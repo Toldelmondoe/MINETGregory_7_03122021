@@ -10,8 +10,11 @@ const sequelize = new Sequelize(, {
     host: "localhost:8080"
 });
 
+const authRoutes = require("./routes/auth")
+
 app.use(bodyParser.json());
 app.use(helmet());
+
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
@@ -19,5 +22,8 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
 });
+
+app.use("/images", express.static(path.join(__dirname, "images")));
+app.use("/api/auth", authRoutes);
 
 module.exports = app;
