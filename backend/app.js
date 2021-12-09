@@ -5,7 +5,7 @@ const path = require("path");
 const auth = require("./middleware/auth");
 const app = express();
 const { Sequelize } = require('sequelize');
-const sequelize = new Sequelize(, {
+const sequelize = new Sequelize("", {
     dialect: "mysql",
     host: "localhost:8080"
 });

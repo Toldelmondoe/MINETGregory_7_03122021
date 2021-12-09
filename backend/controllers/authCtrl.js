@@ -23,19 +23,23 @@ exports.signup = (req, res, next) => { // fonction qui permet aux utilisateurs d
     if (!emailValidator.validate(req.body.email) || !passwordSchema.validate(req.body.password)) { // si l'email et le mot de passe ne sont pas valides alors une erreur est retournée
         return res.status(400).json({ message: 'Vérifiez le format de votre adresse e-mail et votre mot de passe doit comporter au moins 8 caractères, contenir des majuscules, des lettres minuscules et des chiffres.' });
       
-    }   else if (emailValidator.validate(req.body.email) || passwordSchema.validate(req.body.password)) { // si l'email et le mot de passe sont valide alors :
+    }   else { // si l'email et le mot de passe sont valide alors :
+            console.log(req.body)
             const maskedMail = MaskData.maskEmail2(req.body.email); // masquage de l'adresse mail
-            bcrypt.hash(req.body.password, 10) // le mot de passe de l'utilisateur est haché gràce à bcrypt et le salt qui est définit à 10.
-            .then(hash => { // création d'un objet contenant les informations utilisateur
-                const user = new User ({ // création d'un nouvel utilisateur
-                    email: maskedMail, 
-                    password: hash
-                });
-                user.save() // sauvegarde de ces informations sur la base de données
-                .then( hash => res.status(201).json({ message: 'Utilisateur créé !' }))
-                .catch(error => res.status(400).json({ error }))
-            })
-            .catch(error => res.status(500).json({ error }))
+            const password = bcrypt.hashSync(req.body.password, 10);
+            const user = new User ({ // création d'un nouvel utilisateur
+                nom: req.body.nom,
+                email: maskedMail, 
+                password: password
+            });
+            user.save() // sauvegarde de ces informations sur la base de données
+            .then( hash => res.status(201).json({ message: 'Utilisateur créé !' }))
+            .catch(error => res.status(400).json({ error }))
+            // bcrypt.hash(req.body.password, 10) // le mot de passe de l'utilisateur est haché gràce à bcrypt et le salt qui est définit à 10.
+                //.then(hash => { // création d'un objet contenant les informations utilisateur
+                    
+               // })
+           // .catch(error => res.status(500).json({ error }))
         };   
 }
     
