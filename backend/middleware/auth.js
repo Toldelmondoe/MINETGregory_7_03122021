@@ -8,6 +8,7 @@ module.exports = (req, res, next) => {
         if (req.body.userId && req.body.userId !== userId) { // le userId de la requête et celui du token sont comparés
             throw 'User ID non valable !'; // si les userId sont différents alors User ID non valable
         } else { // si les userId sont identiques alors on peut passer à la suite
+            console.log('authentification réussie !');
             next();
         }
     } catch (error) {
