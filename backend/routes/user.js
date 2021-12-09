@@ -1,11 +1,13 @@
-const express       = require("express");
-const router        = express.Router();
-const userCtrl      = require("../controllers/userCtrl");
-const auth          = require('../middleware/auth'); 
+const express = require("express");
+const router = express.Router();
 
-router.get("/all/", userCtrl.findAllUsers)
-router.get("/:id", userCtrl.findOneUser)
-router.delete("/", auth, userCtrl.deleteOneUser)
-router.delete("/:id", auth, userCtrl.deleteMyAccount)
+const userCtrl = require("../controllers/userCtrl");
+const auth = require('../middleware/auth'); 
+const multer = require("../middleware/multer-config");
 
-module.exports = router
+router.get("/:id", auth, userCtrl.getUserProfile);
+router.patch("/update", auth, multer, userCtrl.updateUserProfile);
+router.put("/update", auth, userCtrl.updatePassword);
+router.delete("/:id", auth, userCtrl.deleteProfile);
+
+module.exports = router;
