@@ -1,5 +1,4 @@
-const { Sequelize, DataTypes, Model } = require("sequelize")
-const sequelize = new Sequelize('sqlite::memory:');
+const { Model } = require("sequelize")
 
 module.exports = (sequelize, DataTypes) => {
     class User extends Model {}
@@ -16,13 +15,9 @@ module.exports = (sequelize, DataTypes) => {
         password: {
             type: DataTypes.STRING,
             allowNull: false
-        },
-        isAdmin: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false,
-            defaultValue: false
         }
-    }, {
+    }, 
+    {
         sequelize,
         modelName: "User"
     })

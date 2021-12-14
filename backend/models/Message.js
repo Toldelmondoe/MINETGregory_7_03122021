@@ -1,5 +1,4 @@
-const { Sequelize, DataTypes, Model } = require("sequelize");
-const sequelize = new Sequelize('sqlite::memory:');
+const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
     class Message extends Model {}
@@ -11,7 +10,8 @@ module.exports = (sequelize, DataTypes) => {
         messageUrl: {
             type: DataTypes.STRING
         }
-    }, {
+    }, 
+    {
         sequelize,
         modelName: "Message"
     })
