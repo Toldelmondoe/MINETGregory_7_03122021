@@ -23,7 +23,7 @@ module.exports = (req, res, next) => {
         Comment.destroy({ where: { MessageId: req.query.messageId }})
         Message.destroy({ where: { id: req.query.messageId }})
         .then((res) => {
-            res.status(200).json({ message: "Le message et ses commentaires ont été effacés !" })
+            res.status(200).json({ message: "haveRightOnMessage : Le message et ses commentaires ont été effacés !" })
         })
         .catch(error => res.status(403).json({ error }))
     } else {
@@ -36,7 +36,7 @@ module.exports = (req, res, next) => {
     if(req.query.commentUid == req.query.uid || req.query.uid == 1) {
         Comment.destroy({ where: { MessageId: req.query.messageId }})
         .then((res) => {
-            res.status(200).json({ message: "Le commentaire a été effacé !" })
+            res.status(200).json({ message: "haveRightOnComment : Le commentaire a été effacé !" })
         })
         .catch(error => res.status(403).json({ error }))
     } else {
@@ -52,7 +52,7 @@ module.exports = (req, res, next) => {
         Comment.destroy({ where: { UserId: req.params.id }})
         Message.destroy({ where: { UserId: req.params.id }})
         User.destroy({ where: { id: req.params.id }}) 
-        .then( () => res.status(200).json({ message: "Compte supprimé !" })
+        .then( () => res.status(200).json({ message: "haveRightOnAccount : Compte supprimé !" })
         )
         .catch(error => res.status(403).json({ error }))
     } else {
@@ -69,7 +69,7 @@ module.exports = (req, res, next) => {
         Message.destroy({ where: { UserId: req.query.uid }})
         Comment.destroy({ where: { UserId: req.query.uid }})
         .then((res) => {
-            res.status(200).json({ message: "Compte supprimé !" })
+            res.status(200).json({ message: "haveRightOnUsers : Compte supprimé !" })
         })
         .catch(error => res.status(403).json({ error }))
     } else {
