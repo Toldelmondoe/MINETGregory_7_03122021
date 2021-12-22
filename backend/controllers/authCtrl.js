@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 
 exports.signup = (req, res, next) => {   
   if ( !req.body.userName || !req.body.email || !req.body.password ) {
-    return res.status(400).json({message: "Veuillez remplir tous les champs !"})
+    return res.status(400).json({ message: "Veuillez remplir tous les champs !" })
 }
     const nameRegex = /(.*[a-z]){3,30}/;
     const mailRegex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
@@ -27,15 +27,15 @@ exports.signup = (req, res, next) => {
         })            
         .catch((error) => {res.status(401).json({ error})});  
         })
-      .catch((error) => { res.status(500).json({message: "erreur serveur" + error})})
+      .catch((error) => { res.status(500).json({ message: "erreur serveur" + error })})
     } else {
-      res.status(400).json({message: "Paramètres incorrects !"})
+      res.status(400).json({ message: "Paramètres incorrects !" })
     }               
 };
 
 exports.login = (req, res, next) => {
   if ( !req.body.email || !req.body.password ) {
-    return res.status(400).json({message: "Veuillez remplir tous les champs !"})
+    return res.status(400).json({ message: "Veuillez remplir tous les champs !" })
 }
   User.findOne({
     where: {
