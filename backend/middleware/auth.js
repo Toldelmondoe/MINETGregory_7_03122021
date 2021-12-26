@@ -1,9 +1,12 @@
 const jwt = require('jsonwebtoken');
+const User = require('../models/user');
+const Message = require('../models/message');
+const Comment = require('../models/comment');
 // middleware qui protégera les routes sélectionnées et vérifier que l'utilisateur est authentifié avant d'autoriser l'envoi de ses requêtes
-module.exports = (req, res, next) => {
+verifyToken = (req, res, next) => {
     try {
         const token = req.headers.authorization.split(' ')[1]; // récupération du token de la requête entrante dans le headers
-        const decodedToken = jwt.verify(token, 'TKN_SECRET'); // vérification du token
+        const decodedToken = jwt.verify(token, process.env.TKN_SECRET); // vérification du token
         const userId = decodedToken.userId; // récupération de l'id du token
         if (req.body.userId && req.body.userId !== userId) { // le userId de la requête et celui du token sont comparés
             throw 'User ID non valable !'; // si les userId sont différents alors User ID non valable
@@ -16,63 +19,138 @@ module.exports = (req, res, next) => {
     }
 };
 
-module.exports = (req, res, next) => {
-    const Message = db.messages
-    const Comment = db.comments
-    if(req.query.messageUid == req.query.uid || req.query.uid == 1) {
-        Comment.destroy({ where: { MessageId: req.query.messageId }})
-        Message.destroy({ where: { id: req.query.messageId }})
-        .then((res) => {
-            res.status(200).json({ message: "haveRightOnMessage : Le message et ses commentaires ont été effacés !" })
-        })
-        .catch(error => res.status(403).json({ error }))
-    } else {
-        res.status(401).json({ message : "Non autorisé !" })
+verifyHaveRight = (req, res, next) => {
+    let token = req.headers[process.env.TKN_SECRET];
+    if (!token) {
+        return res.status(403).json({ message: "Le token ne correspond pas !" });
     }
+    jwt.verify(token, config.secret, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ message: "Non autorisé !" });
+        }
+        req.id = decoded.id;
+        User.findByPk(req.id).then((user) => {
+            user.getRoles().then((roles) => {
+                for (let i = 0; i < roles.length; i++) {
+                    console.log(roles[i].name);
+                    if (roles[i].name === "admin") {
+                        console.log("l'utilisateur est admin !");
+                    return next ();
+                    }
+                }
+                if (req.params.id && req.params.id == user.id) {
+                    console.log("l'utilisateur est propiétaire !");
+                return next ();
+                }
+                return res.status(401).json({ message: "non autorisé !" });
+            });
+        });
+    });
 };
 
-module.exports = (req, res, next) => {
-    const Comment = db.comments
-    if(req.query.commentUid == req.query.uid || req.query.uid == 1) {
-        Comment.destroy({ where: { MessageId: req.query.messageId }})
-        .then((res) => {
-            res.status(200).json({ message: "haveRightOnComment : Le commentaire a été effacé !" })
-        })
-        .catch(error => res.status(403).json({ error }))
-    } else {
-        res.status(401).json({ message : "Non autorisé !" })
+verifyMessageRight = (req, res, next) => {
+    let token = req.headers[process.env.TKN_SECRET];
+    if (!token) {
+        return res.status(403).json({ message: "Le token ne correspond pas !" });
     }
+    jwt.verify(token, process.env.TKN_SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ message: "Non autorisé !" });
+        }
+        console.log(decoded);
+        console.log(req.id);
+        req.id = decoded.id;
+        User.findByPk(decoded.id).then((user) => {
+            user.get.roles().then((roles) => {
+                for (let i = 0; i < roles.length; i++) {
+                    console.log(roles[i].name);
+                    if (roles[i].name === "admin") {
+                        console.log("l'utilisateur est admin !");
+                        return next ();
+                    }
+                    Message.findByPk(req.params.id).then((message) => {
+                        console.log(req.params.id);
+                        message.get.roles().then((roles) => {
+                            if(user.id === decoded.id) {
+                                console.log("l'utilisateur est propriétaire !");
+                                return next();
+                            }
+                            return res.status(401).json({ message: "non autorisé !" });
+                        });    
+                    });
+                }
+            });
+        });
+    });
 };
 
-module.exports = (req, res, next) => {
-    const User = db.users
-    const Message = db.messages
-    const Comment = db.comments
-    if(req.query.UserId) {
-        Comment.destroy({ where: { UserId: req.params.id }})
-        Message.destroy({ where: { UserId: req.params.id }})
-        User.destroy({ where: { id: req.params.id }}) 
-        .then( () => res.status(200).json({ message: "haveRightOnAccount : Compte supprimé !" })
-        )
-        .catch(error => res.status(403).json({ error }))
-    } else {
-        res.status(401).json({ message : "Non autorisé !" })
+verifyCommentRight = (req, res, next) => {
+    let token = req.headers[process.env.TKN_SECRET];
+    if (!token) {
+        return res.status(403).json({ message: "Le token ne correspond pas !" });
     }
+    jwt.verify(token, process.env.TKN_SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ message: "Non autorisé !" });
+        }
+        console.log(decoded);
+        console.log(req.id);
+        req.id = decoded.id;
+        User.findByPk(decoded.id).then((user) => {
+            user.get.roles().then((roles) => {
+                for (let i = 0; i < roles.length; i++) {
+                    console.log(roles[i].name);
+                    if (roles[i].name === "admin") {
+                        console.log("l'utilisateur est admin !");
+                        return next ();
+                    }
+                    Comment.findByPk(req.params.id).then((comment) => {
+                        console.log(req.params.id);
+                        comment.get.roles().then((roles) => {
+                            if(user.id === decoded.id) {
+                                console.log("l'utilisateur est propriétaire !");
+                                return next();
+                            }
+                            return res.status(401).json({ message: "non autorisé !" });
+                        });    
+                    });
+                }
+            });
+        });
+    });
 };
 
-module.exports = (req, res, next) => {
-    const User = db.users
-    const Message = db.messages
-    const Comment = db.comments
-    if(req.query.isAdmin) {
-        User.destroy({ where: { id: req.query.uid}})
-        Message.destroy({ where: { UserId: req.query.uid }})
-        Comment.destroy({ where: { UserId: req.query.uid }})
-        .then((res) => {
-            res.status(200).json({ message: "haveRightOnUsers : Compte supprimé !" })
-        })
-        .catch(error => res.status(403).json({ error }))
-    } else {
-        res.status(401).json({ message : "Non autorisé !" })
+isAdmin = (req, res, next) => {
+    let token = req.headers[process.env.TKN_SECRET];
+    if (!token) {
+        return res.status(403).json({ message: "Le token ne correspond pas !" });
     }
+    jwt.verify(token, process.env.TKN_SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ message: "Non autorisé !" });
+        }
+        req.id = decoded.id;
+        User.findByPk(req.id).then((user) => {
+            user.getRoles().then((roles) => {
+                for (let i = 0; i < roles.length; i++) {
+                    if (roles[i].name === "admin") {
+                        next();
+                        return;
+                    }
+                }
+                res.status(403).json({ message: "Vous n'êtes pas administrateur !" });
+                return;
+            });
+        });
+    });    
 };
+
+const auth = {
+    verifyToken: verifyToken,
+    verifyHaveRight: verifyHaveRight,
+    verifyMessageRight: verifyMessageRight,
+    verifyCommentRight: verifyCommentRight,
+    isAdmin: isAdmin,
+};
+
+module.exports = auth
