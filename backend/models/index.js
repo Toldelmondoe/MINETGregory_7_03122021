@@ -38,10 +38,11 @@ db.messages = require("./message.js")(sequelize, Sequelize)
 db.comments = require("./comment.js")(sequelize, Sequelize)
 db.roles = require("./role.js")(sequelize, Sequelize)
 
+db.roles.hasMany(db.users)
 db.messages.belongsTo(db.users)
 db.users.hasMany(db.messages)
 db.users.hasMany(db.comments)
-db.users.belongsTo(db.roles)
+db.users.hasOne(db.roles)
 db.comments.belongsTo(db.users)
 db.comments.belongsTo(db.messages)
 db.comments.hasOne(db.comments);

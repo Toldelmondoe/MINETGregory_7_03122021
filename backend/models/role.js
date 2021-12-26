@@ -4,11 +4,15 @@ module.exports = (sequelize, DataTypes) => {
     class Role extends Model {}
     
     Role.init({
-        user: {
+        role: {
             type: DataTypes.STRING,
             allowNull: false
         },
-        admin: {
+        roleUser: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        roleAdmin: {
             type: DataTypes.STRING,
             allowNull: false
         }
