@@ -8,6 +8,6 @@ router.post("/", auth.verifyToken, multer, messageCtrl.createMessage);
 router.get("/all/:id", auth.verifyToken, messageCtrl.findAllMessagesForOne);
 router.get("/:id", auth.verifyToken, messageCtrl.findOneMessage);
 router.get("/", auth.verifyToken, messageCtrl.findAllMessages);
-router.delete("/", auth.verifyPostRight, messageCtrl.deleteMessage);
+router.delete("/", auth.verifyMessageRight, messageCtrl.deleteMessage);
 
 module.exports = router;
