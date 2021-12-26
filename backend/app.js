@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 
 const { user } = require("./models/user");
 const dataBase = require("./models");
-const Role = db.role;
+const Role = db.roles;
 const User = db.users;
 var bcrypt = require("bcrypt");
 
@@ -79,3 +79,6 @@ app.use("/api/messages", auth, messageRoutes);
 app.use("/api/comments", auth, commentRoutes);
 
 module.exports = app;
+
+
+
