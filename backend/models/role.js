@@ -4,18 +4,15 @@ module.exports = (sequelize, DataTypes) => {
     class Role extends Model {}
     
     Role.init({
-        role: {
+        roleId: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            unique: true
+        },
+        description: {
             type: DataTypes.STRING,
             allowNull: false
         },
-        roleUser: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        roleAdmin: {
-            type: DataTypes.STRING,
-            allowNull: false
-        }
     }, 
     {
         sequelize,

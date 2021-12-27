@@ -20,12 +20,12 @@ exports.signup = (req, res, next) => {
             password: hash
           });
           user.save()                                       
-        .then((user) => { 
-          if (user) {
-            return res.status(201).json({ message: "Utilisateur créé !" })
-          }
-        })            
-        .catch((error) => {res.status(401).json({ error})});  
+          .then((user) => { 
+            if (user) {
+              return res.status(201).json({ message: "Utilisateur créé !" })
+            }
+          })            
+          .catch((error) => {res.status(401).json({ error})});  
         })
       .catch((error) => { res.status(500).json({ message: "erreur serveur" + error })})
     } else {
@@ -36,12 +36,12 @@ exports.signup = (req, res, next) => {
 exports.login = (req, res, next) => {
   if ( !req.body.email || !req.body.password ) {
     return res.status(400).json({ message: "Veuillez remplir tous les champs !" })
-}
+  }
   User.findOne({
     where: {
       email: req.body.email
     }
-    })       
+  })       
   .then(user => {
     if (!user) {  
       return res.status(404).json({ message: "email non trouvé !" }); 
@@ -60,6 +60,6 @@ exports.login = (req, res, next) => {
       })
     })
     .catch(error => {console.log(error); res.status(500).json({ error })});                             
-    })
+  })
   .catch(error => res.status(500).json({ error }));                                 
 };
