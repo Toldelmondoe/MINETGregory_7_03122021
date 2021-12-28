@@ -1,47 +1,124 @@
-const http = require('http');
-const app = require('./app');
+const express = require("express");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const path = require("path");
+const helmet = require('helmet');
+const auth = require("./middleware/authJwt");
 
-const normalizePort = val => {
-  const port = parseInt(val, 10);
+const authRoutes = require("./routes/auth.routes")
+const userRoutes = require("./routes/user.routes")
+const postRoutes = require("./routes/post.routes")
+const commentRoutes = require("./routes/comment.routes")
 
-  if (isNaN(port)) {
-    return val;
-  }
-  if (port >= 0) {
-    return port;
-  }
-  return false;
+const app = express();
+
+// Sécurisation des headers
+app.use(helmet());
+
+var corsOptions = {
+  origin: "http://localhost:8081"
 };
-const port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
+app.use(cors(corsOptions));
 
-const errorHandler = error => {
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
-  const address = server.address();
-  const bind = typeof address === 'string' ? 'pipe ' + address : 'port: ' + port;
-  switch (error.code) {
-    case 'EACCES':
-      console.error(bind + ' Nécessite des privilèges plus élevés !');
-      process.exit(1);
-      break;
-    case 'EADDRINUSE':
-      console.error(bind + ' Est déjà utilisé !');
-      process.exit(1);
-      break;
-    default:
-      throw error;
-  }
-};
+// parse requests of content-type - application/json
+app.use(bodyParser.json());
 
-const server = http.createServer(app);
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended : true }));
 
-server.on('error', errorHandler);
-server.on('listening', () => {
-  const address = server.address();
-  const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port;
-  console.log('Connecté sur le ' + bind);
+// database
+const db = require("./middleware");
+const { User } = require("./middleware");
+const Role = db.role;
+
+var bcrypt = require("bcrypt");
+
+app.use("/images", express.static(path.join(__dirname, "images")));
+app.use("/api/auth", authRoutes);
+app.use("/api/users", auth, userRoutes);
+app.use("/api/posts", auth, postRoutes);
+app.use("/api/comments", auth, commentRoutes);
+
+// db.sequelize.sync();
+db.sequelize.sync().then(() => {
+  initial();
 });
 
-server.listen(port);
+function initial() {
+  Role.findOrCreate({
+    where: {
+      id: 1, 
+    },
+    defaults: {
+      id: 1,
+      name: "user",
+    },
+  });
+
+  Role.findOrCreate({
+    where: {
+      id: 2,
+    },
+    defaults: {
+      id: 2,
+      name: "moderator",
+    },
+  });
+
+  Role.findOrCreate({
+    where: {
+      id:3,
+    },
+    defaults: {
+      id: 3,
+      name: "admin",
+    },
+  });
+
+  User.findOrCreate({
+    where: {username: "moderator," },
+    defaults: {
+      username: "moderator",
+      email: "moderator@gmail.com",
+      password: bcrypt.hashSync("moderator", 5),
+    }
+  })
+  .then((users) => {
+    users[0].setRoles([2]).then(() => {
+      ({ message: "moderator successfully created !" });
+    });
+  })
+  .catch((err) => {
+    ({ message: err.message});
+  });
+
+  User.findOrCreate({
+    where: {username: "admin," },
+    defaults: {
+      username: "admin",
+      email: "admin@gmail.com",
+      password: bcrypt.hashSync("admin", 5),
+    }
+  })
+  .then((users) => {
+    users[0].setRoles([3]).then(() => {
+      ({ message: "admin successfully created !" });
+    });
+  })
+  .catch((err) => {
+    ({ message: err.message });
+  });
+};
+
+// simple route
+app.get("/", (req, res) => {
+  res.json({ message: "Welcome to groupomania." });
+});
+
+// routes
+require("./routes/auth.routes");
+require("./routes/post.routes");
+require("./routes/user.routes");
+require("./routes/comment.routes");
+
+module.exports = app;
