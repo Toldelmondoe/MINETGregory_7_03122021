@@ -1,5 +1,6 @@
 const { commentController } = require("../controllers/comment.controller.js");
 const { authJwt } = require("../middleware/authJwt.js");
+const multer = require("../middleware/multer-config.js");
 
 module.exports = function(app) {
   app.use(function(req, res, next) {
@@ -14,7 +15,8 @@ module.exports = function(app) {
   app.post(
     "/api/comments",
     [authJwt.verifyToken],
-    [commentController.createComment]
+    [commentController.createComment],
+    multer
   );
   app.delete(
     "/api/comments/:id",

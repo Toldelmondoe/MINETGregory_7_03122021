@@ -31,7 +31,7 @@ app.use(bodyParser.urlencoded({ extended : false }));
 
 // database
 const db = require("./middleware");
-const { User } = require("./middleware");
+const User = db.role;
 const Role = db.role;
 
 var bcrypt = require("bcrypt");
@@ -120,8 +120,8 @@ require("./routes/comment.routes");
 
 app.use("/images", express.static(path.join(__dirname, "images")));
 app.use("/api/auth", authRoutes);
-app.use("/api/users", auth, userRoutes);
-app.use("/api/posts", auth, postRoutes);
-app.use("/api/comments", auth, commentRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/posts", postRoutes);
+app.use("/api/comments", commentRoutes);
 
 module.exports = app;
