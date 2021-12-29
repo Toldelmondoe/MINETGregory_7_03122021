@@ -25,7 +25,9 @@ module.exports = function(app) {
     [
       authJwt.verifyToken, 
       authJwt.verifyHaveRight, 
-      authJwt.verifyCommentRight
+      authJwt.verifyCommentRight,
+      authJwt.isModerator,
+      authJwt.isAdmin
     ],
     commentController.deleteComment
   );

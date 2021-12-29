@@ -5,10 +5,10 @@ const path = require("path");
 const helmet = require('helmet');
 const auth = require("./middleware/authJwt");
 
-const authRoutes = require("./routes/auth.routes")
-const userRoutes = require("./routes/user.routes")
-const postRoutes = require("./routes/post.routes")
-const commentRoutes = require("./routes/comment.routes")
+const authRoutes = require("./routes/auth.routes");
+const userRoutes = require("./routes/user.routes");
+const postRoutes = require("./routes/post.routes");
+const commentRoutes = require("./routes/comment.routes");
 
 const app = express();
 
@@ -32,12 +32,6 @@ const { User } = require("./middleware");
 const Role = db.role;
 
 var bcrypt = require("bcrypt");
-
-app.use("/images", express.static(path.join(__dirname, "images")));
-app.use("/api/auth", authRoutes);
-app.use("/api/users", auth, userRoutes);
-app.use("/api/posts", auth, postRoutes);
-app.use("/api/comments", auth, commentRoutes);
 
 // db.sequelize.sync();
 db.sequelize.sync().then(() => {
@@ -120,5 +114,11 @@ require("./routes/auth.routes");
 require("./routes/post.routes");
 require("./routes/user.routes");
 require("./routes/comment.routes");
+
+app.use("/images", express.static(path.join(__dirname, "images")));
+app.use("/api/auth", authRoutes);
+app.use("/api/users", auth, userRoutes);
+app.use("/api/posts", auth, postRoutes);
+app.use("/api/comments", auth, commentRoutes);
 
 module.exports = app;

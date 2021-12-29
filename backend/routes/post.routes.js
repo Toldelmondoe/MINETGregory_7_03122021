@@ -29,7 +29,9 @@ module.exports = function(app) {
     [
       authJwt.verifyToken, 
       authJwt.verifyHaveRight, 
-      authJwt.verifyPostRight
+      authJwt.verifyPostRight,
+      authJwt.isModerator,
+      authJwt.isAdmin
     ],
     postController.deletePost
   );
