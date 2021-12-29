@@ -3,7 +3,6 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require("path");
 const helmet = require('helmet');
-const auth = require("./middleware/authJwt");
 
 const authRoutes = require("./routes/auth.routes");
 const userRoutes = require("./routes/user.routes");
@@ -11,9 +10,6 @@ const postRoutes = require("./routes/post.routes");
 const commentRoutes = require("./routes/comment.routes");
 
 const app = express();
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: false}));
 
 // Sécurisation des headers
 app.use(helmet());
@@ -31,7 +27,7 @@ app.use(bodyParser.urlencoded({ extended : false }));
 
 // database
 const db = require("./middleware");
-const User = db.role;
+const User = db.user;
 const Role = db.role;
 
 var bcrypt = require("bcrypt");
@@ -39,6 +35,22 @@ var bcrypt = require("bcrypt");
 // db.sequelize.sync();
 db.sequelize.sync().then(() => {
   initial();
+});
+
+// simple route
+app.get("/api", (req, res) => {
+  res.json({ message: "Welcome to groupomania." });
+});
+
+// routes
+require("./routes/auth.routes");
+require("./routes/post.routes");
+require("./routes/user.routes");
+require("./routes/comment.routes");
+
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}.`);
 });
 
 function initial() {
@@ -71,6 +83,24 @@ function initial() {
       name: "admin",
     },
   });
+
+  User.findOrCreate({
+    where: {username: "user," },
+    defaults: {
+      username: "user",
+      email: "user@gmail.com",
+      password: bcrypt.hashSync("user", 5),
+    }
+  })
+  .then((users) => {
+    users[0].setRoles([1]).then(() => {
+      ({ message: "user successfully created !" });
+    });
+  })
+  .catch((err) => {
+    ({ message: err.message});
+  });
+
 
   User.findOrCreate({
     where: {username: "moderator," },
@@ -106,17 +136,6 @@ function initial() {
     ({ message: err.message });
   });
 };
-
-// simple route
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to groupomania." });
-});
-
-// routes
-require("./routes/auth.routes");
-require("./routes/post.routes");
-require("./routes/user.routes");
-require("./routes/comment.routes");
 
 app.use("/images", express.static(path.join(__dirname, "images")));
 app.use("/api/auth", authRoutes);

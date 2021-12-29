@@ -92,7 +92,7 @@ deletePost = (req, res, next) => {
     console.log("S'il n'est ni l'auteur ni admin => suppression impossible")
     console.log(req.query.postUid == req.query.uid || req.query.uid == 1)
     if(req.query.post == req.query.uid || req.query.uid == 1) {
-        Comment.destroy({ where: { PostId: req.query.PostId }})
+        Comment.destroy({ where: { commentId: req.query.commentId }})
         Post.destroy({ where: { id: req.query.postId }})
         .then((res) => {
                 res.status(200).json({ message: "Le message et ses commentaires ont été effacés !" })
