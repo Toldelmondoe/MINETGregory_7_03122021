@@ -26,7 +26,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended : false }));
 
 // database
-const db = require("./middleware");
+const db = require("./models");
 const User = db.user;
 const Role = db.role;
 

@@ -1,4 +1,4 @@
-const db = require("../middleware");
+const db = require("../models");
 const Comment = db.comments;              
 const User = db.users;
 

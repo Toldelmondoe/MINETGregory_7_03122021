@@ -1,7 +1,6 @@
 const config = require("../config/db.config.js");
 
 const Sequelize = require("sequelize");
-const commentController = require("../controllers/comment.controller.js");
 const sequelize = new Sequelize(
     config.DB,
     config.USER,
