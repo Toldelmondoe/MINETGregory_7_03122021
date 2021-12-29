@@ -1,15 +1,27 @@
-module.exports = (sequelize, Sequelize) => {
-    const Comment = sequelize.define("comments", {
-        comment: {
-            type: Sequelize.TEXT
+const { Model } = require("sequelize");
+
+module.exports = (sequelize, DataTypes) => {
+    class Comment extends Model {}
+    
+    Comment.init({
+        commentId: {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: true,
+        },
+        content: {
+            type: DataTypes.TEXT
         },
         commentUrl: {
-            type: Sequelize.STRING
+            type: DataTypes.STRING
         }
-    });
-
-    return Comment;
-};
+    }, 
+    {
+        sequelize,
+        modelName: "comments"
+    })
+    return Comment
+}
 
 
 

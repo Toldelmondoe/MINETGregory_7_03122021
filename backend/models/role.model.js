@@ -1,19 +1,20 @@
-module.exports = (sequelize, Sequelize) => {
-    const Role = sequelize.define("roles", {
+const { Model } = require("sequelize");
+
+module.exports = (sequelize, DataTypes) => {
+    class Role extends Model {}
+    
+    Role.init({
         id: {
-            type: Sequelize.INTEGER,
-            primaryKey: true
+            type: DataTypes.INTEGER,
+            primaryKey: true,
         },
         name: {
-            type: Sequelize.STRING
-        },
-        post: {
-            type: Sequelize.TEXT
-        },
-        comment: {
-            type: Sequelize.TEXT
+            type: DataTypes.STRING
         }
-    });
-
-    return Role;
-};
+    }, 
+    {
+        sequelize,
+        modelName: "roles"
+    })
+    return Role
+}

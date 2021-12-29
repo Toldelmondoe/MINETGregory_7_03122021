@@ -1,5 +1,5 @@
-const { commentController } = require("../controllers/comment.controller");
-const { authJwt } = require("../middleware");
+const { commentController } = require("../controllers/comment.controller.js");
+const { authJwt } = require("../middleware/authJwt.js");
 
 module.exports = function(app) {
   app.use(function(req, res, next) {
@@ -9,17 +9,13 @@ module.exports = function(app) {
       );
       next();
   });
-  
   app.get("/api/comments", commentController.findAllComments);
-
   app.get("/api/comments/:id", commentController.findOneComment);
-    
   app.post(
     "/api/comments",
     [authJwt.verifyToken],
-    commentController.createComment
+    [commentController.createComment]
   );
-
   app.delete(
     "/api/comments/:id",
     [
@@ -29,6 +25,6 @@ module.exports = function(app) {
       authJwt.isModerator,
       authJwt.isAdmin
     ],
-    commentController.deleteComment
+    [commentController.deleteComment]
   );
 };

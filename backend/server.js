@@ -12,6 +12,9 @@ const commentRoutes = require("./routes/comment.routes");
 
 const app = express();
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: false}));
+
 // Sécurisation des headers
 app.use(helmet());
 
@@ -24,7 +27,7 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended : true }));
+app.use(bodyParser.urlencoded({ extended : false }));
 
 // database
 const db = require("./middleware");

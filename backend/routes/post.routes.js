@@ -1,6 +1,6 @@
-const { postController } = require("../controllers/post.controller");
-const { authJwt } = require("../middleware");
-const multer = require('../middleware/multer-config');
+const { postController } = require("../controllers/post.controller.js");
+const { authJwt } = require("../middleware/authJwt.js");
+const multer = require("../middleware/multer-config.js");
 
 module.exports = function(app) {
   app.use(function(req, res, next) {
@@ -10,20 +10,15 @@ module.exports = function(app) {
       );
       next();
   });
-    
   app.get("/api/posts", postController.findAllPosts);
-  
-  app.get("/api/posts/:id", postController.findOnePost);
-      
+  app.get("/api/posts/:id", postController.findOnePost);     
   app.get("/api/posts/all/:id", postController.findAllPostsForOne);
-
   app.post(
     "/api/posts",
     [authJwt.verifyToken],
-    postController.createPost,
+    [postController.createPost],
     multer
   );
-  
   app.delete(
     "/api/posts/:id",
     [
@@ -33,6 +28,6 @@ module.exports = function(app) {
       authJwt.isModerator,
       authJwt.isAdmin
     ],
-    postController.deletePost
+    [postController.deletePost]
   );
 };

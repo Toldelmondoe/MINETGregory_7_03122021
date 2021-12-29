@@ -1,13 +1,24 @@
-module.exports = (sequelize, Sequelize) => {
-    const Post = sequelize.define("posts", {
-        post: {
-            type: Sequelize.TEXT,
+const { Model } = require("sequelize");
+
+module.exports = (sequelize, DataTypes) => {
+    class Post extends Model {}
+    
+    Post.init({
+        postId: {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: true,
+        },
+        content: {
+            type: DataTypes.TEXT
         },
         postUrl: {
-            type: Sequelize.STRING
+            type: DataTypes.STRING
         }
-
-    });
-
-    return Post;
-};
+    }, 
+    {
+        sequelize,
+        modelName: "posts"
+    })
+    return Post
+}

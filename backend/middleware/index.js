@@ -40,6 +40,24 @@ db.user.belongsToMany(db.role, {
     otherKey: "roleId"
 });
 
+db.post.belongsToMany(db.comment, {
+    through: "user_posts",
+    foreignKey: "postId",
+    otherKey:"commentId"
+});
+
+db.user.belongsToMany(db.post, {
+    through: "user_posts",
+    foreignKey: "userId",
+    otherKey: "postId"
+});
+
+db.user.belongsToMany(db.comment, {
+    through: "user_comments",
+    foreignKey: "userId",
+    otherKey: "commentId"
+});
+
 db.ROLES = ["user", "admin", "moderator"];
 
 module.exports = db;
