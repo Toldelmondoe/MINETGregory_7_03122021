@@ -42,11 +42,6 @@ app.get("/api", (req, res) => {
   res.json({ message: "Welcome to groupomania." });
 });
 
-// routes
-require("./routes/auth.routes");
-require("./routes/post.routes");
-require("./routes/user.routes");
-require("./routes/comment.routes");
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
@@ -85,7 +80,7 @@ function initial() {
   });
 
   User.findOrCreate({
-    where: {username: "user," },
+    where: {username: "user" },
     defaults: {
       username: "user",
       email: "user@gmail.com",
@@ -103,7 +98,7 @@ function initial() {
 
 
   User.findOrCreate({
-    where: {username: "moderator," },
+    where: {username: "moderator" },
     defaults: {
       username: "moderator",
       email: "moderator@gmail.com",
@@ -120,7 +115,7 @@ function initial() {
   });
 
   User.findOrCreate({
-    where: {username: "admin," },
+    where: {username: "admin" },
     defaults: {
       username: "admin",
       email: "admin@gmail.com",

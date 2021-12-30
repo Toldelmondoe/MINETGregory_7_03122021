@@ -39,23 +39,14 @@ db.user.belongsToMany(db.role, {
     otherKey: "roleId"
 });
 
-db.post.belongsToMany(db.comment, {
-    through: "user_posts",
-    foreignKey: "postId",
-    otherKey:"commentId"
-});
+db.post.hasMany(db.comment);
+db.comment.belongsTo(db.post);
 
-db.user.belongsToMany(db.post, {
-    through: "user_posts",
-    foreignKey: "userId",
-    otherKey: "postId"
-});
+db.user.hasMany(db.post);
+db.post.belongsTo(db.user);
 
-db.user.belongsToMany(db.comment, {
-    through: "user_comments",
-    foreignKey: "userId",
-    otherKey: "commentId"
-});
+db.user.hasMany(db.comment);
+db.comment.belongsTo(db.user);
 
 db.ROLES = ["user", "admin", "moderator"];
 

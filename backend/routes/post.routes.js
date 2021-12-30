@@ -1,33 +1,24 @@
-const { postController } = require("../controllers/post.controller.js");
-const { authJwt } = require("../middleware/authJwt.js");
-const multer = require("../middleware/multer-config.js");
+const express = require("express");
+const router = express.Router();
+const postController = require("../controllers/post.controller");
+const authJwt = require('../middleware/authJwt'); 
+const multer = require("../middleware/multer-config");
 
-module.exports = function(app) {
-  app.use(function(req, res, next) {
-    res.header(
-      "Acces-Control-Allow-Headers",
-      "x-acces-token, Origin, Content-Type, Accept"
-      );
-      next();
-  });
-  app.get("/api/posts", postController.findAllPosts);
-  app.get("/api/posts/:id", postController.findOnePost);     
-  app.get("/api/posts/all/:id", postController.findAllPostsForOne);
-  app.post(
-    "/api/posts",
-    [authJwt.verifyToken],
-    [postController.createPost],
-    multer
-  );
-  app.delete(
-    "/api/posts/:id",
-    [
-      authJwt.verifyToken, 
-      authJwt.verifyHaveRight, 
-      authJwt.verifyPostRight,
-      authJwt.isModerator,
-      authJwt.isAdmin
-    ],
-    [postController.deletePost]
-  );
-};
+router.get("/", postController .findAllPosts);
+router.get("/:postId", postController .findOnePost);
+router.get("/", postController .findAllPostsForOne);
+router.post("/", multer, authJwt.verifyToken, postController .createPost);
+router.delete("/:postId", [
+    authJwt.verifyToken, 
+    authJwt.verifyPostRight, 
+    authJwt.verifyHaveRight, 
+    authJwt.isModeratorOrAdmin
+  ], 
+  postController.deletePost
+);
+
+module.exports = router; 
+
+
+
+
