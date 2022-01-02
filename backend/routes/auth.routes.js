@@ -3,7 +3,8 @@ const router = express.Router();
 const verifySignUp = require("../middleware/verifySignUp");
 const controller = require("../controllers/auth.controller");
 
-router.post('/signup', [
+router.post('/signup', 
+  [
     verifySignUp.checkDuplicateUsernameOrEmail, 
     verifySignUp.checkRolesExisted
   ],
