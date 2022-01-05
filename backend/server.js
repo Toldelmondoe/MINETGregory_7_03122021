@@ -106,7 +106,7 @@ function initial() {
     }
   })
   .then((users) => {
-    users[0].setRoles([1,2]).then(() => {
+    users[0].setRoles([2]).then(() => {
       ({ message: "moderator successfully created !" });
     });
   })
@@ -123,7 +123,7 @@ function initial() {
     }
   })
   .then((users) => {
-    users[0].setRoles([1,2,3]).then(() => {
+    users[0].setRoles([3]).then(() => {
       ({ message: "admin successfully created !" });
     });
   })
