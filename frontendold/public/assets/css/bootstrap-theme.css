@@ -8,7 +8,7 @@
 }
 
 .navbar-inverse .navbar-nav > li > a,
-.navbar-inverse .navbar-nav > .open ul > a { color:rgba(255, 255, 255, 0.4); }
+.navbar-inverse .navbar-nav > .open ul > a { color:#ffffff; }
 
 .navbar-inverse .navbar-nav > .active > a,
 .navbar-inverse .navbar-nav > .active > a:hover, 
@@ -96,3 +96,4 @@
 /*           Images            */
 /*******************************/
 .img-rounded { -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
+.center-home { width: 100%; height: 100%;}
