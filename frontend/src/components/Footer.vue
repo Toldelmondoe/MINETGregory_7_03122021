@@ -6,9 +6,7 @@
                     <div class="card bg-light">
                         <div class="card-body m-0 p-1">
                             <div class="col-12 d-flex flex-column-reverse flex-md-row justify-content-md-center text-dark">
-                                <p class="mb-1 mr-1">Groupomania 2022</p>
-                                <p class="mb-1 mr-1 d-none d-md-block"> | </p>
-                                
+                                <p class="mb-1 mr-1">Groupomania 2022</p>    
                             </div>
                         </div>
                     </div>

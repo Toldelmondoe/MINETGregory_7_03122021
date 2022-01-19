@@ -9,10 +9,11 @@
 <script>
 import NavHeader from "./components/NavHeader"
 import Footer from "./components/Footer"
+
 export default {
     name: "App",
-    components: { 
-        NavHeader,
+    components: {
+        NavHeader, 
         Footer
     }
 }
