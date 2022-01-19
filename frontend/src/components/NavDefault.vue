@@ -6,7 +6,7 @@
             </a>
             <div class="container">
                 <div class="btn-group-vertical" role="group" aria-label="Groupe de boutons en colonne">
-                    <router-link to="/signin"><button type="button" class="btn btn-info mb-4 active">Se connecter</button></router-link>
+                    <router-link to="{name: 'signin'}"><button type="submit" class="btn btn-info mb-4 active">Se connecter</button></router-link>
                     <button type="button" class="btn btn-info mb-3 active"><router-link to="/signup">S'enregistrer</router-link></button>
                 </div>
             </div>

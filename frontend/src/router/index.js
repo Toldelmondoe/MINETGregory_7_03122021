@@ -1,26 +1,27 @@
-import { createRouter, createWebHashHistory } from "vue-router"
+import { createRouter, createWebHashHistory } from 'vue-router'
+import Accueil from "../components/Accueil";
 
 const routes = [
-    {
-        path: "/",
-        name: "Accueil",
-        component: () => import("../components/Accueil"),
-    },
-    {
-        path: "/signin",
-        name: "Connexion",
-        component: () => import("../components/Connexion"),
-    },
-    {
-        path: "/signup",
-        name: "Inscription",
-        component: () => import("../components/Inscription")
-    },
-    {
-        path: "/account",
-        name: "Compte",
-        component: () => import("../components/Compte")
-    }
+  {
+    path: "/",
+    name: "Accueil",
+    component: Accueil,
+  },
+  {
+    path: "/signin",
+    name: "Connexion",
+    component: () => import("../components/Connexion"),
+  },
+  {
+    path: "/signup",
+    name: "Inscription",
+    component: () => import("../components/Inscription")
+  },
+  {
+    path: "/account",
+    name: "Compte",
+    component: () => import("../components/Compte")
+  }
 ]
 
 const router = createRouter({
