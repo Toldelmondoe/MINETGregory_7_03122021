@@ -1,13 +1,12 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Accueil from "../components/Accueil";
-
 const routes = [
   {
     path: "/",
     name: "Accueil",
-    component: Accueil,
-  },
-  {
+    component: Accueil
+  }
+  /*{
     path: "/signin",
     name: "Connexion",
     component: () => import("../components/Connexion"),
@@ -21,14 +20,14 @@ const routes = [
     path: "/account",
     name: "Compte",
     component: () => import("../components/Compte")
-  }
+  }*/
 ]
 
 const router = createRouter({
     history: createWebHashHistory(),
     routes
 })
-
+/*
 router.beforeEach((to, from, next) => {
     const publicPages = ["/", "/signin", "/signup"]
     const authRequired = !publicPages.includes(to.path)
@@ -38,6 +37,6 @@ router.beforeEach((to, from, next) => {
         return next("/signin")
     }
     next()
-})
+})*/
 
 export default router
