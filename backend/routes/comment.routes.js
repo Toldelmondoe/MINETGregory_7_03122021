@@ -4,9 +4,9 @@ const commentController = require("../controllers/comment.controller");
 const authJwt = require('../middleware/authJwt'); 
 
 router.get("/", commentController.findAllComments);
-router.get("/:commentId", commentController.findOneComment);
+router.get("/:Postid", commentController.findOneComment);
 router.post("/", authJwt.verifyToken, commentController.createComment);
-router.delete("/:commentId", 
+router.delete("/", 
   [
     authJwt.verifyToken, 
     authJwt.verifyCommentRight, 
