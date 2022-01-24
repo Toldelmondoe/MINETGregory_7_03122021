@@ -17,6 +17,11 @@ const routes = [
     name: "Inscription",
     component: () => import('../views/Inscription')
   },
+  {
+    path: "/posts",
+    name: "Posts",
+    component: () => import("../views/Posts")
+},
 ]
 
 const router = createRouter({
@@ -24,7 +29,7 @@ const router = createRouter({
   routes
 })
 
-/*
+
 router.beforeEach((to, from, next) => {
     const publicPages = ["/", "/signin", "/signup"]
     const authRequired = !publicPages.includes(to.path)
@@ -34,6 +39,6 @@ router.beforeEach((to, from, next) => {
         return next("/signin")
     }
     next()
-})*/
+})
 
 export default router

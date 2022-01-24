@@ -4,21 +4,21 @@
             <div class="row justify-content-center">
                 <div class="col-12 col-md-10 col-lg-8">
                     <div class="card bg-light">
-                        <p class="h5 my-3 text-center" style="color:#008EAB;">Bienvenu sur le réseau social interne Groupomania</p>
+                        <p class="h5 my-3 text-center" style="color:#008EAB;">Bienvenue sur le réseau social interne Groupomania</p>
                         <div class="card-header bg-light d-flex flex-column justify-content-center">
-                            <img src="../assets/icon-left-font-monochrome-black.svg" class="m-0 p-0" height="60" alt="logo groupomania">
+                            <router-link to="/"><img src="../assets/icon-left-font-monochrome-black.svg" class="m-0 p-0" height="60" alt="logo groupomania"></router-link>
                             <h5 class="h6 text-center" style="color:#008EAB;">Veuillez-vous identifier !</h5>
                         </div>
                         <div class="card-body col-md-8 col-lg-6 offset-md-2 offset-lg-3">
                             <form @submit.prevent="handleSubmit">
                                 <div class="form-group">
-                                    <label for="InputEmail" class="sr-only">Adresse e-mail :</label>
-                                    <input type="email" v-model="InputEmail" name="InputEmail" class="form-control" id="InputEmail" aria-describedby="emailHelp" placeholder="adresse e-mail" :class="{ 'is-invalid': submitted && !InputEmail }">
-                                    <div v-show="submitted && !InputEmail" class="invalid-feedback">Une adresse e-mail est requise !</div>
+                                    <label for="InputName" class="sr-only">Nom d'utilisateur :</label>
+                                    <input type="text" v-model="InputName" name="InputName" class="form-control" id="InputName" aria-describedby="nameHelp" placeholder="Nom d'utilisateur" :class="{ 'is-invalid': submitted && !InputName }">
+                                    <div v-show="submitted && !InputName" class="invalid-feedback">Un nom d'utilisateur est requis !</div>
                                 </div>
                                 <div class="form-group">
                                     <label for="InputPassword" class="sr-only">Mot de passe :</label>
-                                    <input type="password" v-model="InputPassword" name="InputPassword" class="form-control" id="InputPassword" placeholder="mot de passe" :class="{ 'is-invalid': submitted && !InputPassword }">
+                                    <input type="password" v-model="InputPassword" name="InputPassword" class="form-control" id="InputPassword" placeholder="Mot de passe" :class="{ 'is-invalid': submitted && !InputPassword }">
                                     <div v-show="submitted && !InputPassword" class="invalid-feedback">Un mot de passe est requis !</div>
                                 </div>
                                 <button class="btn btn-primary btn-sm btn-block">Se connecter</button>
@@ -42,7 +42,7 @@ export default {
     name: "Connexion",
     data() {
         return {
-            InputEmail: "",
+            InputName: "",
             InputPassword: "",
             submitted: false
         }
@@ -50,11 +50,11 @@ export default {
     methods: {
         handleSubmit() {            
             this.submitted = true
-            axios.post('http://localhost:3000/api/auth/signin', { email: this.InputEmail, password: this.InputPassword })
+            axios.post('http://localhost:3000/api/auth/signin', { username: this.InputName, password: this.InputPassword })
             .then(function (response) {
                 localStorage.setItem("token",response.data.token)
                 localStorage.setItem("userId",response.data.userId)
-                localStorage.setItem("userName",response.data.userName)
+                localStorage.setItem("userName",response.data.username)
                 localStorage.setItem("avatar",response.data.avatar)
                 localStorage.setItem("role",response.data.role)
                 Swal.fire({
