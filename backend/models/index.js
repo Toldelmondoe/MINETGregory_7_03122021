@@ -23,30 +23,30 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.user = require("../models/user.model.js")(sequelize, Sequelize);
-db.role = require("../models/role.model.js")(sequelize, Sequelize);
-db.post = require("../models/post.model.js")(sequelize, Sequelize);
-db.comment = require("../models/comment.model.js")(sequelize, Sequelize);
+db.users = require("../models/user.model.js")(sequelize, Sequelize);
+db.roles = require("../models/role.model.js")(sequelize, Sequelize);
+db.posts = require("../models/post.model.js")(sequelize, Sequelize);
+db.comments = require("../models/comment.model.js")(sequelize, Sequelize);
 
-db.role.belongsToMany(db.user, {
+db.roles.belongsToMany(db.users, {
     through: "user_roles",
     foreignKey: "roleId",
     otherKey: "userId"
 });
-db.user.belongsToMany(db.role, {
+db.users.belongsToMany(db.roles, {
     through: "user_roles",
     foreignKey: "userId",
     otherKey: "roleId"
 });
 
-db.post.hasMany(db.comment);
-db.comment.belongsTo(db.post);
+db.posts.hasMany(db.comments);
+db.comments.belongsTo(db.posts);
 
-db.user.hasMany(db.post);
-db.post.belongsTo(db.user);
+db.users.hasMany(db.posts);
+db.posts.belongsTo(db.users);
 
-db.user.hasMany(db.comment);
-db.comment.belongsTo(db.user);
+db.users.hasMany(db.comments);
+db.comments.belongsTo(db.users);
 
 db.ROLES = ["user", "admin", "moderator"];
 

@@ -3,10 +3,11 @@ const router = express.Router();
 const commentController = require("../controllers/comment.controller");
 const authJwt = require('../middleware/authJwt'); 
 
-router.get("/", commentController.findAllComments);
-router.get("/:Postid", commentController.findOneComment);
-router.post("/", authJwt.verifyToken, commentController.createComment);
-router.delete("/", 
+router.get("/posts/:id", commentController.findAllComments);
+router.get("/:id", commentController.findOneComment);
+router.post("/", commentController.createComment);
+router.put("/:id", commentController.modifyComment);
+router.delete("/:id", 
   [
     authJwt.verifyToken, 
     authJwt.verifyCommentRight, 

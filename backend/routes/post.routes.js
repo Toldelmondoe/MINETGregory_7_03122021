@@ -6,9 +6,10 @@ const multer = require("../middleware/multer-config");
 
 router.get("/", postController.findAllPosts);
 router.get("/:id", postController.findOnePost);
-router.get("/all/:id", postController.findAllPostsForOne);
-router.post("/posts", multer, authJwt.verifyToken, postController.createPost);
-router.delete("/", 
+router.get("/users/:id", postController.findAllPostsForOne);
+router.post("/", multer, postController.createPost);
+router.put("/:id", multer, postController.modifyPost);
+router.delete("/:id", 
   [
     authJwt.verifyToken, 
     authJwt.verifyPostRight, 

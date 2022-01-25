@@ -1,6 +1,6 @@
 const db = require("../models");
-const Comment = db.comment;              
-const User = db.user;
+const Comment = db.comments;              
+const User = db.users;
 
 createComment = (req, res, next) => {
     const comment = new Comment(

@@ -1,6 +1,6 @@
 const db = require("../models");
-const Post = db.post;
-const User = db.user;
+const Post = db.posts;
+const User = db.users;
 
 createPost = (req, res, next) => {
 

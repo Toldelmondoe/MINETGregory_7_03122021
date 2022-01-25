@@ -27,8 +27,8 @@ app.use(bodyParser.urlencoded({ extended : false }));
 
 // database
 const db = require("./models");
-const User = db.user;
-const Role = db.role;
+const User = db.users;
+const Role = db.roles;
 
 var bcrypt = require("bcrypt");
 
@@ -76,6 +76,7 @@ function initial() {
     defaults: {
       id: 3,
       name: "admin",
+      isAdmin: 1
     },
   });
 
