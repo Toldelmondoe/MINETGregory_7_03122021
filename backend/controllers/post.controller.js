@@ -1,20 +1,19 @@
-const db = require("../models")
-const Post = db.posts
-const User = db.users
-const Comment = db.comments
+const db = require("../models");
+const Post = db.post;
+const User = db.user;
 
 createPost = (req, res, next) => {
 
     console.log("req.body" + req.body.postUrl);
-    let imagePost = "";
+    let varImage = "";
     if (req.file) { 
-        imagePost = `${req.protocol}://${req.get("host")}/images/${req.file.filename}` 
+        varImage = `${req.protocol}://${req.get("host")}/images/${req.file.filename}` 
     }
     const post = new Post(
         {
             UserId: req.body.UserId,
             post: req.body.post,
-            postUrl: imagePost
+            postUrl: varImage
         }
     )
     console.log(post)
@@ -25,11 +24,11 @@ createPost = (req, res, next) => {
 
 findAllPosts = (req, res, next) => {
     Post.findAll({
-        include: { model: User, required: true, attributes: ["username"]}, 
+        include: { model: User, required: true, attributes: ["username", "avatar", "isActive"]}, 
         order: [["id", "DESC"]],
     })    
     .then(posts => {
-        const list = posts.map(post => {
+        const listPosts = posts.map(post => {
             return Object.assign({},
                 {
                     id: post.id,
@@ -38,11 +37,12 @@ findAllPosts = (req, res, next) => {
                     postUrl: post.postUrl,
                     UserId: post.UserId,
                     username: post.User.username,
+                    avatar: post.User.avatar,
                     isActive: post.User.isActive
                 }
             )
         })
-        res.status(200).json({ list })
+        res.status(200).json({ listPosts })
     })
     .catch(error => res.status(400).json({ error }))
 };
@@ -54,53 +54,70 @@ findOnePost = (req, res, next) => {
         include: {
             model: User,
             required: true,
-            attributes: ["username"] 
+            attributes: ["username", "avatar", "isActive"] 
         },
         order: [["id", "DESC"]]
     })
     .then(post => {
         onePost.id = post.id,
         onePost.userId = post.UserId,
+        onePost.avatar = post.User.avatar,
         onePost.username = post.User.username,
+        onePost.isActive = post.User.isActive,
         onePost.createdAt = post.createdAt,
         onePost.post = post.post,
-        onePost.postUrl = post.post,
+        onePost.postUrl = post.postUrl,
         res.status(200).json(onePost)
     })
     .catch(error => res.status(404).json({ error }))
 };
 
 findAllPostsForOne = (req, res, next) => {
-    let list = ""
     Post.findAll({ 
         where: { UserId: req.params.id },
+        include: {
+            model: User,
+            required: true,
+            attributes: ["username", "avatar", "isActive"] 
+        },
+        order: [["id", "DESC"]]
     })
-    .then((res) => { 
-        list = res;
-        res.status(200).json( { list } )
+    .then(posts => { 
+        const ListPosts = posts.map(post => {
+            return Object.assign({},
+                {
+                    id: post.id,
+                    createdAt: post.createdAt,
+                    post: post.post,
+                    postUrl: post.postUrl,
+                    UserId: post.UserId,
+                    username: post.User.username,
+                    avatar: post.User.avatar,
+                    isActive: post.User.isActive
+                }
+            )
+        })
+        res.status(200).json({ ListPosts })
     })
-    .catch((error) => { res.status(404).json({ error })})
+    .catch(error => res.status(400).json({ error }))
 };
 
 deletePost = (req, res, next) => {
-    console.log("Processus de suppression des messages")
-    console.log("Id message : " + req.query.postId)
-    console.log("Id auteur du message : " + req.query.postUid)
-    console.log("Id utilisateur qui demande la suppression du message : " + req.query.uid)
-    console.log("L'utilisateur qui demande la suppression du message est-il l'auteur du message ou admin ?") + 
-    console.log("Si il est l'auteur du message ou admin => suppression du message")
-    console.log("S'il n'est ni l'auteur ni admin => suppression impossible")
-    console.log(req.query.postUid == req.query.uid || req.query.uid == 1)
-    if(req.query.post == req.query.uid || req.query.uid == 1) {
-        Comment.destroy({ where: { commentId: req.query.commentId }})
-        Post.destroy({ where: { id: req.query.postId }})
-        .then((res) => {
-                res.status(200).json({ message: "Le message et ses commentaires ont été effacés !" })
-        })
+    Post.destroy({ where: { id: req.params.id }})
+        .then(() => res.status(200).json({ message: "Message supprimé !" }))
         .catch(error => res.status(400).json({ error }))
-    } else {
-        res.status(401).json({message : "Non autorisé !"})
-    };
+};
+
+modifyPost = (req, res, next) => {
+    const postObject = req.file ?
+      {
+        ...req.body.post,
+        postUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
+      } : { ... req.body}
+
+    Post.update({ ...postObject, id:  req.params.id}, { where: { id: req.params.id }})
+    .then(() => res.status(200).json({ message: "Message modifié !" }))
+    .catch(error => res.status(400).json({ error }))
 };
 
 const postController = {
@@ -108,7 +125,8 @@ const postController = {
     findAllPosts: findAllPosts,
     findOnePost: findOnePost,
     findAllPostsForOne: findAllPostsForOne,
-    deletePost: deletePost
+    deletePost: deletePost,
+    modifyPost: modifyPost
 };
 
 module.exports = postController;

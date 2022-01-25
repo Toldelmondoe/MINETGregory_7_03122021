@@ -6,7 +6,7 @@
                     <div class="card bg-light">
                         <p class="h5 my-3 text-center" style="color:#008EAB;">Bienvenue sur le réseau social interne Groupomania</p>
                         <div class="card-header bg-light d-flex flex-column justify-content-center">
-                            <router-link to="/"><img src="../assets/icon-left-font-monochrome-black.svg" class="m-0 p-0" height="60" alt="logo groupomania"></router-link>
+                            <router-link to="/"><img src="../assets/icon-left-font-monochrome-black.svg" class="offset-lg-2" height="60" alt="logo groupomania"></router-link>
                             <h5 class="h6 text-center" style="color:#008EAB;">Veuillez-vous identifier !</h5>
                         </div>
                         <div class="card-body col-md-8 col-lg-6 offset-md-2 offset-lg-3">
@@ -54,7 +54,7 @@ export default {
             .then(function (response) {
                 localStorage.setItem("token",response.data.token)
                 localStorage.setItem("userId",response.data.userId)
-                localStorage.setItem("userName",response.data.username)
+                localStorage.setItem("username",response.data.username)
                 localStorage.setItem("avatar",response.data.avatar)
                 localStorage.setItem("role",response.data.role)
                 Swal.fire({

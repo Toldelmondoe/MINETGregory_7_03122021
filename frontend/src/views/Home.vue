@@ -9,8 +9,8 @@
                         <h5 class="h6 text-center" style="color:#008EAB;">Informations utiles !</h5>
                     </div>
                     <div class="card-body">
-                        <p>Cette application est strictement réservée au personnel du groupe.</p>
-                        <p>Pour y accéder, merci de vous <router-link to="/signin">connecter</router-link> ou de vous <router-link to="/signup">inscrire</router-link> si vous ne l'avez pas encore fait.</p>
+                        <p>Cette application est strictement réservée aux personnels du groupe.</p>
+                        <p>Pour y accéder, merci de vous <router-link to="/signin">connecter</router-link> ou de vous <router-link to="/signup">inscrire</router-link> si ce n'est déjà fait.</p>
                     </div>
                     <div class="card-footer bg-light d-flex justify-content-between">
                         <span class="text-dark">Bonne navigation !</span>

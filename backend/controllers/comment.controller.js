@@ -1,6 +1,6 @@
 const db = require("../models");
-const Comment = db.comments;              
-const User = db.users;
+const Comment = db.comment;              
+const User = db.user;
 
 createComment = (req, res, next) => {
     const comment = new Comment(
@@ -16,9 +16,9 @@ createComment = (req, res, next) => {
 };
 
 findOneComment = (req, res, next) => {
-    Comment.findAll({ 
+    Comment.findOne({ 
         where: { 
-            PostId: req.params.Postid 
+            id: req.params.id 
         },
         include: {
             model: User,
@@ -31,30 +31,39 @@ findOneComment = (req, res, next) => {
 };
 
 findAllComments = (req, res, next) => {
-    Comment.findAll()
+    Comment.findAll({ 
+        where: { 
+            PostId: req.params.id 
+        },
+        include: {
+            model: User,
+            required: true,
+            attributes: ["username", "avatar", "isActive"]
+        }, 
+        order: [["id", "DESC"]]
+    })
     .then(comments => { res.status(200).json(comments) })
     .catch(error => res.status(400).json({ error }))
 };
 
 deleteComment = (req, res, next) => {
-    console.log("Processus de suppression des commentaires")
-    console.log("Id commentaire : " + req.query.commentId)
-    console.log("Id auteur du commentaire : " + req.query.commentUid)
-    console.log("Id utilisateur qui demande la suppression du commentaire : " + req.query.currentUid)
-    console.log("L'utilisateur qui demande la suppression du commentaire est-il l'auteur du message ou admin ?") + 
-    console.log("Si il est l'auteur du commentaire ou admin => suppression du commentaire")
-    console.log("S'il n'est ni l'auteur ni admin => suppression impossible")
-    
-  Comment.destroy({ where: { id: req.query.commentId }})
+    Comment.destroy({ where: { id: req.params.id }})
         .then(() => res.status(200).json({ message: "Commentaire supprimé !" }))
         .catch(error => res.status(400).json({ error }))
+};
+
+modifyComment = (req, res, next) => { 
+    Comment.update({ ...req.body }, { where: { id: req.params.id }})
+    .then(() => res.status(200).json({ message: "Commentaire modifié !" }))
+    .catch(error => res.status(400).json({ error }))
 };
 
 const commentController = {
     createComment: createComment,
     findOneComment: findOneComment,
     findAllComments: findAllComments,
-    deleteComment: deleteComment
+    deleteComment: deleteComment,
+    modifyComment: modifyComment
 };
 
 module.exports = commentController;

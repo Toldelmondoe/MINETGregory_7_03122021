@@ -47,7 +47,7 @@
                                     le {{post.createdAt.slice(0,10).split('-').reverse().join('/') + ' à ' + post.createdAt.slice(11,16)}}
                                 </span>
                             </div>                                
-                            <div v-if="post.UserId == this.currentUserId || this.isAdmin == 'true'">
+                            <div v-if="post.userId == this.currentuserId || this.isAdmin == 'true'">
                                 <a :href="'#/post/edit/' + post.id"><img src="/images/edit.png" class="m-1 p-0" alt="Editer le message" title="Editer le message"/></a>
                                 <a :href="'#/post/delete/' + post.id"><img src="/images/delete.png" class="m-1 p-0" alt="Supprimer le message" title="Supprimer le message"/></a>
                             </div>                               
@@ -85,7 +85,7 @@ export default {
             isAdmin: false,
             isActive: true,
             newImage: "",
-            currentUserId: "", 
+            currentuserId: "", 
             newPost: "",
             file: null,
             posts: [],
@@ -99,11 +99,11 @@ export default {
         addNewPost() {
             const formData = new FormData()
             formData.set("image", this.file)
-            formData.set("UserId", this.currentUserId.toString())
+            formData.set("userId", this.currentuserId.toString())
             formData.set("post", this.newPost.toString())
             axios.post("http://localhost:3000/api/posts/", formData, { headers: { "Authorization":"Bearer " + localStorage.getItem("token")}})
             .then(()=> {
-                this.UserId = ""
+                this.userId = ""
                 this.newPost = ""
                 this.file = null
                 Swal.fire({
@@ -136,14 +136,14 @@ export default {
     },
     created: function() {
         this.isAdmin = localStorage.getItem("role")
-        this.currentUserId = localStorage.getItem("userId")
+        this.currentuserId = localStorage.getItem("userId")
         if (localStorage.getItem("refresh")===null) {
             localStorage.setItem("refresh", 0)
             location.reload()
         }
         axios.get("http://localhost:3000/api/posts",{ headers: {"Authorization": "Bearer " + localStorage.getItem("token")} })
         .then(res => {
-            const rep = res.data.ListePosts
+            const rep = res.data.ListPosts
             if (rep.length === 0) { this.noPost = true } else { this.noPost = false }
             this.posts = rep
         })

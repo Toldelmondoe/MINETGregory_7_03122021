@@ -13,14 +13,14 @@ const routes = [
     component: () => import('../views/Connexion.vue')
   },
   {
-    path: "/signup",
-    name: "Inscription",
+    path: '/signup',
+    name: 'Inscription',
     component: () => import('../views/Inscription')
   },
   {
-    path: "/posts",
-    name: "Posts",
-    component: () => import("../views/Posts")
+    path: '/posts',
+    name: 'Posts',
+    component: () => import('../views/Posts')
 },
 ]
 
