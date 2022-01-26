@@ -5,7 +5,7 @@ const User = db.users;
 createComment = (req, res, next) => {
     const comment = new Comment(
         {
-            UserId: req.body.UserId,
+            userId: req.body.userId,
             PostId: req.body.PostId,
             comment: req.body.comment
         }

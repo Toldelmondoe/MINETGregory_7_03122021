@@ -52,7 +52,7 @@
                                 </div>
                                 <div class="col-12 col-md-8 text-dark">
                                     <p class="small text-left m-0 p-1">Adresse e-mail : {{email}}</p>
-                                    <p class="small text-left m-0 p-1">Rôle : {{role}}</p>
+                                    <p class="small text-left m-0 p-1">Rôle : {{roles}}</p>
                                     <p class="small text-left m-0 p-1">Crée le : {{createdAt}}</p>
                                     <p class="small text-left m-0 p-1">Votre contenu : </p>
                                     <ul>
@@ -109,7 +109,7 @@ export default {
         return {
             username: "", 
             email: "", 
-            role: "", 
+            roles: "", 
             createdAt: "", 
             postsCount: "", 
             commentsCount: "", 
@@ -195,7 +195,7 @@ export default {
         .then(user => {
             this.username = user.data.username
             this.email = user.data.email
-            this.role = user.data.role
+            this.roles = user.data.roles
             this.createdAt = user.data.createdAt.slice(0,10).split('-').reverse().join('/') + ' à ' + user.data.createdAt.slice(11,16)
             this.postsCount = user.data.postsCount
             this.commentsCount = user.data.commentsCount

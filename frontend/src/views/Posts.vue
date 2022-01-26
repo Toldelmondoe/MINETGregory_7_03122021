@@ -3,7 +3,7 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-12 col-md-10 col-lg-8" id="allPosts">
-                    <a  href="" data-toggle="modal" data-target="#modalAddPost" class="my-2 btn btn-sm btn-block btn-success">Publier un message...</a>
+                    <a  href="" data-toggle="modal" data-target="#modalAddPost" class="my-2 btn btn-lm btn-block btn-success">Publier un nouveau message</a>
                     <div class="modal fade" id="modalAddPost" tabindex="-1" aria-labelledby="modalAddPost" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -61,7 +61,7 @@
                         </div>
                     </div>
                     <NoPost v-if="noPost"></NoPost>
-                    <div class="card bg-danger">
+                    <div class="card bg-info">
                         <p class="my-2 text-center text-white">Il n'y a pas de messages plus ancien que celui au-dessus...</p>
                     </div>
                 </div>

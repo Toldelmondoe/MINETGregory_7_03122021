@@ -11,7 +11,7 @@ createPost = (req, res, next) => {
     }
     const post = new Post(
         {
-            UserId: req.body.UserId,
+            userId: req.body.userId,
             post: req.body.post,
             postUrl: varImage
         }
@@ -35,7 +35,7 @@ findAllPosts = (req, res, next) => {
                     createdAt: post.createdAt,
                     post: post.post,
                     postUrl: post.postUrl,
-                    UserId: post.UserId,
+                    userId: post.userId,
                     username: post.User.username,
                     avatar: post.User.avatar,
                     isActive: post.User.isActive
@@ -60,7 +60,7 @@ findOnePost = (req, res, next) => {
     })
     .then(post => {
         onePost.id = post.id,
-        onePost.userId = post.UserId,
+        onePost.userId = post.userId,
         onePost.avatar = post.User.avatar,
         onePost.username = post.User.username,
         onePost.isActive = post.User.isActive,
@@ -74,7 +74,7 @@ findOnePost = (req, res, next) => {
 
 findAllPostsForOne = (req, res, next) => {
     Post.findAll({ 
-        where: { UserId: req.params.id },
+        where: { userId: req.params.id },
         include: {
             model: User,
             required: true,
@@ -90,7 +90,7 @@ findAllPostsForOne = (req, res, next) => {
                     createdAt: post.createdAt,
                     post: post.post,
                     postUrl: post.postUrl,
-                    UserId: post.UserId,
+                    userId: post.userId,
                     username: post.User.username,
                     avatar: post.User.avatar,
                     isActive: post.User.isActive
