@@ -28,7 +28,7 @@ findAllPosts = (req, res, next) => {
         order: [["id", "DESC"]],
     })    
     .then(posts => {
-        const listPosts = posts.map(post => {
+        const ListPosts = posts.map(post => {
             return Object.assign({},
                 {
                     id: post.id,
@@ -42,7 +42,7 @@ findAllPosts = (req, res, next) => {
                 }
             )
         })
-        res.status(200).json({ listPosts })
+        res.status(200).json({ ListPosts })
     })
     .catch(error => res.status(400).json({ error }))
 };

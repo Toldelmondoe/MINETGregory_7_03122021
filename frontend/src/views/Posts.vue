@@ -3,13 +3,13 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-12 col-md-10 col-lg-8" id="allPosts">
-                    <a  href="" data-toggle="modal" data-target="#modalAddPost" class="my-2 btn btn-sm btn-block btn-success">Poster un message...</a>
+                    <a  href="" data-toggle="modal" data-target="#modalAddPost" class="my-2 btn btn-sm btn-block btn-success">Publier un message...</a>
                     <div class="modal fade" id="modalAddPost" tabindex="-1" aria-labelledby="modalAddPost" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <form enctype="multipart/form-data">
                                     <div class="modal-header">
-                                        <p class="modal-title h5">Poster un nouveau message</p>
+                                        <p class="modal-title h5">Publier un nouveau message</p>
                                     </div>
                                     <div class="row modal-body">
                                         <div class="col-12 justify-content-center form-group">
@@ -30,7 +30,7 @@
                                     <div class="modal-footer">
                                         <div class="row w-100 justify-content-spacebetween">
                                             <div class="col-6"><a data-dismiss="modal" class="btn btn-secondary btn-block">Annuler</a></div>
-                                            <div class="col-6"><button type="submit" @click.prevent="addNewPost()" class="btn btn-success btn-block">Valider</button></div>
+                                            <div class="col-6"><button type="submit" @click.prevent="addNewPost()" class="btn btn-success btn-block">Publier</button></div>
                                         </div>
                                     </div>
                                 </form>

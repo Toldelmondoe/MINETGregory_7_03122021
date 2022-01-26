@@ -21,7 +21,12 @@ const routes = [
     path: '/posts',
     name: 'Posts',
     component: () => import('../views/Posts')
-},
+  },
+  {
+    path: '/compte',
+    name: 'Compte',
+    component: () => import('../views/Compte')
+  }
 ]
 
 const router = createRouter({
