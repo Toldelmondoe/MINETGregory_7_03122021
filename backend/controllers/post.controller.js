@@ -4,15 +4,14 @@ const User = db.users;
 
 createPost = (req, res, next) => {
 
-    console.log("req.body" + req.body.postUrl);
     let varImage = "";
     if (req.file) { 
         varImage = `${req.protocol}://${req.get("host")}/images/${req.file.filename}` 
     }
     const post = new Post(
         {
-            userId: req.body.userId,
-            post: req.body.post,
+            UserId: req.body.userId,
+            content: req.body.post,
             postUrl: varImage
         }
     )
@@ -33,7 +32,7 @@ findAllPosts = (req, res, next) => {
                 {
                     id: post.id,
                     createdAt: post.createdAt,
-                    post: post.post,
+                    content: post.post,
                     postUrl: post.postUrl,
                     userId: post.userId,
                     username: post.User.username,

@@ -53,10 +53,10 @@ export default {
             axios.post('http://localhost:3000/api/auth/signin', { username: this.InputName, password: this.InputPassword })
             .then(function (response) {
                 localStorage.setItem("token",response.data.token)
-                localStorage.setItem("userId",response.data.userId)
+                localStorage.setItem("userId",response.data.id)
                 localStorage.setItem("username",response.data.username)
                 localStorage.setItem("avatar",response.data.avatar)
-                localStorage.setItem("role",response.data.role)
+                localStorage.setItem("roles",response.data.roles)
                 Swal.fire({
                     text: "Connexion réussie !",
                     footer: "Redirection en cours...",

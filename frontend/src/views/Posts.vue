@@ -99,12 +99,13 @@ export default {
         addNewPost() {
             const formData = new FormData()
             formData.set("image", this.file)
-            formData.set("userId", this.currentuserId.toString())
+            formData.set("userId", localStorage.getItem("userId"))
             formData.set("post", this.newPost.toString())
             axios.post("http://localhost:3000/api/posts/", formData, { headers: { "Authorization":"Bearer " + localStorage.getItem("token")}})
             .then(()=> {
                 this.userId = ""
                 this.newPost = ""
+                this.content = ""
                 this.file = null
                 Swal.fire({
                     text: "Message posté !",
@@ -134,7 +135,7 @@ export default {
             })
         }
     },
-    created: function() {
+    created: function() { // get All
         this.isAdmin = localStorage.getItem("role")
         this.currentuserId = localStorage.getItem("userId")
         if (localStorage.getItem("refresh")===null) {

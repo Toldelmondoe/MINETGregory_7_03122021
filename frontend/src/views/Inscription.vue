@@ -68,7 +68,7 @@ export default {
                         localStorage.setItem("userId",response.data.userId)
                         localStorage.setItem("username",response.data.username)
                         localStorage.setItem("avatar",response.data.avatar)
-                        localStorage.setItem("role",response.data.role)
+                        localStorage.setItem("roles",response.data.roles)
                         Swal.fire({
                             text: "Inscription réussie !",
                             footer: "Connexion en cours...",
