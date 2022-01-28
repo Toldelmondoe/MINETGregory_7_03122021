@@ -60,7 +60,7 @@
                             <a :href="'#/commentaires/' + post.id" class="h6 small">Voir les commentaires</a>
                         </div>
                     </div>
-                    <NoPost v-if="noPost"></NoPost>
+                    
                     <div class="card bg-info">
                         <p class="my-2 text-center text-white">Il n'y a pas de messages plus ancien que celui au-dessus...</p>
                     </div>
@@ -71,21 +71,18 @@
 </template>
 
 <script>
-import NoPost from "./NoPost"
+
 import axios from "axios"
 import Swal from "sweetalert2"
 export default {
     name: "Posts",
-    components: { 
-        NoPost
-    },
     data() {
         return {
-            noPost: false,
             isAdmin: false,
             isActive: true,
             newImage: "",
             currentuserId: "", 
+            content: [],
             newPost: "",
             file: null,
             posts: [],
@@ -105,7 +102,7 @@ export default {
             .then(()=> {
                 this.userId = ""
                 this.newPost = ""
-                this.content = ""
+                this.post = ""
                 this.file = null
                 Swal.fire({
                     text: "Message posté !",
@@ -136,7 +133,7 @@ export default {
         }
     },
     created: function() { // get All
-        this.isAdmin = localStorage.getItem("role")
+        this.isAdmin = localStorage.getItem("roles")
         this.currentuserId = localStorage.getItem("userId")
         if (localStorage.getItem("refresh")===null) {
             localStorage.setItem("refresh", 0)
@@ -145,7 +142,6 @@ export default {
         axios.get("http://localhost:3000/api/posts",{ headers: {"Authorization": "Bearer " + localStorage.getItem("token")} })
         .then(res => {
             const rep = res.data.ListPosts
-            if (rep.length === 0) { this.noPost = true } else { this.noPost = false }
             this.posts = rep
         })
         .catch((error)=>{
