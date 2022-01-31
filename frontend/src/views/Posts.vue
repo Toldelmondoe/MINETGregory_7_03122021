@@ -57,7 +57,7 @@
                             <img class="w-100" :src="post.postUrl" v-if="post.postUrl !== ''">
                         </div>
                         <div class="card-footer bg-light text-dark text-left m-0">
-                            <a :href="'#/commentaires/' + post.id" class="h6 small">Voir les commentaires</a>
+                            <a :href="'#/comments/' + post.id" class="h6 small">Voir les commentaires</a>
                         </div>
                     </div>
                     
@@ -82,7 +82,7 @@ export default {
             isActive: true,
             newImage: "",
             currentuserId: "", 
-            content: [],
+            content: "",
             newPost: "",
             file: null,
             posts: [],
