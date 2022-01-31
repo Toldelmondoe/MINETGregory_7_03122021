@@ -53,7 +53,7 @@
                             </div>                               
                         </div>
                         <div class="card-body text-dark text-left">
-                            <p class="small" v-if="post.post !== ''"> {{post.post}} </p>
+                            <p class="small" v-if="post.content !== ''"> {{post.content}} </p>
                             <img class="w-100" :src="post.postUrl" v-if="post.postUrl !== ''">
                         </div>
                         <div class="card-footer bg-light text-dark text-left m-0">
@@ -71,9 +71,9 @@
 </template>
 
 <script>
-
 import axios from "axios"
 import Swal from "sweetalert2"
+
 export default {
     name: "Posts",
     data() {
@@ -97,12 +97,12 @@ export default {
             const formData = new FormData()
             formData.set("image", this.file)
             formData.set("userId", localStorage.getItem("userId"))
-            formData.set("post", this.newPost.toString())
+            formData.set("content", this.newPost.toString())
             axios.post("http://localhost:3000/api/posts/", formData, { headers: { "Authorization":"Bearer " + localStorage.getItem("token")}})
             .then(()=> {
                 this.userId = ""
                 this.newPost = ""
-                this.post = ""
+                this.content = ""
                 this.file = null
                 Swal.fire({
                     text: "Message posté !",

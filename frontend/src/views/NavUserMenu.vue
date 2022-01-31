@@ -1,0 +1,48 @@
+<template>
+    <div id="navbarContent" class="m-0 p-0 justify-content-end align-self-center">
+        <div class="nav-item dropdown m-0 p-0">
+            <a class="nav-item nav-link m-0 p-0" href="#" data-toggle="dropdown" id="my_account" aria-haspopup="true" aria-expanded="false">
+                <img :src="avatar" alt="Image de profile" height="37" class="my-0 rounded-circle"/>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="my_account">
+                <p class="h5 dropdown-item-text">{{username}}</p>
+                <div class="dropdown-divider"></div>
+                <div class="d-flex"><img src="/images/editer.png" fill="text-primary" class="pl-4" height="37"><router-link to="/Compte" class="dropdown-item pl-2">Mon compte</router-link></div>
+                <div class="d-flex"><img src="/images/message.png" fill="text-primary" class="pl-4" height="37"><router-link to="/Compte/Posts" class="dropdown-item pl-2">Mes messages</router-link></div>
+                <div class="dropdown-divider"></div>
+                <div class="d-flex"><img src="/images/sortie.png" fill="text-primary" class="pl-4" height="37"><a class ="dropdown-item pl-2 text-danger" @click="deconnexion" href="#">Déconnexion</a></div>
+            </div>
+        </div>            
+    </div>
+</template>
+
+<script>
+import Swal from "sweetalert2"
+export default {
+    name: "NavUserMenu",
+    data() {
+        return {
+            username: "", 
+            avatar: "/images/default_user.jpg"
+        }
+    },
+    created: function() {
+            this.username = localStorage.getItem("username") 
+            this.avatar = localStorage.getItem("avatar") 
+    },
+    methods: {
+        deconnexion: function() {
+            localStorage.clear()
+            Swal.fire({
+                text: "Déconnexion en cours !",
+                footer: "Redirection en cours...",
+                icon: "info",
+                timer: 2000,
+                showConfirmButton: false,
+                timerProgressBar: true,
+                willClose: () => { location.reload() }
+            })
+        }
+    }
+}
+</script>
