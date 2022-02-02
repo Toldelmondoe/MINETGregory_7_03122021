@@ -2,7 +2,7 @@
     <div id="navbarContent" class="m-0 p-0 justify-content-end align-self-center">
         <div class="nav-item dropdown m-0 p-0">
             <a class="nav-item nav-link m-0 p-0" href="#" data-toggle="dropdown" id="my_account" aria-haspopup="true" aria-expanded="false">
-                <img src="/images/default_user.jpg" alt="Image de profile" height="70" class="my-0 rounded-circle"/>
+                <img :src="avatar" alt="Image de profile" height="70" class="my-0 rounded-circle"/>
             </a>
             <div class="dropdown-menu center" aria-labelledby="my_account">
                 <p class="h5 dropdown-item-text text-primary text-center">{{username}}</p>

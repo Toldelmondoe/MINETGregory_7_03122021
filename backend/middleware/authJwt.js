@@ -161,18 +161,16 @@ verifyPostRight = (req, res, next) => {
                         return;
                     }
                     Post.findByPk(req.params.id).then((post) => {
-                        console.log(req.params.id);
-                        post.getRoles().then((roles) => {
-                            if(user.id === decoded.id) {
-                                console.log("Current is owner !");
-                                next();
-                                return;
-                            }
-                            res.status(401).json({ 
-                                message: "Unauthorized !" 
-                            });
+                    console.log("post created by: "+ post.userId);
+                        if(post.userId === user.id) {
+                            console.log("Current is owner !");
+                            next();
                             return;
-                        });    
+                        }
+                        res.status(401).json({ 
+                            message: "Unauthorized !" 
+                        });
+                        return;       
                     });
                 }
             });

@@ -76,7 +76,6 @@ function initial() {
     defaults: {
       id: 3,
       name: "admin",
-      isAdmin: 1
     },
   });
 
