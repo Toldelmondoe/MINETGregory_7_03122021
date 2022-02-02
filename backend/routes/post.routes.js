@@ -3,6 +3,7 @@ const router = express.Router();
 const postController = require("../controllers/post.controller");
 const authJwt = require('../middleware/authJwt'); 
 const multer = require("../middleware/multer-config");
+const verifySignUp = require("../middleware/verifySignUp");
 
 router.get("/", postController.findAllPosts);
 router.get("/:id", postController.findOnePost);

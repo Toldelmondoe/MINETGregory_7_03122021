@@ -50,7 +50,6 @@ export default {
 
 <style>
  .center {
-  position: absolute;
   left: -90%;
 }
 </style>

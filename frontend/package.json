@@ -13,7 +13,8 @@
     "core-js": "^3.20.3",
     "sweetalert2": "^11.3.6",
     "vue": "^3.0.0",
-    "vue-router": "^4.0.12"
+    "vue-router": "^4.0.12",
+    "vue-simple-password-meter": "^0.1.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
