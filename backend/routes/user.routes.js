@@ -4,20 +4,8 @@ const authJwt = require('../middleware/authJwt');
 const controller = require("../controllers/user.controller");
 
 router.get("/", controller.AllAccess);
-router.get("/user", authJwt.verifyToken, controller.userBoard);
-router.get("/mod",
-  [
-    authJwt.verifyToken, 
-    authJwt.isModerator
-  ],
-    controller.moderatorBoard
-);
-router.get("/admin",
-  [
-    authJwt.verifyToken, 
-    authJwt.isAdmin
-  ],
-    controller.adminBoard
-);
+router.get("/user", controller.userBoard);
+router.get("/mod", controller.moderatorBoard);
+router.get("/admin", controller.adminBoard);
 
 module.exports = router; 

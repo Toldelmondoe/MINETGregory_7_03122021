@@ -22,11 +22,6 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             defaultValue: "http://localhost:3000/images/default_user.jpg"
         },
-        isAdmin: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false,
-            defaultValue: false
-        },
         isActive: {
             type: DataTypes.BOOLEAN,
             allowNull: false,

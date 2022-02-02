@@ -3,46 +3,101 @@ const Comment = db.comments;
 const User = db.users;
 
 createComment = (req, res, next) => {
+
+    let varImage = "";
+    if (req.file) { 
+        varImage = `${req.protocol}://${req.get("host")}/images/${req.file.filename}` 
+    }
+
     const comment = new Comment(
         {
-            userId: req.body.userId,
-            PostId: req.body.PostId,
-            comment: req.body.comment
+            UserId: req.body.userId,
+            content: req.body.content,
+            commentUrl: varImage
         }
     )
     comment.save()
-    .then(() => res.status(201).json({ message: "Commentaire ajouté !" }))
-    .catch(error => res.status(400).json({ error }))
-};
-
-findOneComment = (req, res, next) => {
-    Comment.findOne({ 
-        where: { 
-            id: req.params.id 
-        },
-        include: {
-            model: User,
-            required: true,
-            attributes: ["username"]
-        }
-    })
-    .then(comment => { res.status(200).json(comment) })
-    .catch(error => res.status(404).json({ error }))
+        .then(() => res.status(201).json({ message: "Commentaire ajouté !" }))
+        .catch(error => res.status(400).json({ error }))
 };
 
 findAllComments = (req, res, next) => {
     Comment.findAll({ 
-        where: { 
-            PostId: req.params.id 
-        },
+        include: { model: User, required: true, attributes: ["username", "avatar", "isActive"]}, 
+        order: [["id", "DESC"]]
+    })
+    .then(comments => { 
+        const ListComments = comments.map(comment => {
+            return Object.assign({},
+                {
+                    id: comment.id,
+                    createdAt: comment.createdAt,
+                    content: comment.content,
+                    commentUrl: comment.commentUrl,
+                    userId: comment.userId,
+                    username: comment.User.username,
+                    avatar: comment.User.avatar,
+                    isActive: comment.User.isActive
+                }
+            )
+        })
+        res.status(200).json({ ListComments }) 
+    })
+    .catch(error => res.status(400).json({ error }))
+};
+
+findOneComment = (req, res, next) => {
+    const oneComment = {}
+    Comment.findOne({ 
+        where: { id: req.params.id },
         include: {
             model: User,
             required: true,
             attributes: ["username", "avatar", "isActive"]
-        }, 
+        },
         order: [["id", "DESC"]]
     })
-    .then(comments => { res.status(200).json(comments) })
+    .then(comment => { 
+        oneComment.id = comment.id,
+        oneComment.userId = comment.userId,
+        oneComment.avatar = comment.User.avatar,
+        oneComment.username = comment.User.username,
+        oneComment.isActive = comment.User.isActive,
+        oneComment.createdAt = comment.createdAt,
+        oneComment.content = comment.content,
+        oneComment.postUrl = comment.postUrl,
+        res.status(200).json(oneComment) 
+    })
+    .catch(error => res.status(404).json({ error }))
+};
+
+findAllCommentsForOne = (req, res, next) => {
+    Comment.findAll({ 
+        where: { userId: req.params.id },
+        include: {
+            model: User,
+            required: true,
+            attributes: ["username", "avatar", "isActive"] 
+        },
+        order: [["id", "DESC"]]
+    })
+    .then(comments => { 
+        const ListComments = comments.map(comment => {
+            return Object.assign({},
+                {
+                    id: comment.id,
+                    createdAt: comment.createdAt,
+                    content: comment.content,
+                    commentUrl: comment.commentUrl,
+                    userId: comment.userId,
+                    username: comment.User.username,
+                    avatar: comment.User.avatar,
+                    isActive: comment.User.isActive
+                }
+            )
+        })
+        res.status(200).json({ ListComments })
+    })
     .catch(error => res.status(400).json({ error }))
 };
 
@@ -53,15 +108,22 @@ deleteComment = (req, res, next) => {
 };
 
 modifyComment = (req, res, next) => { 
-    Comment.update({ ...req.body }, { where: { id: req.params.id }})
-    .then(() => res.status(200).json({ message: "Commentaire modifié !" }))
-    .catch(error => res.status(400).json({ error }))
+    const commentObject = req.file ?
+      {
+        ...req.body.post,
+        commentUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
+      } : { ... req.body}
+
+      Comment.update({ ...commentObject, id:  req.params.id}, { where: { id: req.params.id }})
+      .then(() => res.status(200).json({ message: "Commentaire modifié !" }))
+      .catch(error => res.status(400).json({ error }))
 };
 
 const commentController = {
     createComment: createComment,
-    findOneComment: findOneComment,
     findAllComments: findAllComments,
+    findOneComment: findOneComment,
+    findAllCommentsForOne: findAllCommentsForOne,
     deleteComment: deleteComment,
     modifyComment: modifyComment
 };

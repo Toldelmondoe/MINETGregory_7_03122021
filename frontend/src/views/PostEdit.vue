@@ -94,7 +94,7 @@ export default {
         }
     },
     beforeMount () {
-        axios.get("http://localhost:3000/api/post/" + this.$route.params.id, { headers: {"Authorization": "Bearer " + localStorage.getItem("token")} })
+        axios.get("http://localhost:3000/api/posts/" + this.$route.params.id, { headers: {"Authorization": "Bearer " + localStorage.getItem("token")} })
         .then(res => {
             this.editUserId = res.data.userId
             console.log(res)
@@ -102,7 +102,7 @@ export default {
                 this.editorTag = "( Utilisateur : " + res.data.username + " )"
                 this.editPost = res.data.post
                 this.newImage = res.data.postUrl
-            } else if ( localStorage.getItem("role") == "true") {
+            } else if ( localStorage.getItem("roles") == "true") {
                 this.editorTag = "( Administrateur : " + localStorage.getItem("username") + " )"
                 this.editPost = res.data.post
                 this.newImage = res.data.postUrl

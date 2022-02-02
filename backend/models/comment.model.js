@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     class Comment extends Model {}
     
     Comment.init({
-        commentId: {
+        id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true,
