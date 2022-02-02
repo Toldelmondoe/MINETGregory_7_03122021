@@ -17,16 +17,15 @@ const routes = [
     name: 'Inscription',
     component: () => import('../views/Inscription')
   },
-  
   {
     path: '/compte',
     name: 'Compte',
     component: () => import('../views/Compte')
   },
   {
-    path: "/compte/posts",
-    name: "Mes Messages",
-    component: () => import("../views/PostsUser")
+    path: '/compte/posts',
+    name: 'Mes Messages',
+    component: () => import('../views/PostsUser')
   },
   {
     path: '/posts',
@@ -34,14 +33,19 @@ const routes = [
     component: () => import('../views/Posts')
   },
   {
-    path: "/post/edit/:id",
-    name: "Post Edit",
-    component: () => import("../views/PostEdit")
+    path: '/post/edit/:id',
+    name: 'Post Edit',
+    component: () => import('../views/PostEdit')
   },
   {
-    path: "/post/drop/:id",
-    name: "Post Drop",
-    component: () => import("../views/PostDrop")
+    path: '/post/drop/:id',
+    name: 'Post Drop',
+    component: () => import('../views/PostDrop')
+  },
+  {
+    path: '/comments/:id',
+    name: 'Comments',
+    component: () => import('../views/Comments')
   },
 ]
 

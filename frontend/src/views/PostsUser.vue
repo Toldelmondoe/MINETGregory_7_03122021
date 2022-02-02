@@ -4,8 +4,8 @@
             <div class="row justify-content-center">
                 <div class="col-12 col-md-10 col-lg-8" id="allPosts">
                     <div class="row my-2">
-                        <div class="col-6 pr-1"><a href="#/posts" class="btn btn-sm btn-block btn-success">... retour aux messages</a></div>
-                        <div class="col-6 pl-1"><a href="#/compte" class="btn btn-sm btn-block btn-primary">retour à mon compte ...</a></div>
+                        <div class="col-6 pr-1"><a href="/posts" class="btn btn-sm btn-block btn-success">... retour aux messages</a></div>
+                        <div class="col-6 pl-1"><a href="/compte" class="btn btn-sm btn-block btn-primary">retour à mon compte ...</a></div>
                     </div>
                     <div v-for="post in userPosts" :key="post.id" class="card bg-light my-3">
                         <div class="card-header bg-light d-flex align-items-center justify-content-between m-0 p-1">
@@ -18,8 +18,8 @@
                                 </span>
                             </div>                                
                             <div>
-                                <a :href="'#/post/edit/' + post.id"><img src="/images/edit.png" class="m-1 p-0" height="35" alt="Editer le message" title="Editer le message"/></a>
-                                <a :href="'#/post/drop/' + post.id"><img src="/images/remove.png" class="m-1 p-0" height="30" alt="Supprimer le message" title="Supprimer le message"/></a>
+                                <a :href="'/post/edit/' + post.id"><img src="/images/edit.png" class="m-1 p-0" height="35" alt="Editer le message" title="Editer le message"/></a>
+                                <a :href="'/post/drop/' + post.id"><img src="/images/remove.png" class="m-1 p-0" height="30" alt="Supprimer le message" title="Supprimer le message"/></a>
                             </div>                               
                         </div>
                         <div class="card-body text-dark text-left">

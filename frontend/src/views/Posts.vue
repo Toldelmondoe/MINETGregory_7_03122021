@@ -48,8 +48,8 @@
                                 </span>
                             </div>                                
                             <div v-if="post.userId == this.currentUserId || this.isAdmin == 'true'">
-                                <a :href="'#/post/edit/' + post.id"><img src="/images/edit.png" class="m-1 p-0" height="35" alt="Editer le message" title="Editer le message"/></a>
-                                <a :href="'#/post/drop/' + post.id"><img src="/images/remove.png" class="m-1 p-0" height="30" alt="Supprimer le message" title="Supprimer le message"/></a>
+                                <a :href="'/post/edit/' + post.id"><img src="/images/edit.png" class="m-1 p-0" height="35" alt="Editer le message" title="Editer le message"/></a>
+                                <a :href="'/post/drop/' + post.id"><img src="/images/remove.png" class="m-1 p-0" height="30" alt="Supprimer le message" title="Supprimer le message"/></a>
                             </div>                               
                         </div>
                         <div class="card-body text-dark text-left">
@@ -57,7 +57,7 @@
                             <img class="w-100" :src="post.postUrl" v-if="post.postUrl !== ''">
                         </div>
                         <div class="card-footer bg-light text-dark text-left m-0">
-                            <a :href="'#/comments/' + post.id" class="h6 small">Voir les commentaires</a>
+                            <a :href="'/comments/' + post.id" class="h6 small">Voir les commentaires</a>
                         </div>
                     </div>
                     

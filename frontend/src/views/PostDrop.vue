@@ -19,7 +19,7 @@
                     </div>
                     <div class="modal-footer">
                         <div class="row w-100 justify-content-spacebetween">
-                            <div class="col-6"><a href="#/posts" class="btn btn-secondary btn-block">Annuler</a></div>
+                            <div class="col-6"><a href="/posts" class="btn btn-secondary btn-block">Annuler</a></div>
                             <div class="col-6"><button type="submit" @click.prevent="deletePost()" class="btn btn-success btn-block">Valider</button></div>
                         </div>
                     </div>
