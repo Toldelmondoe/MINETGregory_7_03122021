@@ -57,7 +57,7 @@
                                     <p class="small text-left m-0 p-1">Votre contenu : </p>
                                     <ul>
                                         <li class="small text-left m-0 p-1"><a href="#/compte/posts">{{postsCount}} message<span v-if="postsCount > 1">s</span></a></li>
-                                        <li class="small text-left m-0 p-1">{{commentsCount}} commentaire<span v-if="commentsCount > 1">s</span></li>
+                                        <li class="small text-left m-0 p-1"><a href="#/compte/comments">{{commentsCount}} commentaire<span v-if="commentsCount > 1">s</span></a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -104,7 +104,7 @@
 import axios from "axios"
 import Swal from "sweetalert2"
 export default {
-    name: "Compte" ,
+    name: "Compte",
     data() {
         return {
             username: "", 

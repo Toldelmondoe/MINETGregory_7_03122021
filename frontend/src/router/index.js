@@ -17,16 +17,32 @@ const routes = [
     name: 'Inscription',
     component: () => import('../views/Inscription')
   },
+  
+  {
+    path: '/compte',
+    name: 'Compte',
+    component: () => import('../views/Compte')
+  },
+  {
+    path: "/compte/posts",
+    name: "Mes Messages",
+    component: () => import("../views/PostsUser")
+  },
   {
     path: '/posts',
     name: 'Posts',
     component: () => import('../views/Posts')
   },
   {
-    path: '/compte',
-    name: 'Compte',
-    component: () => import('../views/Compte')
-  }
+    path: "/post/edit/:id",
+    name: "Post Edit",
+    component: () => import("../views/PostEdit")
+  },
+  {
+    path: "/post/drop/:id",
+    name: "Post Drop",
+    component: () => import("../views/PostDrop")
+  },
 ]
 
 const router = createRouter({
