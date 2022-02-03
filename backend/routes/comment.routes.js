@@ -9,6 +9,6 @@ router.get("/:id", commentController.findOneComment);
 router.get("/users/:id", commentController.findAllCommentsForOne);
 router.post("/", multer, commentController.createComment);
 router.put("/:id", multer, commentController.modifyComment);
-router.delete("/:id", authJwt.verifyCommentRight, commentController.deleteComment);
+router.delete("/:id", commentController.deleteComment);
 
 module.exports = router; 

@@ -47,7 +47,7 @@
                                     le {{post.createdAt.slice(0,10).split('-').reverse().join('/') + ' à ' + post.createdAt.slice(11,16)}}
                                 </span>
                             </div>                                
-                            <div v-if="post.userId == this.currentUserId || this.isAdmin == 'true'">
+                            <div v-if="post.userId == this.currentUserId">
                                 <a :href="'/post/edit/' + post.id"><img src="/images/edit.png" class="m-1 p-0" height="35" alt="Editer le message" title="Editer le message"/></a>
                                 <a :href="'/post/drop/' + post.id"><img src="/images/remove.png" class="m-1 p-0" height="30" alt="Supprimer le message" title="Supprimer le message"/></a>
                             </div>                               
@@ -57,7 +57,7 @@
                             <img class="w-100" :src="post.postUrl" v-if="post.postUrl !== ''">
                         </div>
                         <div class="card-footer bg-light text-dark text-left m-0">
-                            <a :href="'/comments/' + post.id" class="h6 small">Voir les commentaires</a>
+                            <a :href="'/comments/' + post.id"  class="h6 small">Voir les commentaires</a>
                         </div>
                     </div>
                     
@@ -78,7 +78,6 @@ export default {
     name: "Posts",
     data() {
         return {
-            isAdmin: false,
             isActive: true,
             newImage: "",
             currentUserId: "", 
@@ -115,10 +114,10 @@ export default {
                 })
             })
             .catch((error)=>{
-                const codeError = error.message.split("code ")[1]
+                const codeError = error.message.split("code")[1]
                 let messageError = ""
                 switch (codeError){
-                    case "400": messageError = "Le message n'a pas été posté !"; break
+                    case "400": messageError = "Le message n'a pas été publié !"; break
                     case "401": messageError = "Requête non-authentifiée !"; break
                 }
                 Swal.fire({
@@ -133,7 +132,7 @@ export default {
         }
     },
     created: function() { // get All
-        this.isAdmin = localStorage.getItem("roles")
+        
         this.currentUserId = localStorage.getItem("userId")
         if (localStorage.getItem("refresh")===null) {
             localStorage.setItem("refresh", 0)

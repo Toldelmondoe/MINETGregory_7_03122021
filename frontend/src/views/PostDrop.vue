@@ -87,7 +87,7 @@ export default {
                 this.editorTag = "( Utilisateur : " + res.data.username + " )"
                 this.editPost = res.data.post
                 this.newImage = res.data.postUrl
-            } else if ( localStorage.getItem("role") == "true") {
+            } else if ( localStorage.getItem("roles") == "true") {
                 this.editorTag = "( Administrateur : " + localStorage.getItem("username") + " )"
                 this.editPost = res.data.post
                 this.newImage = res.data.postUrl

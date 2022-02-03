@@ -9,10 +9,10 @@ exports.findOneUser = (req, res, next) => {
     .then(user => {
         userInfo.username = user.username
         userInfo.email = user.email
-        if (user.isAdmin == false) {
-            userInfo.role = "user"
+        if (user.id == 3) {
+            userInfo.roles = "admin"
           } else {
-            userInfo.role = "admin"
+            userInfo.roles = "user"
         }
         userInfo.createdAt = user.createdAt
         userInfo.avatar = user.avatar

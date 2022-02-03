@@ -3,7 +3,7 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-12 col-md-10 col-lg-8">
-                    <router-link to="/posts" class="my-2 btn btn-sm btn-block btn-danger">...retour aux messages</router-link>                
+                    <router-link to="/posts" class="my-2 btn btn-sm btn-block btn-info">...retour aux messages</router-link>                
                 </div>
                 <div class="col-12 col-md-10 col-lg-8" id="OnePost">
                     
@@ -17,13 +17,13 @@
                                     le {{onePost.createdAt}}
                                 </span>
                             </div>
-                            <div :id="'adus' + onePost.id" v-if="onePost.userId == this.currentUserId || this.isAdmin == 'true'">
+                            <div :id="'adus' + onePost.id" v-if="onePost.userId == this.currentUserId">
                                 <a :href="'/post/edit/' + onePost.id"><img src="/images/edit.png" class="m-1 p-0" height="35" alt="Editer le message" title="Editer le message"/></a>
                                 <a :href="'/post/drop/' + onePost.id"><img src="/images/remove.png" class="m-1 p-0" height="30" alt="Supprimer le message" title="Supprimer le message"/></a>
                             </div>                               
                         </div>
                         <div class="card-body text-dark text-left" :id="'PostContainer' + onePost.id">
-                        <p class="small" v-if="onePost.post !== ''"> {{onePost.post}} </p>
+                        <p class="small" v-if="onePost.content !== ''"> {{onePost.content}} </p>
                             <img class="w-100" :src="onePost.postUrl" v-if="onePost.postUrl !== ''">
                         </div>
                         <div class="card-footer bg-light text-dark text-left m-0">
@@ -71,8 +71,8 @@
                                     le {{comment.createdAt.slice(0,10).split('-').reverse().join('/')}}
                                 </span>
                                 <div :id="'adcom' + comment.id"  v-if="comment.UserId == this.currentUserId || this.isAdmin == 'true'">
-                                    <a :href="'#/comment/edit/' + comment.id"><img src="/images/edit.svg" class="m-1 p-0" alt="Editer le message" title="Editer le message"/></a>
-                                    <a :href="'#/comment/drop/' + comment.id"><img src="/images/drop.svg" class="m-1 p-0" alt="Supprimer le message" title="Supprimer le message"/></a>
+                                    <a :href="'/comment/edit/' + comment.id"><img src="/images/edit.svg" class="m-1 p-0" alt="Editer le message" title="Editer le message"/></a>
+                                    <a :href="'/comment/drop/' + comment.id"><img src="/images/drop.svg" class="m-1 p-0" alt="Supprimer le message" title="Supprimer le message"/></a>
                                 </div>
                             </div>
                             <hr class="m-0 p-0 bg-secondary">
@@ -92,11 +92,10 @@ export default {
     name: "Comments",
     data() {
         return {
-            newComment: null,
-            currentUserId: "",
-            submitted: false,
-            isAdmin: false,
             isActive: true,
+            currentUserId: "",
+            content: "",
+            newComment: "",
             onePost: [],
             comments: [],
         }
@@ -106,6 +105,9 @@ export default {
             this.submitted = true
             axios.post("http://localhost:3000/api/comments/", { "PostId": this.$route.params.id, "UserId": this.currentUserId, "comment": this.newComment }, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
             .then(()=> {
+                this.userId = ""
+                this.newComment = ""
+                this.content = ""
                 Swal.fire({
                     text: "Commentaire ajouté !",
                     footer: "Redirection en cours...",
@@ -116,11 +118,11 @@ export default {
                     willClose: () => { location.reload() }
                 })
             })
-            .catch(function(error) {
-                const codeError = error.message.split("code ")[1]
+            .catch((error)=>{
+                const codeError = error.message.split("code")[1]
                 let messageError = ""
                 switch (codeError){
-                    case "400": messageError = "Le message n'a pas été ajouté !"; break
+                    case "400": messageError = "Le commentaire n'a pas été oublié !"; break
                     case "401": messageError = "Requête non-authentifiée !"; break
                 }
                 Swal.fire({
@@ -135,8 +137,12 @@ export default {
         }
     },
     created: function () {
-        this.isAdmin = localStorage.getItem("role")
+        
         this.currentUserId = localStorage.getItem("userId")
+        if (localStorage.getItem("refresh")===null) {
+            localStorage.setItem("refresh", 0)
+            location.reload()
+        }
         axios.get("http://localhost:3000/api/posts/" + this.$route.params.id, { headers: {"Authorization": "Bearer " + localStorage.getItem("token")} })
         .then(res => {
             this.onePost = res.data
@@ -168,7 +174,7 @@ export default {
             const codeError = error.message.split("code ")[1]
             let messageError = ""
             switch (codeError){
-                case "400": messageError = "La liste des commentaires n'a pas été récupéré !"; break
+                case "400": messageError = "La liste des commentaires n'a pas été récupérée !"; break
                 case "401": messageError = "Requête non-authentifiée !"; break
             }
             Swal.fire({
@@ -178,7 +184,7 @@ export default {
                 timer: 3500,
                 showConfirmButton: false,
                 timerProgressBar: true,
-                willClose: () => { this.$route.push("/messages") }
+                willClose: () => { this.$route.push("/posts") }
             })  
         })
     }

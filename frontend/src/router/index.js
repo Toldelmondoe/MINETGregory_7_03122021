@@ -33,12 +33,12 @@ const routes = [
     component: () => import('../views/Posts')
   },
   {
-    path: '/post/edit/:id',
+    path: '/posts/edit/:id',
     name: 'Post Edit',
     component: () => import('../views/PostEdit')
   },
   {
-    path: '/post/drop/:id',
+    path: '/posts/drop/:id',
     name: 'Post Drop',
     component: () => import('../views/PostDrop')
   },

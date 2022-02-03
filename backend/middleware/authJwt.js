@@ -83,15 +83,15 @@ verifyCommentRight = (req, res, next) => {
                     }
                     Comment.findByPk(req.params.id).then((comment) => {
                         console.log("comment created by: "+ comment.userId);
-                            if(comment.userId === user.id) {
-                                console.log("Current is owner !");
-                                next();
-                                return;
-                            }
-                            res.status(401).json({ 
-                                message: "Unauthorized" 
-                            });
+                        if(comment.userId === user.id) {
+                            console.log("Current is owner !");
+                            next();
                             return;
+                        }
+                        res.status(401).json({ 
+                            message: "Unauthorized" 
+                        });
+                        return;
                     });
                 }
             });

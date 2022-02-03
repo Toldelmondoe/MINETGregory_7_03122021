@@ -55,14 +55,11 @@ export default {
     },
     methods: {
         handleSubmit() {
-            const InputName = this.InputName
-            const InputEmail = this.InputEmail
-            const InputPassword = this.InputPassword
             this.submitted = true;
-            axios.post("http://localhost:3000/api/auth/signup", { username: InputName, email: InputEmail, password: InputPassword })
+            axios.post("http://localhost:3000/api/auth/signup", { username: this.InputName, email: this.InputEmail, password: this.InputPassword })
             .then(function (response) {
                 if (response.statusText==="Created") {
-                    axios.post("http://localhost:3000/api/auth/signin", { username: InputName, password: InputPassword })
+                    axios.post("http://localhost:3000/api/auth/signin", { username: this.InputName, password: this.InputPassword })
                     .then(function (response) {
                         localStorage.setItem("token",response.data.token)
                         localStorage.setItem("userId",response.data.userId)

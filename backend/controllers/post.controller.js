@@ -8,6 +8,7 @@ createPost = (req, res, next) => {
     if (req.file) { 
         varImage = `${req.protocol}://${req.get("host")}/images/${req.file.filename}` 
     }
+
     const post = new Post(
         {
             UserId: req.body.userId,
@@ -15,7 +16,6 @@ createPost = (req, res, next) => {
             postUrl: varImage
         }
     )
-    console.log(post)
     post.save()
         .then(() => res.status(201).json({ message: "Publication réussie" }))
         .catch(error => res.status(400).json({ error }))
@@ -66,6 +66,7 @@ findOnePost = (req, res, next) => {
         onePost.createdAt = post.createdAt,
         onePost.content = post.content,
         onePost.postUrl = post.postUrl,
+        onePost.comment = post.comment,
         res.status(200).json(onePost)
     })
     .catch(error => res.status(404).json({ error }))

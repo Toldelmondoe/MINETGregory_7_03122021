@@ -7,5 +7,6 @@ router.get("/", controller.AllAccess);
 router.get("/user", controller.userBoard);
 router.get("/mod", controller.moderatorBoard);
 router.get("/admin", controller.adminBoard);
+router.get("/:id", controller.findOneUser);
 
 module.exports = router; 
