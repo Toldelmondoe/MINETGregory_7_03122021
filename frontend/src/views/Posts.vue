@@ -81,7 +81,6 @@ export default {
             isActive: true,
             newImage: "",
             currentUserId: "", 
-            content: "",
             newPost: "",
             file: null,
             posts: [],
@@ -101,7 +100,6 @@ export default {
             .then(()=> {
                 this.userId = ""
                 this.newPost = ""
-                this.content = ""
                 this.file = null
                 Swal.fire({
                     text: "Message posté !",
@@ -131,7 +129,7 @@ export default {
             })
         }
     },
-    created: function() { // get All
+    created: function() {
         
         this.currentUserId = localStorage.getItem("userId")
         if (localStorage.getItem("refresh")===null) {
@@ -147,7 +145,7 @@ export default {
             const codeError = error.message.split("code ")[1]
             let messageError = ""
             switch (codeError){
-                case "400": messageError = "La liste des messages n'a pas été récupérer !"; break
+                case "400": messageError = "La liste des messages n'a pas été récupérée !"; break
             }
             Swal.fire({
                 title: "Une erreur est survenue",

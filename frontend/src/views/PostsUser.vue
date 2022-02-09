@@ -4,7 +4,7 @@
             <div class="row justify-content-center">
                 <div class="col-12 col-md-10 col-lg-8" id="allPosts">
                     <div class="row my-2">
-                        <div class="col-6 pr-1"><a href="/posts" class="btn btn-sm btn-block btn-success">... retour aux messages</a></div>
+                        <div class="col-6 pr-1"><a href="/posts" class="btn btn-sm btn-block btn-success">... retour au fil d'actualité</a></div>
                         <div class="col-6 pl-1"><a href="/compte" class="btn btn-sm btn-block btn-primary">retour à mon compte ...</a></div>
                     </div>
                     <div v-for="post in userPosts" :key="post.id" class="card bg-light my-3">
@@ -27,7 +27,7 @@
                             <img class="w-100" :src="post.postUrl" v-if="post.postUrl !== ''">
                         </div>
                         <div class="card-footer bg-light text-dark text-left m-0">
-                            <a :href="'#/comments/' + post.id" class="h6 small">Voir les commentaires</a>
+                            <a :href="'/comments/' + post.id" class="h6 small">Voir les commentaires</a>
                         </div>
                     </div>
                 </div>
