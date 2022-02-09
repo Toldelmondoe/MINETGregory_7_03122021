@@ -46,7 +46,7 @@
                                     <div class="row modal-body">
                                         <div class="col-12 justify-content-center form-group">
                                             <label for="newComment" class="sr-only">Commentaire :</label>
-                                            <textarea class="form-control" v-model="newComment" id="newComment" name="comment" rows="10" placeholder="Votre commentaire ici..." required :class="{ 'is-invalid': submitted && !newComment }"></textarea>
+                                            <textarea class="form-control" v-model="newComment" id="newComment" name="content" rows="10" placeholder="Votre commentaire ici..." required :class="{ 'is-invalid': submitted && !newComment }"></textarea>
                                             <div v-show="submitted && !newComment" class="invalid-feedback">Une commentaire est requis !</div>
                                         </div>
                                     </div>
@@ -66,9 +66,9 @@
                         <div class="card-header align-items-center m-0 p-1">
                             <div class="d-flex justify-content-between">
                                 <span class="small text-dark m-0 p-1">
-                                    Commentaire de {{comment.User.username}} 
-                                    <span v-if="!comment.User.isActive" class="small text-danger">(supprimé)</span>, 
-                                    le {{comment.createdAt.slice(0,10).split('-').reverse().join('/')}}
+                                    Commentaire de {{comment.username}}
+                                    <span v-if="!comment.isActive" class="small text-danger">(supprimé)</span>,
+                                    le {{comment.createdAt.slice(0,10).split('-').reverse().join('/') +' à '+ comment.createdAt.slice(11,16)}}
                                 </span>
                                 <div :id="'addCmt' + comment.id"  v-if="comment.UserId == this.currentUserId">
                                     <a :href="'/comment/edit/' + comment.id"><img src="/images/edit.svg" class="m-1 p-0" alt="Editer le message" title="Editer le message"/></a>
@@ -76,7 +76,7 @@
                                 </div>
                             </div>
                             <hr class="m-0 p-0 bg-secondary">
-                            <p class="small text-dark m-0 p-1"> {{comment.comment}}</p>
+                            <p class="small text-dark m-0 p-1"> {{comment.content}}</p>
                         </div>
                     </div>
                 </div>
@@ -88,6 +88,7 @@
 <script>
 import axios from "axios"
 import Swal from "sweetalert2"
+import router from "../router"
 export default {
     name: "Comments",
     data() {
@@ -103,7 +104,7 @@ export default {
     methods: {
         addNewComment() {
             this.submitted = true
-            axios.post("http://localhost:3000/api/comments/", { "PostId": this.$route.params.id, "UserId": this.currentUserId, "comment": this.newComment }, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
+            axios.post("http://localhost:3000/api/comments/", { "PostId": this.$route.params.id, "UserId": this.currentUserId, "content": this.newComment }, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
             .then(()=> {
                 this.userId = ""
                 this.newComment = ""
@@ -163,12 +164,13 @@ export default {
                 timer: 3500,
                 showConfirmButton: false,
                 timerProgressBar: true,
-                willClose: () => { this.$route.push("/posts") }
+                willClose: () => { router.push("/posts") }
             })  
         })
-        axios.get("http://localhost:3000/api/comments/posts/" + this.$route.params.id, { headers: {"Authorization": "Bearer " + localStorage.getItem("token")} })
+        axios.get("http://localhost:3000/api/comments/post/" + this.$route.params.id, { headers: {"Authorization": "Bearer " + localStorage.getItem("token")} })
         .then(cmt => {
-            this.comments = cmt.data
+          console.log(cmt.data);
+            this.comments = cmt.data.ListComments
         })
         .catch(function(error) {
             const codeError = error.message.split("code ")[1]
@@ -184,7 +186,7 @@ export default {
                 timer: 3500,
                 showConfirmButton: false,
                 timerProgressBar: true,
-                willClose: () => { this.$route.push("/posts") }
+                willClose: () => { router.push("/posts") }
             })  
         })
     }

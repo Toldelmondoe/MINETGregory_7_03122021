@@ -10,7 +10,8 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true,
         },
         content: {
-            type: DataTypes.TEXT
+            type: DataTypes.TEXT,
+            required: true
         },
         commentUrl: {
             type: DataTypes.STRING

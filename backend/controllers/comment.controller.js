@@ -3,7 +3,6 @@ const Comment = db.comments;
 const User = db.users;
 
 createComment = (req, res, next) => {
-
     let varImage = "";
     if (req.file) { 
         varImage = `${req.protocol}://${req.get("host")}/images/${req.file.filename}` 
@@ -13,11 +12,37 @@ createComment = (req, res, next) => {
         {
             UserId: req.body.userId,
             content: req.body.content,
-            commentUrl: varImage
+            commentUrl: varImage,
+            PostId: req.body.PostId
         }
     )
     comment.save()
         .then(() => res.status(201).json({ message: "Commentaire ajouté !" }))
+        .catch(error => res.status(400).json({ error }))
+};
+findCommentsByPost = (req, res, next) => {
+    Comment.findAll({
+        where: {PostId: req.params.id},
+        include: { model: User, required: true, attributes: ["username", "avatar", "isActive"]},
+        order: [["id", "DESC"]]
+    })
+        .then(comments => {
+            const ListComments = comments.map(comment => {
+                return Object.assign({},
+                    {
+                        id: comment.id,
+                        createdAt: comment.createdAt,
+                        content: comment.content,
+                        commentUrl: comment.commentUrl,
+                        userId: comment.userId,
+                        username: comment.User.username,
+                        avatar: comment.User.avatar,
+                        isActive: comment.User.isActive
+                    }
+                )
+            })
+            res.status(200).json({ ListComments })
+        })
         .catch(error => res.status(400).json({ error }))
 };
 
@@ -125,6 +150,7 @@ const commentController = {
     findOneComment: findOneComment,
     findAllCommentsForOne: findAllCommentsForOne,
     deleteComment: deleteComment,
+    findCommentsByPost: findCommentsByPost,
     modifyComment: modifyComment
 };
 

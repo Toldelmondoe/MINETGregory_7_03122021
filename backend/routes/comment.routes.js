@@ -6,6 +6,7 @@ const multer = require("../middleware/multer-config");
 
 router.get("/", commentController.findAllComments);
 router.get("/:id", commentController.findOneComment);
+router.get("/post/:id", commentController.findCommentsByPost);
 router.get("/users/:id", commentController.findAllCommentsForOne);
 router.post("/", multer, commentController.createComment);
 router.put("/:id", multer, commentController.modifyComment);
