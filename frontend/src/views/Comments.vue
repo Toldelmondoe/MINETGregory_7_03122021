@@ -41,19 +41,18 @@
                             <div class="modal-content">
                                 <form enctype="multipart/form-data">
                                     <div class="modal-header">
-                                        <p class="modal-title h5">Poster un nouveau commentaire</p>
+                                        <p class="modal-title h5">Publier un nouveau commentaire</p>
                                     </div>
                                     <div class="row modal-body">
                                         <div class="col-12 justify-content-center form-group">
                                             <label for="newComment" class="sr-only">Commentaire :</label>
-                                            <textarea class="form-control" v-model="newComment" id="newComment" name="comment" rows="10" placeholder="Votre commentaire ici..." required :class="{ 'is-invalid': submitted && !newComment }"></textarea>
-                                            <div v-show="submitted && !newComment" class="invalid-feedback">Une commentaire est requis !</div>
+                                            <textarea class="form-control" v-model="newComment" id="newComment" name="comment" rows="10" placeholder="Votre commentaire ici..."></textarea>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
                                         <div class="row w-100 justify-content-spacebetween">
                                             <div class="col-6"><a data-dismiss="modal" class="btn btn-secondary btn-block">Annuler</a></div>
-                                            <div class="col-6"><button type="submit" @click.prevent="addNewComment()" class="btn btn-success btn-block">Valider</button></div>
+                                            <div class="col-6"><button type="submit" @click.prevent="addNewComment()" class="btn btn-success btn-block">Publier</button></div>
                                         </div>
                                     </div>
                                 </form>

@@ -98,7 +98,7 @@ export default {
             formData.set("content", this.newPost.toString())
             axios.post("http://localhost:3000/api/posts/", formData, { headers: { "Authorization":"Bearer " + localStorage.getItem("token")}})
             .then(()=> {
-                this.userId = ""
+                this.UserId = ""
                 this.newPost = ""
                 this.file = null
                 Swal.fire({

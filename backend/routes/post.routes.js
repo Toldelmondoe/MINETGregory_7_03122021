@@ -9,7 +9,7 @@ router.get("/:id", postController.findOnePost);
 router.get("/users/:id", postController.findAllPostsForOne);
 router.post("/", multer, postController.createPost);
 router.put("/:id", multer, postController.modifyPost);
-router.delete("/drop/:id", postController.deletePost);
+router.delete("/:id", postController.deletePost);
 
 module.exports = router; 
 

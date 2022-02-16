@@ -14,7 +14,6 @@
                         </div>
                         <div class="col-12 justify-content-center text-center">
                             <img :src="newImage" class="w-50 rounded">
-                            <p class="small text-center">Image à partager</p>
                         </div>
                     </div>
                     <div class="modal-footer">

@@ -60,7 +60,7 @@ export default {
         updatePost() {
             const formData = new FormData()
             formData.set("image", this.file)
-            formData.set("post", this.editPost.toString())
+            formData.set("content", this.editPost.toString())
             axios.put("http://localhost:3000/api/posts/" + this.$route.params.id, formData, { headers: { "Authorization":"Bearer " + localStorage.getItem("token")}})
             .then(res=> {
                 if (res.status === 200) {

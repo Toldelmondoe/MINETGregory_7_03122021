@@ -159,7 +159,7 @@ export default {
             })
         },
         deleteAccount() {
-            axios.put("http://localhost:3000/api/users/" + localStorage.getItem("userId"), { isActive: false }, { headers: {"Authorization": "Bearer " + localStorage.getItem("token")}})
+            axios.delete("http://localhost:3000/api/users/" + localStorage.getItem("userId"), { headers: {"Authorization": "Bearer " + localStorage.getItem("token")}})
             .then(()=> {
                 localStorage.clear()
                 Swal.fire({
