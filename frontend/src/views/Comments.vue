@@ -46,7 +46,7 @@
                                     <div class="row modal-body">
                                         <div class="col-12 justify-content-center form-group">
                                             <label for="newComment" class="sr-only">Commentaire :</label>
-                                            <textarea class="form-control" v-model="newComment" id="newComment" name="content" rows="10" placeholder="Votre commentaire ici..." required :class="{ 'is-invalid': submitted && !newComment }"></textarea>
+                                            <textarea class="form-control" v-model="newComment" id="newComment" name="comment" rows="10" placeholder="Votre commentaire ici..." required :class="{ 'is-invalid': submitted && !newComment }"></textarea>
                                             <div v-show="submitted && !newComment" class="invalid-feedback">Une commentaire est requis !</div>
                                         </div>
                                     </div>
@@ -93,6 +93,7 @@ export default {
     name: "Comments",
     data() {
         return {
+            UserId: "",
             isActive: true,
             currentUserId: "",
             content: "",

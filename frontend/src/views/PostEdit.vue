@@ -61,7 +61,7 @@ export default {
             const formData = new FormData()
             formData.set("image", this.file)
             formData.set("post", this.editPost.toString())
-            axios.put("http://localhost:3000/api/posts/" + this.$route.params.id, formData, { headers: { "Authorization":"Bearer " + localStorage.getItem("token")}})
+            axios.put("http://localhost:3000/api/post/" + this.$route.params.id, formData, { headers: { "Authorization":"Bearer " + localStorage.getItem("token")}})
             .then(res=> {
                 if (res.status === 200) {
                     Swal.fire({
@@ -94,7 +94,7 @@ export default {
         }
     },
     beforeMount () {
-        axios.get("http://localhost:3000/api/posts/" + this.$route.params.id, { headers: {"Authorization": "Bearer " + localStorage.getItem("token")} })
+        axios.get("http://localhost:3000/api/post/" + this.$route.params.id, { headers: {"Authorization": "Bearer " + localStorage.getItem("token")} })
         .then(res => {
             this.editUserId = res.data.userId
             console.log(res)

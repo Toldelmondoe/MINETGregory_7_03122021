@@ -34,7 +34,7 @@ findCommentsByPost = (req, res, next) => {
                         createdAt: comment.createdAt,
                         content: comment.content,
                         commentUrl: comment.commentUrl,
-                        userId: comment.userId,
+                        UserId: comment.userId,
                         username: comment.User.username,
                         avatar: comment.User.avatar,
                         isActive: comment.User.isActive
