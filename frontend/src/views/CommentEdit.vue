@@ -43,7 +43,7 @@ export default {
     },
     methods: {
         updateComment() {
-            axios.put("http://localhost/api/comment/" + this.$route.params.id, {"comment":this.editComment}, {headers: { "Authorization":"Bearer " + localStorage.getItem("token") }})
+            axios.put("http://localhost/api/comments/" + this.$route.params.id, {"comment":this.editComment}, {headers: { "Authorization":"Bearer " + localStorage.getItem("token") }})
             .then(res => {
                 if (res.status === 200) {
                     Swal.fire({
@@ -76,7 +76,7 @@ export default {
         }
     },
     beforeMount () {
-        axios.get("http://localhost/api/comment/" + this.$route.params.id, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
+        axios.get("http://localhost/api/comments/" + this.$route.params.id, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
         .then(res => {
             if (res.data === null) {
                 Swal.fire({

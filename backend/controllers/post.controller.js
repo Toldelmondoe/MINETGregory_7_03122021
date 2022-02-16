@@ -34,7 +34,7 @@ findAllPosts = (req, res, next) => {
                     createdAt: post.createdAt,
                     content: post.content,
                     postUrl: post.postUrl,
-                    userId: post.userId,
+                    userId: post.UserId,
                     username: post.User.username,
                     avatar: post.User.avatar,
                     isActive: post.User.isActive
@@ -59,7 +59,7 @@ findOnePost = (req, res, next) => {
     })
     .then(post => {
         onePost.id = post.id,
-        onePost.userId = post.userId,
+        onePost.userId = post.UserId,
         onePost.avatar = post.User.avatar,
         onePost.username = post.User.username,
         onePost.isActive = post.User.isActive,
@@ -90,7 +90,7 @@ findAllPostsForOne = (req, res, next) => {
                     createdAt: post.createdAt,
                     content: post.content,
                     postUrl: post.postUrl,
-                    userId: post.userId,
+                    userId: post.UserId,
                     username: post.User.username,
                     avatar: post.User.avatar,
                     isActive: post.User.isActive

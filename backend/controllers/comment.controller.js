@@ -3,16 +3,11 @@ const Comment = db.comments;
 const User = db.users;
 
 createComment = (req, res, next) => {
-    let varImage = "";
-    if (req.file) { 
-        varImage = `${req.protocol}://${req.get("host")}/images/${req.file.filename}` 
-    }
-
+    
     const comment = new Comment(
         {
-            UserId: req.body.userId,
+            userId: req.body.UserId,
             content: req.body.content,
-            commentUrl: varImage,
             PostId: req.body.PostId
         }
     )
@@ -33,8 +28,7 @@ findCommentsByPost = (req, res, next) => {
                         id: comment.id,
                         createdAt: comment.createdAt,
                         content: comment.content,
-                        commentUrl: comment.commentUrl,
-                        UserId: comment.userId,
+                        userId: comment.UserId,
                         username: comment.User.username,
                         avatar: comment.User.avatar,
                         isActive: comment.User.isActive
@@ -58,8 +52,7 @@ findAllComments = (req, res, next) => {
                     id: comment.id,
                     createdAt: comment.createdAt,
                     content: comment.content,
-                    commentUrl: comment.commentUrl,
-                    userId: comment.userId,
+                    userId: comment.UserId,
                     username: comment.User.username,
                     avatar: comment.User.avatar,
                     isActive: comment.User.isActive
@@ -84,7 +77,7 @@ findOneComment = (req, res, next) => {
     })
     .then(comment => { 
         oneComment.id = comment.id,
-        oneComment.userId = comment.userId,
+        oneComment.userId = comment.UserId,
         oneComment.avatar = comment.User.avatar,
         oneComment.username = comment.User.username,
         oneComment.isActive = comment.User.isActive,
@@ -113,8 +106,7 @@ findAllCommentsForOne = (req, res, next) => {
                     id: comment.id,
                     createdAt: comment.createdAt,
                     content: comment.content,
-                    commentUrl: comment.commentUrl,
-                    userId: comment.userId,
+                    userId: comment.UserId,
                     username: comment.User.username,
                     avatar: comment.User.avatar,
                     isActive: comment.User.isActive
@@ -133,15 +125,9 @@ deleteComment = (req, res, next) => {
 };
 
 modifyComment = (req, res, next) => { 
-    const commentObject = req.file ?
-      {
-        ...req.body.post,
-        commentUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
-      } : { ... req.body}
-
-      Comment.update({ ...commentObject, id:  req.params.id}, { where: { id: req.params.id }})
-      .then(() => res.status(200).json({ message: "Commentaire modifié !" }))
-      .catch(error => res.status(400).json({ error }))
+    Comment.update({ ...commentObject, id:  req.params.id}, { where: { id: req.params.id }})
+    .then(() => res.status(200).json({ message: "Commentaire modifié !" }))
+    .catch(error => res.status(400).json({ error }))
 };
 
 const commentController = {

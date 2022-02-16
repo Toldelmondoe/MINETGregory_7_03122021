@@ -12,9 +12,6 @@ module.exports = (sequelize, DataTypes) => {
         content: {
             type: DataTypes.TEXT,
             required: true
-        },
-        commentUrl: {
-            type: DataTypes.STRING
         }
     }, 
     {

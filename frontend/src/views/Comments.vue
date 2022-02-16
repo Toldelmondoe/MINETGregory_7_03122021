@@ -93,10 +93,8 @@ export default {
     name: "Comments",
     data() {
         return {
-            UserId: "",
             isActive: true,
             currentUserId: "",
-            content: "",
             newComment: "",
             onePost: [],
             comments: [],
@@ -104,12 +102,14 @@ export default {
     },
     methods: {
         addNewComment() {
+            const formData = new FormData()
+            formData.set("userId", localStorage.getItem("userId"))
+            formData.set("content", this.newComment.toString())
             this.submitted = true
             axios.post("http://localhost:3000/api/comments/", { "PostId": this.$route.params.id, "UserId": this.currentUserId, "content": this.newComment }, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
             .then(()=> {
                 this.userId = ""
                 this.newComment = ""
-                this.content = ""
                 Swal.fire({
                     text: "Commentaire ajouté !",
                     footer: "Redirection en cours...",
