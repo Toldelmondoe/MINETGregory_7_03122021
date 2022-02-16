@@ -69,9 +69,9 @@
                                     <span v-if="!comment.isActive" class="small text-danger">(supprimé)</span>,
                                     le {{comment.createdAt.slice(0,10).split('-').reverse().join('/') +' à '+ comment.createdAt.slice(11,16)}}
                                 </span>
-                                <div :id="'addCmt' + comment.id"  v-if="comment.UserId == this.currentUserId">
-                                    <a :href="'/comment/edit/' + comment.id"><img src="/images/edit.svg" class="m-1 p-0" alt="Editer le message" title="Editer le message"/></a>
-                                    <a :href="'/comment/drop/' + comment.id"><img src="/images/drop.svg" class="m-1 p-0" alt="Supprimer le message" title="Supprimer le message"/></a>
+                                <div :id="'addCmt' + comment.id"  v-if="comment.userId == this.currentUserId">
+                                    <a :href="'/comment/edit/' + comment.id"><img src="/images/edit.png" class="m-1 p-0" height="30" alt="Editer le commentaire" title="Editer le commentaire"/></a>
+                                    <a :href="'/comment/drop/' + comment.id"><img src="/images/remove.png" class="m-1 p-0" height="25" alt="Supprimer le commentaire" title="Supprimer le commentaire"/></a>
                                 </div>
                             </div>
                             <hr class="m-0 p-0 bg-secondary">

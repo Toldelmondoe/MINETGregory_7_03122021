@@ -6,7 +6,7 @@ createComment = (req, res, next) => {
     
     const comment = new Comment(
         {
-            UserId: req.body.userId,
+            UserId: req.body.UserId,
             content: req.body.content,
             PostId: req.body.PostId
         }

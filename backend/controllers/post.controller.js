@@ -111,7 +111,7 @@ deletePost = (req, res, next) => {
 modifyPost = (req, res, next) => {
     const postObject = req.file ?
       {
-        ...req.body.post,
+        ... req.body,
         postUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
       } : { ... req.body}
 

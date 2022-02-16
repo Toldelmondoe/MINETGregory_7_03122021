@@ -114,7 +114,7 @@ export default {
             postsCount: "", 
             commentsCount: "", 
             avatar: "",
-            newAvatar: "/images/default_user.jpg", 
+            newAvatar: "", 
             file: null, 
             submitted: false
         }
@@ -127,7 +127,7 @@ export default {
         updateAvatar() {
             this.submitted = true
             const formData = new FormData()
-            formData.append("image", this.file);
+            formData.set("image", this.file);
             axios.put("http://localhost:3000/api/users/" + localStorage.getItem("userId"), formData, { headers:{ "Authorization": "Bearer " + localStorage.getItem("token")}})
             .then(function(res) {
                 localStorage.setItem("avatar", res.data.avatar)

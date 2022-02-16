@@ -24,7 +24,7 @@ export default {
     data() {
         return {
             username: "", 
-            avatar: "/images/default_user.jpg"
+            avatar: ""
         }
     },
     created: function() {

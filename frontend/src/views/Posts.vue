@@ -79,6 +79,7 @@ export default {
     data() {
         return {
             isActive: true,
+            avatar: "",
             newImage: "",
             currentUserId: "", 
             newPost: "",
