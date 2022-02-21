@@ -28,6 +28,11 @@ const routes = [
     component: () => import('../views/PostsUser')
   },
   {
+    path: '/compte/comments',
+    name: 'Mes Commentaires',
+    component: () => import('../views/CommentsUser')
+  },
+  {
     path: '/posts',
     name: 'Posts',
     component: () => import('../views/Posts')

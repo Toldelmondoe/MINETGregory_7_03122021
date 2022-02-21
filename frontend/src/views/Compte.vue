@@ -65,7 +65,7 @@
                         <div class="card-footer" style="background-color:ghostwhite;">
                             <div class="row d-flex align-items-center m-0 p-0">
                                 <div class="col-12">
-                                    <a href="" data-toggle="modal" data-target="#modalDeleteAccount" class="btn btn-sm btn-block btn-danger">Supprimer mon compte !</a>
+                                    <a href="" data-toggle="modal" data-target="#modalDeleteAccount" class="btn btn-sm btn-danger col">Supprimer mon compte !</a>
                                     <div class="modal fade" id="modalDeleteAccount" data-backdrop="static"  data-keyboard="false" tabindex="-1" aria-labelledby="modalDeleteAccount" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content border border-danger">

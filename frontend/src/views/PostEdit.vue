@@ -7,25 +7,25 @@
                         <p class="modal-title h5 mr-1">Editer message</p>
                         <p class="modal-title mt-1" :class="editorColor">{{editorTag}}</p>
                     </div>
-                    <div class="row modal-body">
-                        <div class="col-12 justify-content-center form-group">
-                            <label for="editPost" class="sr-only">Message :</label>
-                            <textarea class="form-control" v-model="editPost" id="editPost" name="post" rows="10" placeholder="Votre message ici..."></textarea>
-                        </div>
-                        <div class="col-12 justify-content-center text-center">
-                            <img :src="newImage" class="w-50 rounded">
-                            <p class="small text-center">Image à partager</p>
-                        </div>
-                        <div class="col-12 justify-content-center">
-                            <div class="form-group justify-content-center">
-                                <label for="File" class="sr-only">Choisir une nouvelle photo</label>
-                                <input @change="onFileChange()" type="file" ref="file" name="image" class="form-control-file" id="File" accept=".jpg, .jpeg, .gif, .png">
+                        <div class="row modal-body">
+                            <div class="col-12 justify-content-center form-group">
+                                <label for="editPost" class="sr-only">Message :</label>
+                                <textarea class="form-control" v-model="editPost" id="editPost" name="post" rows="10" placeholder="Votre message ici ..."></textarea>
+                            </div>
+                            <div class="col-12 justify-content-center text-center">
+                                <img :src="newImage" class="w-50 rounded">
+                                <p class="small text-center">Image à partager</p>
+                            </div>
+                            <div class="col-12 justify-content-center">
+                                <div class="form-group justify-content-center">
+                                    <label for="File" class="sr-only">Choisir une nouvelle photo</label>
+                                    <input @change="onFileChange()" type="file" ref="file" name="image" class="form-control-file" id="File" accept=".jpg, .jpeg, .gif, .png">
+                                </div>
                             </div>
                         </div>
-                    </div>
                     <div class="modal-footer">
                         <div class="row w-100 justify-content-spacebetween">
-                            <div class="col-6"><a href="/posts" class="btn btn-secondary btn-block">Annuler</a></div>
+                            <div class="col-6"><a href="/compte/posts" class="btn btn-secondary btn-block">Annuler</a></div>
                             <div class="col-6"><button type="submit" @click.prevent="updatePost()" class="btn btn-success btn-block">Valider</button></div>
                         </div>
                     </div>
@@ -49,7 +49,7 @@ export default {
             editorTag: "",
             editorColor: "text-secondary",
             file: null,
-            isSucces: false
+            isSucces: false,
         }
     },
     methods: {

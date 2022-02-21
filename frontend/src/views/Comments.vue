@@ -3,7 +3,7 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-12 col-md-10 col-lg-8">
-                    <router-link to="/posts" class="my-2 btn btn-sm btn-block btn-info">...retour aux messages</router-link>                
+                    <router-link to="/posts" class="my-2 btn btn-sm btn-block btn-info">... retour au fil d'actualité</router-link>                
                 </div>
                 <div class="col-12 col-md-10 col-lg-8" id="OnePost">
                     
@@ -35,7 +35,7 @@
                     
                 </div>
                 <div class="col-12 col-md-10 col-lg-8">
-                    <a href="" data-toggle="modal" data-target="#modalAddComment" class="my-2 btn btn-sm btn-block btn-success">Poster un commentaire...</a>
+                    <a href="" data-toggle="modal" data-target="#modalAddComment" class="my-2 btn btn-sm btn-block btn-success">Publier un commentaire...</a>
                     <div class="modal fade" id="modalAddComment" tabindex="-1" aria-labelledby="modalAddComment" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">

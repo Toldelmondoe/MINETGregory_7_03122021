@@ -15,7 +15,7 @@
                     </div>
                     <div class="modal-footer">
                         <div class="row w-100 justify-content-spacebetween">
-                            <div class="col-6"><a :href="postId" class="btn btn-secondary btn-block">Annuler</a></div>
+                            <div class="col-6"><a href="/compte/comments" class="btn btn-secondary btn-block">Annuler</a></div>
                             <div class="col-6"><button type="submit" @click.prevent="deleteComment()" class="btn btn-success btn-block">Valider</button></div>
                         </div>
                     </div>
@@ -52,7 +52,7 @@ export default {
                         timer: 1500,
                         showConfirmButton: false,
                         timerProgressBar: true,
-                        willClose: () => { router.push(this.postId.slice(1)); this.postId = "" }
+                        willClose: () => { router.push("/comments") }
                     })
                 }
             })
