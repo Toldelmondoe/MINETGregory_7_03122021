@@ -56,7 +56,11 @@ export default {
     methods: {
         handleSubmit() {
             this.submitted = true;
-            axios.post("http://localhost:3000/api/auth/signup", { username: this.InputName, email: this.InputEmail, password: this.InputPassword })
+            axios.post("http://localhost:3000/api/auth/signup", { 
+                username: this.InputName, 
+                email: this.InputEmail, 
+                password: this.InputPassword 
+            })
             .then(function (response) {
                 if (response.statusText==="Created") {
                     axios.post("http://localhost:3000/api/auth/signin", { username: this.InputName, password: this.InputPassword })
@@ -73,7 +77,7 @@ export default {
                             timer: 2000,
                             showConfirmButton: false,
                             timerProgressBar: true,
-                            willClose: () => { router.push("/posts") }
+                            willClose: () => { router.push("/signin") }
                         })
                     })
                     .catch(function(error) {
