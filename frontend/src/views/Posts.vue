@@ -49,6 +49,7 @@
                             </div>                                
                             <div v-if="post.userId == this.currentUserId">
                                 <a :href="'/post/edit/' + post.id"><img src="/images/edit.png" class="m-1 p-0" height="35" alt="Editer le message" title="Editer le message"/></a>
+                                <a :href="'/post/drop/' + post.id"><img src="/images/remove.png" class="m-1 p-0" height="30" alt="Supprimer le message" title="Supprimer le message"/></a>    
                                     <div id="navbarContent" class="m-1 p-0 justify-content-end">
                                         <div class="nav-item dropdown m-0 p-0">
                                             <a class="nav-item nav-link m-0 p-0 " href="#" data-toggle="dropdown" id="my_account" aria-haspopup="true" aria-expanded="false">
@@ -177,6 +178,34 @@ export default {
             })
         },
     },
+    created: function() {
+        
+        this.currentUserId = localStorage.getItem("userId")
+        if (localStorage.getItem("refresh")===null) {
+            localStorage.setItem("refresh", 0)
+            location.reload()
+        }
+        axios.get("http://localhost:3000/api/posts",{ headers: {"Authorization": "Bearer " + localStorage.getItem("token")} })
+        .then(res => {
+            const rep = res.data.ListPosts
+            this.posts = rep
+        })
+        .catch((error)=>{
+            const codeError = error.message.split("code ")[1]
+            let messageError = ""
+            switch (codeError){
+                case "400": messageError = "La liste des messages n'a pas été récupérée !"; break
+            }
+            Swal.fire({
+                title: "Une erreur est survenue",
+                text: messageError || error.message,
+                icon: "error",
+                timer: 3500,
+                showConfirmButton: false,
+                timerProgressBar: true
+            }) 
+        })
+    },
     beforeMount() {
         axios.get("http://localhost:3000/api/posts/" + this.$route.params.id, { headers: {"Authorization": "Bearer " + localStorage.getItem("token")} })
         .then(res => {
@@ -220,35 +249,6 @@ export default {
                 willClose: () => { router.push("/posts") }
             })  
         })
-    },
-    created: function() {
-        
-        this.currentUserId = localStorage.getItem("userId")
-        if (localStorage.getItem("refresh")===null) {
-            localStorage.setItem("refresh", 0)
-            location.reload()
-        }
-        axios.get("http://localhost:3000/api/posts",{ headers: {"Authorization": "Bearer " + localStorage.getItem("token")} })
-        .then(res => {
-            const rep = res.data.ListPosts
-            this.posts = rep
-        })
-        .catch((error)=>{
-            const codeError = error.message.split("code ")[1]
-            let messageError = ""
-            switch (codeError){
-                case "400": messageError = "La liste des messages n'a pas été récupérée !"; break
-            }
-            Swal.fire({
-                title: "Une erreur est survenue",
-                text: messageError || error.message,
-                icon: "error",
-                timer: 3500,
-                showConfirmButton: false,
-                timerProgressBar: true
-            }) 
-        })
     }
-    
 }
 </script>
