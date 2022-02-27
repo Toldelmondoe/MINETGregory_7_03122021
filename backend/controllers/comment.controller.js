@@ -78,6 +78,7 @@ findOneComment = (req, res, next) => {
     .then(comment => { 
         oneComment.id = comment.id,
         oneComment.userId = comment.UserId,
+        oneComment.postId=comment.PostId,
         oneComment.avatar = comment.User.avatar,
         oneComment.username = comment.User.username,
         oneComment.isActive = comment.User.isActive,

@@ -10,7 +10,7 @@
                     <div class="row modal-body">
                         <div class="col-12 justify-content-center form-group">
                             <label for="editComment" class="sr-only">Commentaire :</label>
-                            <textarea class="form-control" v-model="editComment" id="editComment" name="comment" rows="10" placeholder="Votre commentaire ici..."></textarea>
+                            <textarea class="form-control" v-model="editComment" id="editComment" name="content" rows="10" placeholder="Votre commentaire ici..."></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -43,7 +43,7 @@ export default {
     },
     methods: {
         updateComment() {
-            axios.put("http://localhost/api/comments/" + this.$route.params.id, {"comment":this.editComment}, {headers: { "Authorization":"Bearer " + localStorage.getItem("token") }})
+            axios.put("http://localhost:3000/api/comments/" + this.$route.params.id, {"content":this.editComment}, {headers: { "Authorization":"Bearer " + localStorage.getItem("token") }})
             .then(res => {
                 if (res.status === 200) {
                     Swal.fire({
@@ -53,7 +53,7 @@ export default {
                         timer: 1500,
                         showConfirmButton: false,
                         timerProgressBar: true,
-                        willClose: () => { router.push(this.postId.slice(1)); this.postId = "" }
+                        willClose: () => { router.push("/compte/comments/") }
                     })
                 }
             })
@@ -76,8 +76,9 @@ export default {
         }
     },
     beforeMount () {
-        axios.get("http://localhost/api/comments/" + this.$route.params.id, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
+        axios.get("http://localhost:3000/api/comments/" + this.$route.params.id, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
         .then(res => {
+          console.log(res);
             if (res.data === null) {
                 Swal.fire({
                     title: "Une erreur est survenue",
@@ -89,27 +90,16 @@ export default {
                     willClose: () => { router.push("/posts") }
                 })
             }
-            this.editUserId = res.data.UserId
-            this.postId = "/comment/" + res.data.PostId
-            if (this.editUserId == localStorage.getItem('userId')) {
-                this.editorTag = "( Utilisateur : " + res.data.username + " )"
-                this.editComment = res.data.comment
-            } else if ( localStorage.getItem('role') == "true") {
-                this.editorTag = "( Administrateur : " + localStorage.getItem('username') + " )"
-                this.editComment = res.data.comment
-                this.editorColor = "text-danger"
-            } else {
-                Swal.fire({
-                    title: "Une erreur est survenue",
-                    text: "Vous n'avez pas accès à cette fonctionnalité !",
-                    icon: "error",
-                    timer: 1500,
-                    showConfirmButton: false,
-                    timerProgressBar: true,
-                    willClose: () => { router.push(this.postId) }
-                })  
-            }
-        })
+            this.editUserId = res.data.userId
+            this.editComment = res.data.content
+            this.postId = res.data.postId
+        }).catch(err=>{
+            console.log(err);
+        });
+    },
+    deleteComment(){
+
     }
+
 }
 </script>

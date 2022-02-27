@@ -50,7 +50,7 @@ export default {
             .then(res=> {
                 if (res.status === 200) {
                     Swal.fire({
-                        text: "Le message à été supprimé !",
+                        text: "Le message a été supprimé !",
                         footer: "Redirection en cours...",
                         icon: "success",
                         timer: 1500,

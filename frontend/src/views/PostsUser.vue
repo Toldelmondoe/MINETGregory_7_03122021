@@ -20,6 +20,16 @@
                             <div>
                                 <a :href="'/post/edit/' + post.id"><img src="/images/edit.png" class="m-1 p-0" height="35" alt="Editer le message" title="Editer le message"/></a>
                                 <a :href="'/post/drop/' + post.id"><img src="/images/remove.png" class="m-1 p-0" height="30" alt="Supprimer le message" title="Supprimer le message"/></a>
+                                <div id="navbarContent" class="m-1 p-0 justify-content-end align-self-center">
+                                    <div class="nav-item dropdown m-0 p-0">
+                                        <a class="nav-item nav-link m-0 p-0" href="#" data-toggle="dropdown" id="my_account" aria-haspopup="true" aria-expanded="false">
+                                            <img src="/images/remove.png" alt="remove" height="30" class="my-0 rounded-circle"/>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="my_account">  
+                                            <div class="col-10"><button type="submit" @click.prevent="deletePost()" class="btn btn-danger btn-block">Confirmer</button></div>
+                                        </div>
+                                    </div>            
+                                </div>
                             </div>                               
                         </div>
                         <div class="card-body text-dark text-left">

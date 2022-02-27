@@ -49,7 +49,16 @@
                             </div>                                
                             <div v-if="post.userId == this.currentUserId">
                                 <a :href="'/post/edit/' + post.id"><img src="/images/edit.png" class="m-1 p-0" height="35" alt="Editer le message" title="Editer le message"/></a>
-                                <a :href="'/post/drop/' + post.id"><img src="/images/remove.png" class="m-1 p-0" height="30" alt="Supprimer le message" title="Supprimer le message"/></a>
+                                    <div id="navbarContent" class="m-1 p-0 justify-content-end">
+                                        <div class="nav-item dropdown m-0 p-0">
+                                            <a class="nav-item nav-link m-0 p-0 " href="#" data-toggle="dropdown" id="my_account" aria-haspopup="true" aria-expanded="false">
+                                                <img src="/images/remove.png" alt="remove" height="30" class="my-0 rounded-circle"/>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right d-grid" aria-labelledby="my_account">  
+                                                <div class="col-9"><button type="submit" @click.prevent="deletePost()" class="btn btn-danger btn-block btn-sm">Confirmer</button></div>
+                                            </div>
+                                        </div>            
+                                    </div>
                             </div>                               
                         </div>
                         <div class="card-body text-dark text-left">
@@ -73,6 +82,7 @@
 <script>
 import axios from "axios"
 import Swal from "sweetalert2"
+import router from "../router"
 
 export default {
     name: "Posts",
@@ -81,7 +91,12 @@ export default {
             isActive: true,
             avatar: "",
             newImage: "",
+            editPost: "",
+            editUserId: "",
             currentUserId: "", 
+            editorTag: "",
+            editorColor: "text-secondary",
+            isSucces: false,
             newPost: "",
             file: null,
             posts: [],
@@ -128,7 +143,83 @@ export default {
                     timerProgressBar: true
                 }) 
             })
-        }
+        },
+        deletePost() {
+            axios.delete("http://localhost:3000/api/posts/" + this.$route.params.id, { headers: { "Authorization":"Bearer " + localStorage.getItem("token") }})
+            .then(res=> {
+                if (res.status === 200) {
+                    Swal.fire({
+                        text: "Le message a été supprimé !",
+                        footer: "Redirection en cours...",
+                        icon: "success",
+                        timer: 1500,
+                        showConfirmButton: false,
+                        timerProgressBar: true,
+                        willClose: () => { router.push("/posts") }
+                    })
+                }
+            })
+            .catch(function(error) {
+                const codeError = error.message.split("code ")[1]
+                let messageError = ""
+                switch (codeError){
+                    case "400": messageError = "Le message n'a pas été supprimé !"; break
+                    case "401": messageError = "Requête non-authentifiée !"; break
+                }
+                Swal.fire({
+                    title: "Une erreur est survenue",
+                    text: messageError || error.message,
+                    icon: "error",
+                    timer: 1500,
+                    showConfirmButton: false,
+                    timerProgressBar: true
+                })  
+            })
+        },
+    },
+    beforeMount() {
+        axios.get("http://localhost:3000/api/posts/" + this.$route.params.id, { headers: {"Authorization": "Bearer " + localStorage.getItem("token")} })
+        .then(res => {
+            this.editUserId = res.data.userId
+            if (this.editUserId == localStorage.getItem("userId"))  {
+                this.editorTag = "( Utilisateur : " + res.data.username + " )"
+                this.editPost = res.data.post
+                this.newImage = res.data.postUrl
+            } else if ( localStorage.getItem("roles") == "true") {
+                this.editorTag = "( Administrateur : " + localStorage.getItem("username") + " )"
+                this.editPost = res.data.post
+                this.newImage = res.data.postUrl
+                this.editorColor = "text-danger"
+            } else {
+                Swal.fire({
+                    title: "Une erreur est survenue",
+                    text: "Vous n'avez pas accès à cette fonctionnalité !",
+                    icon: "error",
+                    timer: 1500,
+                    showConfirmButton: false,
+                    timerProgressBar: true,
+                    willClose: () => { router.push("/posts") }
+                })  
+            }
+        })
+        .catch(function(error) {
+            const codeError = error.message.split("code ")[1]
+            let messageError = ""
+            switch (codeError){
+                case "400": messageError = "Le message n'a pas été mis à jour !"; break
+                case "401": messageError = "Requête non-authentifiée !"; break
+                case "404": messageError = "Le message n'existe pas !"; break
+            }
+            Swal.fire({
+                title: "Une erreur est survenue",
+                text: messageError || error.message,
+                icon: "error",
+                timer: 1500,
+                showConfirmButton: false,
+                timerProgressBar: true,
+                willClose: () => { router.push("/posts") }
+            })  
+        })
     },
     created: function() {
         
@@ -158,5 +249,6 @@ export default {
             }) 
         })
     }
+    
 }
 </script>

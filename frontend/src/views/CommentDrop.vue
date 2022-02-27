@@ -42,17 +42,17 @@ export default {
     },
     methods: {
         deleteComment() {
-            axios.delete("http://localhost/api/comments/" + this.$route.params.id, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
+            axios.delete("http://localhost:3000/api/comments/" + this.$route.params.id, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
             .then(res => {
                 if (res.status === 200) {
                     Swal.fire({
-                        text: "Le commentaire à été supprimé !",
+                        text: "Le commentaire a été supprimé !",
                         footer: "Redirection en cours...",
                         icon: "success",
                         timer: 1500,
                         showConfirmButton: false,
                         timerProgressBar: true,
-                        willClose: () => { router.push("/comments") }
+                        willClose: () => { router.push("/compte/comments") }
                     })
                 }
             })
@@ -75,7 +75,7 @@ export default {
         }
     },
     beforeMount () {
-        axios.get("http://localhost/api/comments/" + this.$route.params.id, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
+        axios.get("http://localhost:3000/api/comments/" + this.$route.params.id, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
         .then(res => {
             if (res.data === null) {
                 Swal.fire({
