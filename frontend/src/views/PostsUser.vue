@@ -19,17 +19,9 @@
                             </div>                                
                             <div>
                                 <a :href="'/post/edit/' + post.id"><img src="/images/edit.png" class="m-1 p-0" height="35" alt="Editer le message" title="Editer le message"/></a>
-                                <a :href="'/post/drop/' + post.id"><img src="/images/remove.png" class="m-1 p-0" height="30" alt="Supprimer le message" title="Supprimer le message"/></a>
-                                <div id="navbarContent" class="m-1 p-0 justify-content-end align-self-center">
-                                    <div class="nav-item dropdown m-0 p-0">
-                                        <a class="nav-item nav-link m-0 p-0" href="#" data-toggle="dropdown" id="my_account" aria-haspopup="true" aria-expanded="false">
-                                            <img src="/images/remove.png" alt="remove" height="30" class="my-0 rounded-circle"/>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="my_account">  
-                                            <div class="col-10"><button type="submit" @click.prevent="deletePost()" class="btn btn-danger btn-block">Confirmer</button></div>
-                                        </div>
-                                    </div>            
-                                </div>
+                                <button type="button" class="btn" data-toggle="modal" @click.prevent="preDelete(post.id)" data-target="#confirm">
+                                  <img src="/images/remove.png" alt="remove" height="30" class="my-0 rounded-circle"/>
+                                </button>
                             </div>                               
                         </div>
                         <div class="card-body text-dark text-left">
@@ -42,6 +34,20 @@
                     </div>
                 </div>
             </div>
+            <!-- Modal For post delete -->
+          <div id="confirm" class="modal">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-body">
+                  Voulez vous supprimer ce post?
+                </div>
+                <div class="modal-footer">
+                  <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete" @click.prevent="deletePost()">OUI</button>
+                  <button type="button" data-dismiss="modal" class="btn">Annuler</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
     </div>
 </template>
@@ -49,6 +55,8 @@
 <script>
 import axios from "axios"
 import Swal from "sweetalert2"
+import router from "../router"
+
 export default {
     name: "Posts User",
     data() {
@@ -56,6 +64,7 @@ export default {
             newImage: "",
             currentUserId: "", 
             newPost: "",
+            postToDelete: null,
             file: null,
             userPosts: []
         }
@@ -85,6 +94,46 @@ export default {
                 timerProgressBar: true
             }) 
         })
-    }
+    },
+    methods : {
+        preDelete(id){
+          this.postToDelete = id;
+        },
+        deletePost() {
+          if(this.postToDelete != null && this.postToDelete!=""){
+            axios.delete("http://localhost:3000/api/posts/" + this.postToDelete, { headers: { "Authorization":"Bearer " + localStorage.getItem("token") }})
+                .then(res=> {
+                  if (res.status === 200) {
+                    Swal.fire({
+                      text: "Le message a été supprimé !",
+                      footer: "Redirection en cours...",
+                      icon: "success",
+                      timer: 1500,
+                      showConfirmButton: false,
+                      timerProgressBar: true,
+                      willClose: () => { router.push("/Posts/") }
+                    });
+                    this.postToDelete = null;
+                  }
+                })
+                .catch(function(error) {
+                  const codeError = error.message.split("code ")[1]
+                  let messageError = ""
+                  switch (codeError){
+                    case "400": messageError = "Le message n'a pas été supprimé !"; break
+                    case "401": messageError = "Requête non-authentifiée !"; break
+                  }
+                  Swal.fire({
+                    title: "Une erreur est survenue",
+                    text: messageError || error.message,
+                    icon: "error",
+                    timer: 1500,
+                    showConfirmButton: false,
+                    timerProgressBar: true
+                  })
+                })
+            }
+        },
+    },
 }
 </script>
