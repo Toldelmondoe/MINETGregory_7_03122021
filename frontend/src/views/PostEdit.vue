@@ -10,7 +10,7 @@
                         <div class="row modal-body">
                             <div class="col-12 justify-content-center form-group">
                                 <label for="editPost" class="sr-only">Message :</label>
-                                <textarea class="form-control" v-model="editPost" id="editPost" name="post" rows="10" placeholder="Votre message ici ..."></textarea>
+                                <textarea class="form-control" v-model="editPost" id="editPost" name="content" rows="10" placeholder="Votre message ici ..."></textarea>
                             </div>
                             <div class="col-12 justify-content-center text-center">
                                 <img :src="newImage" class="w-50 rounded">
@@ -49,7 +49,6 @@ export default {
             editorTag: "",
             editorColor: "text-secondary",
             file: null,
-            isSucces: false,
         }
     },
     methods: {
@@ -95,19 +94,9 @@ export default {
     },
     beforeMount () {
         axios.get("http://localhost:3000/api/posts/" + this.$route.params.id, { headers: {"Authorization": "Bearer " + localStorage.getItem("token")} })
-        .then(res => {
-            this.editUserId = res.data.userId
+        .then(res => { 
             console.log(res)
-            if (this.editUserId == localStorage.getItem("userId"))  {
-                this.editorTag = "( Utilisateur : " + res.data.username + " )"
-                this.editPost = res.data.post
-                this.newImage = res.data.postUrl
-            } else if ( localStorage.getItem("roles") == "true") {
-                this.editorTag = "( Administrateur : " + localStorage.getItem("username") + " )"
-                this.editPost = res.data.post
-                this.newImage = res.data.postUrl
-                this.editorColor = "text-danger"
-            } else {
+            if (res.data === null)  {
                 Swal.fire({
                     title: "Une erreur est survenue",
                     text: "Vous n'avez pas accès à cette fonctionnalité !",
@@ -115,28 +104,16 @@ export default {
                     timer: 1500,
                     showConfirmButton: false,
                     timerProgressBar: true,
-                    willClose: () => { router.push("/posts") }
-                })  
-            }
-        })
-        .catch(function(error) {
-            const codeError = error.message.split("code ")[1]
-            let messageError = ""
-            switch (codeError){
-                case "400": messageError = "Le message n'a pas été mis à jour !"; break
-                case "401": messageError = "Requête non-authentifiée !"; break
-                case "404": messageError = "Le message n'existe pas !"; break
-            }
-            Swal.fire({
-                title: "Une erreur est survenue",
-                text: messageError || error.message,
-                icon: "error",
-                timer: 1500,
-                showConfirmButton: false,
-                timerProgressBar: true,
-                willClose: () => { router.push("/posts") }
-            })  
-        })  
+                })
+            } 
+            this.editUserId = res.data.userId
+            this.editorTag = "( publié par " + res.data.username + " )"
+            this.editorColor = "text-danger"
+            this.editPost = res.data.content
+            this.newImage = res.data.postUrl
+        }).catch(err=>{
+            console.log(err);
+        }); 
     }
 }
 </script>

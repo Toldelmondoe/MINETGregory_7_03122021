@@ -38,7 +38,6 @@ export default {
             editUserId: "",
             editorTag: "",
             editorColor: "text-secondary",
-            isSucces: false
         }
     },
     methods: {
@@ -78,7 +77,7 @@ export default {
     beforeMount () {
         axios.get("http://localhost:3000/api/comments/" + this.$route.params.id, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
         .then(res => {
-          console.log(res);
+            console.log(res);
             if (res.data === null) {
                 Swal.fire({
                     title: "Une erreur est survenue",
@@ -91,6 +90,8 @@ export default {
                 })
             }
             this.editUserId = res.data.userId
+            this.editorTag = "( publié par " + res.data.username + " )"
+            this.editorColor = "text-danger"
             this.editComment = res.data.content
             this.postId = res.data.postId
         }).catch(err=>{

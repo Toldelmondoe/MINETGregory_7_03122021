@@ -50,7 +50,7 @@
                             <div v-if="post.userId == this.currentUserId">
                                 <a :href="'/post/edit/' + post.id"><img src="/images/edit.png" class="m-1 p-0" height="35" alt="Editer le message" title="Editer le message"/></a>
                                 <button type="button" class="btn" data-toggle="modal" @click.prevent="preDelete(post.id)" data-target="#confirm">
-                                  <img src="/images/remove.png" alt="remove" height="30" class="my-0 rounded-circle"/>
+                                    <img src="/images/remove.png" alt="remove" height="30" class="my-0 rounded-circle"/>
                                 </button>
                             </div>
                         </div>
@@ -67,30 +67,27 @@
                     </div>
                 </div>
             </div>
-          <!-- Modal For post delete -->
-          <div id="confirm" class="modal">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-body">
-                  Voulez vous supprimer ce post?
+            <!-- Modal For post delete -->
+            <div id="confirm" class="modal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            Voulez-vous supprimer ce post?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete" @click.prevent="deletePost()">OUI</button>
+                            <button type="button" data-dismiss="modal" class="btn">Annuler</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                  <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete" @click.prevent="deletePost()">OUI</button>
-                  <button type="button" data-dismiss="modal" class="btn">Annuler</button>
-                </div>
-              </div>
             </div>
-          </div>
-
         </div>
     </div>
-
 </template>
 
 <script>
 import axios from "axios"
 import Swal from "sweetalert2"
-//import router from "../router"
 
 export default {
     name: "Posts",
@@ -106,7 +103,7 @@ export default {
     },
     methods: {
         preDelete(id){
-          this.postToDelete = id;
+            this.postToDelete = id;
         },
         onFileChange() {
             this.file = this.$refs.file.files[0];
@@ -187,37 +184,36 @@ export default {
             }
         },
         created: function() {
-          this.currentUserId = localStorage.getItem("userId")
-          if (localStorage.getItem("refresh")===null) {
-            localStorage.setItem("refresh", 0)
-            location.reload()
-          }
-          axios.get("http://localhost:3000/api/posts",{ headers: {"Authorization": "Bearer " + localStorage.getItem("token")} })
-              .then(res => {
+            this.currentUserId = localStorage.getItem("userId")
+            if (localStorage.getItem("refresh")===null) {
+                localStorage.setItem("refresh", 0)
+                location.reload()
+            }
+            axios.get("http://localhost:3000/api/posts",{ headers: {"Authorization": "Bearer " + localStorage.getItem("token")}})
+            .then(res => {
                 const rep = res.data.ListPosts
                 this.posts = rep
-              })
-              .catch((error)=>{
+            })
+            .catch((error)=>{
                 const codeError = error.message.split("code ")[1]
                 let messageError = ""
                 switch (codeError){
-                  case "400": messageError = "La liste des messages n'a pas été récupérée !"; break
+                    case "400": messageError = "La liste des messages n'a pas été récupérée !"; break
                 }
                 Swal.fire({
-                  title: "Une erreur est survenue",
-                  text: messageError || error.message,
-                  icon: "error",
-                  timer: 3500,
-                  showConfirmButton: false,
-                  timerProgressBar: true
+                    title: "Une erreur est survenue",
+                    text: messageError || error.message,
+                    icon: "error",
+                    timer: 3500,
+                    showConfirmButton: false,
+                    timerProgressBar: true
                 })
-              })
+            })
         },
     },
     beforeMount() {
       // On page loading call created method for get all posts
       this.created();
     }
-
 }
 </script>

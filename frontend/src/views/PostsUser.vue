@@ -100,37 +100,37 @@ export default {
           this.postToDelete = id;
         },
         deletePost() {
-          if(this.postToDelete != null && this.postToDelete!=""){
-            axios.delete("http://localhost:3000/api/posts/" + this.postToDelete, { headers: { "Authorization":"Bearer " + localStorage.getItem("token") }})
+            if(this.postToDelete != null && this.postToDelete!=""){
+                axios.delete("http://localhost:3000/api/posts/" + this.postToDelete, { headers: { "Authorization":"Bearer " + localStorage.getItem("token") }})
                 .then(res=> {
-                  if (res.status === 200) {
-                    Swal.fire({
-                      text: "Le message a été supprimé !",
-                      footer: "Redirection en cours...",
-                      icon: "success",
-                      timer: 1500,
-                      showConfirmButton: false,
-                      timerProgressBar: true,
-                      willClose: () => { router.push("/Posts/") }
-                    });
-                    this.postToDelete = null;
-                  }
+                    if (res.status === 200) {
+                        Swal.fire({
+                            text: "Le message a été supprimé !",
+                            footer: "Redirection en cours...",
+                            icon: "success",
+                            timer: 1500,
+                            showConfirmButton: false,
+                            timerProgressBar: true,
+                            willClose: () => { router.push("/Posts/") }
+                        });
+                        this.postToDelete = null;
+                    }
                 })
                 .catch(function(error) {
-                  const codeError = error.message.split("code ")[1]
-                  let messageError = ""
-                  switch (codeError){
-                    case "400": messageError = "Le message n'a pas été supprimé !"; break
-                    case "401": messageError = "Requête non-authentifiée !"; break
-                  }
-                  Swal.fire({
-                    title: "Une erreur est survenue",
-                    text: messageError || error.message,
-                    icon: "error",
-                    timer: 1500,
-                    showConfirmButton: false,
-                    timerProgressBar: true
-                  })
+                    const codeError = error.message.split("code ")[1]
+                    let messageError = ""
+                    switch (codeError){
+                        case "400": messageError = "Le message n'a pas été supprimé !"; break
+                        case "401": messageError = "Requête non-authentifiée !"; break
+                    }
+                    Swal.fire({
+                        title: "Une erreur est survenue",
+                        text: messageError || error.message,
+                        icon: "error",
+                        timer: 1500,
+                        showConfirmButton: false,
+                        timerProgressBar: true
+                    })
                 })
             }
         },

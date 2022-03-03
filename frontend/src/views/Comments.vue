@@ -26,13 +26,7 @@
                         <p class="small" v-if="onePost.content !== ''"> {{onePost.content}} </p>
                             <img class="w-100" :src="onePost.postUrl" v-if="onePost.postUrl !== ''">
                         </div>
-                        <div class="card-footer bg-light text-dark text-left m-0">
-                            <p class="h6 small" v-if="onePost.comment === 0">Il n'y a aucun commentaire.</p>
-                            <p class="h6 small" v-if="onePost.comment === 1">Il y a 1 commentaire.</p>
-                            <p class="h6 small" v-if="onePost.comment > 1">Il y a {{onePost.comment}} commentaires.</p>
-                        </div>
                     </div>
-                    
                 </div>
                 <div class="col-12 col-md-10 col-lg-8">
                     <a href="" data-toggle="modal" data-target="#modalAddComment" class="my-2 btn btn-sm btn-block btn-success">Publier un commentaire...</a>
