@@ -11,6 +11,8 @@
                 <div class="dropdown-divider"></div>
                 <div class="d-flex"><img src="/images/email.png" fill="text-primary" class="pl-4" height="35"><router-link to="/Compte/Posts" class="dropdown-item pl-1 text-primary">Mes messages</router-link></div>
                 <div class="dropdown-divider"></div>
+                <div class="d-flex"><img src="/images/messages.png" fill="text-primary" class="pl-4" height="35"><router-link to="/Compte/Comments" class="dropdown-item pl-1 text-primary">Mes commentaires</router-link></div>
+                <div class="dropdown-divider"></div>
                 <div class="d-flex"><img src="/images/switch.png" fill="text-primary" class="pl-4" height="35"><a class ="dropdown-item pl-1 text-danger" @click="deconnexion" href="#">Déconnexion</a></div>
             </div>
         </div>            

@@ -19,7 +19,9 @@
                             </div>
                             <div :id="'addUsr' + onePost.id" v-if="onePost.userId == this.currentUserId">
                                 <a :href="'/post/edit/' + onePost.id"><img src="/images/edit.png" class="m-1 p-0" height="35" alt="Editer le message" title="Editer le message"/></a>
-                                <a :href="'/post/drop/' + onePost.id"><img src="/images/remove.png" class="m-1 p-0" height="30" alt="Supprimer le message" title="Supprimer le message"/></a>
+                                <button type="button" class="btn" data-toggle="modal" @click.prevent="preDelete(onePost.id)" data-target="#confirm">
+                                    <img src="/images/remove.png" alt="remove" height="30" class="my-0 rounded-circle"/>
+                                </button>
                             </div>                               
                         </div>
                         <div class="card-body text-dark text-left" :id="'PostContainer' + onePost.id">
@@ -59,17 +61,47 @@
                         <div class="card-header align-items-center m-0 p-1">
                             <div class="d-flex justify-content-between">
                                 <span class="small text-dark m-0 p-1">
-                                    Commentaire de {{comment.username}}
+                                    Commenté par {{comment.username}}
                                     <span v-if="!comment.isActive" class="small text-danger">(supprimé)</span>,
                                     le {{comment.createdAt.slice(0,10).split('-').reverse().join('/') +' à '+ comment.createdAt.slice(11,16)}}
                                 </span>
                                 <div :id="'addCmt' + comment.id"  v-if="comment.userId == this.currentUserId">
-                                    <a :href="'/comment/edit/' + comment.id"><img src="/images/edit.png" class="m-1 p-0" height="30" alt="Editer le commentaire" title="Editer le commentaire"/></a>
-                                    <a :href="'/comment/drop/' + comment.id"><img src="/images/remove.png" class="m-1 p-0" height="25" alt="Supprimer le commentaire" title="Supprimer le commentaire"/></a>
+                                    <a :href="'/comment/edit/' + comment.id"><img src="/images/edit.png" class="m-1 p-0" height="35" alt="Editer le commentaire" title="Editer le commentaire"/></a>
+                                    <button type="button" class="btn" data-toggle="modal" @click.prevent="preDeleteCom(comment.id)" data-target="#confirmCom">
+                                        <img src="/images/remove.png" alt="remove" height="30" class="my-0 rounded-circle"/>
+                                    </button>
                                 </div>
                             </div>
                             <hr class="m-0 p-0 bg-secondary">
                             <p class="small text-dark m-0 p-1"> {{comment.content}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal For post delete -->
+            <div id="confirm" class="modal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            Voulez-vous supprimer ce post ?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete" @click.prevent="deletePost()">OUI</button>
+                            <button type="button" data-dismiss="modal" class="btn">Annuler</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal For comment delete -->
+            <div id="confirmCom" class="modal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            Voulez-vous supprimer ce commentaire ?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete" @click.prevent="deleteComment()">OUI</button>
+                            <button type="button" data-dismiss="modal" class="btn">Annuler</button>
                         </div>
                     </div>
                 </div>
@@ -94,6 +126,12 @@ export default {
         }
     },
     methods: {
+        preDelete(id){
+            this.postToDelete = id
+        },
+        preDeleteCom(id){
+            this.commentToDelete = id
+        },
         addNewComment() {
             const formData = new FormData()
             formData.set("userId", localStorage.getItem("userId"))
@@ -129,6 +167,75 @@ export default {
                     timerProgressBar: true
                 })  
             })
+        },
+        deletePost() {
+            if(this.postToDelete != null && this.postToDelete!=""){
+                axios.delete("http://localhost:3000/api/posts/" + this.postToDelete, { headers: { "Authorization":"Bearer " + localStorage.getItem("token") }})
+                .then(res=> {
+                    if (res.status === 200) {
+                        Swal.fire({
+                            text: "Le message a été supprimé !",
+                            footer: "Redirection en cours...",
+                            icon: "success",
+                            timer: 1500,
+                            showConfirmButton: false,
+                            timerProgressBar: true,
+                            willClose: () => { router.push("/posts") }
+                        });
+                        this.postToDelete = null;
+                    }
+                })
+                .catch(function(error) {
+                    const codeError = error.message.split("code ")[1]
+                    let messageError = ""
+                    switch (codeError){
+                        case "400": messageError = "Le message n'a pas été supprimé !"; break
+                        case "401": messageError = "Requête non-authentifiée !"; break
+                    }
+                    Swal.fire({
+                        title: "Une erreur est survenue",
+                        text: messageError || error.message,
+                        icon: "error",
+                        timer: 1500,
+                        showConfirmButton: false,
+                        timerProgressBar: true
+                    })
+                })
+            }
+        },
+        deleteComment() {
+            if(this.commentToDelete != null && this.commentToDelete!=""){
+                axios.delete("http://localhost:3000/api/comments/" + this.commentToDelete, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
+                .then(res => {
+                    if (res.status === 200) {
+                        Swal.fire({
+                            text: "Le commentaire a été supprimé !",
+                            footer: "Redirection en cours...",
+                            icon: "success",
+                            timer: 1500,
+                            showConfirmButton: false,
+                            timerProgressBar: true,
+                            willClose: () => { router.push("/posts/") }
+                        })
+                    }
+                })
+                .catch(function(error) {
+                    const codeError = error.message.split("code ")[1]
+                    let messageError = ""
+                    switch (codeError) {
+                        case "400": messageError = "Le commentaire n'a pas été supprimé !"; break
+                        case "401": messageError = "Requête non-authentifiée !"; break
+                    }
+                    Swal.fire({
+                        title: "Une erreur est survenue",
+                        text: messageError || error.message,
+                        icon: "error",
+                        timer: 1500,
+                        showConfirmButton: false,
+                        timerProgressBar: true
+                    })  
+                })
+            }
         }
     },
     created: function () {

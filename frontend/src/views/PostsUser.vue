@@ -20,7 +20,7 @@
                             <div>
                                 <a :href="'/post/edit/' + post.id"><img src="/images/edit.png" class="m-1 p-0" height="35" alt="Editer le message" title="Editer le message"/></a>
                                 <button type="button" class="btn" data-toggle="modal" @click.prevent="preDelete(post.id)" data-target="#confirm">
-                                  <img src="/images/remove.png" alt="remove" height="30" class="my-0 rounded-circle"/>
+                                    <img src="/images/remove.png" alt="remove" height="30" class="my-0 rounded-circle"/>
                                 </button>
                             </div>                               
                         </div>
@@ -35,19 +35,19 @@
                 </div>
             </div>
             <!-- Modal For post delete -->
-          <div id="confirm" class="modal">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-body">
-                  Voulez vous supprimer ce post?
+            <div id="confirm" class="modal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            Voulez-vous supprimer ce post?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete" @click.prevent="deletePost()">OUI</button>
+                            <button type="button" data-dismiss="modal" class="btn">Annuler</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                  <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete" @click.prevent="deletePost()">OUI</button>
-                  <button type="button" data-dismiss="modal" class="btn">Annuler</button>
-                </div>
-              </div>
             </div>
-          </div>
         </div>
     </div>
 </template>
