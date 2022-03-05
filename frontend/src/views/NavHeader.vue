@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <nav class="col navbar mb-3">
-                <NavBrand></NavBrand>
+                <NavBrand v-if="isLogged"></NavBrand>
                 <NavUserMenu v-if="isLogged"></NavUserMenu>
             </nav>
         </div>

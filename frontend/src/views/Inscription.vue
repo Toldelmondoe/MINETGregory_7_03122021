@@ -56,47 +56,42 @@ export default {
     methods: {
         handleSubmit() {
             this.submitted = true;
-            axios.post("http://localhost:3000/api/auth/signup", { 
-                username: this.InputName, 
-                email: this.InputEmail, 
-                password: this.InputPassword 
-            })
+            axios.post("http://localhost:3000/api/auth/signup", { username: this.InputName, email: this.InputEmail, password: this.InputPassword })
             .then(function (response) {
-                if (response.statusText==="Created") {
-                    axios.post("http://localhost:3000/api/auth/signin", { username: this.InputName, password: this.InputPassword })
-                    .then(function (response) {
-                        localStorage.setItem("token",response.data.token)
-                        localStorage.setItem("userId",response.data.userId)
-                        localStorage.setItem("username",response.data.username)
-                        localStorage.setItem("avatar",response.data.avatar)
-                        localStorage.setItem("roles",response.data.roles)
-                        Swal.fire({
-                            text: "Inscription réussie !",
-                            footer: "Connexion en cours...",
-                            icon: "success",
-                            timer: 2000,
-                            showConfirmButton: false,
-                            timerProgressBar: true,
-                            willClose: () => { router.push("/signin") }
-                        })
+                let currentUser = {};
+                currentUser = response.data;
+                localStorage.setItem("currentUser",currentUser)
+                localStorage.setItem("token",response.data.token)
+                localStorage.setItem("userId",response.data.userId)
+                localStorage.setItem("username",response.data.username)
+                localStorage.setItem("avatar",response.data.avatar)
+                localStorage.setItem("roles",response.data.roles)
+                    Swal.fire({
+                        text: "Inscription réussie !",
+                        footer: "Connexion en cours...",
+                        icon: "success",
+                        timer: 2000,
+                        showConfirmButton: false,
+                        timerProgressBar: true,
+                         willClose: () => { router.push("/signin") }
                     })
-                    .catch(function(error) {
-                        const codeError = error.message.split("code ")[1]
-                        let messageError = ""
-                        switch (codeError){
-                            case "401": messageError = "Mot de passe erroné !";break
-                            case "404": messageError = "Utilisateur non-trouvé !";break
-                        }
-                        Swal.fire({
-                            title: "Une erreur est survenue",
-                            text: messageError || error.message,
-                            icon: "error",
-                            timer: 3500,
-                            showConfirmButton: false,
-                            timerProgressBar: true
-                        })  
-                    })
+            })
+            .catch(function(error) {
+                const codeError = error.message.split("code ")[1]
+                let messageError = ""
+                switch (codeError){
+                    case "400": messageError = "Nom d'utilisateur déja utilisé !"; break
+                    case "401": messageError = "Mot de passe erroné !";break
+                    case "404": messageError = "Utilisateur non-trouvé !";break
                 }
+                Swal.fire({
+                    title: "Une erreur est survenue",
+                    text: messageError || error.message,
+                    icon: "error",
+                    timer: 3500,
+                    showConfirmButton: false,
+                    timerProgressBar: true
+                }) 
             })
             .catch(function (error) {
                 const codeError = error.message.split("code ")[1]
