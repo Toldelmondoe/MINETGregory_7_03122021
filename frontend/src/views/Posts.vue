@@ -49,6 +49,9 @@
                             </div>                                
                             <div v-if="post.userId == this.currentUserId">
                                 <a :href="'/post/edit/' + post.id"><img src="/images/edit.png" class="m-1 p-0" height="35" alt="Editer le message" title="Editer le message"/></a>
+                                <button type="button" class="btn" data-toggle="modal" @click.prevent="preEdit(post.id)" data-target="#confirmEdit">
+                                    <img src="/images/edit.png" alt="remove" height="35" class="my-0 rounded-circle"/>
+                                </button>
                                 <button type="button" class="btn" data-toggle="modal" @click.prevent="preDelete(post.id)" data-target="#confirm">
                                     <img src="/images/remove.png" alt="remove" height="30" class="my-0 rounded-circle"/>
                                 </button>
@@ -81,6 +84,42 @@
                     </div>
                 </div>
             </div>
+            <!-- Modal For post edit -->
+            
+            <div id="confirmEdit" class="modal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form enctype="multipart/form-data">
+                            <div class="modal-header d-flex flex-column flex-md-row align-items-center justify-content-start">
+                                <p class="modal-title h5 mr-1">Editer message</p>
+                                <p class="modal-title mt-1" :class="editorColor">{{editorTag}}</p>
+                            </div>
+                            <div class="row modal-body">
+                                <div class="col-12 justify-content-center form-group">
+                                    <label for="editPost" class="sr-only">Message :</label>
+                                    <textarea class="form-control" v-model="editPost" id="editPost" name="content" rows="10" placeholder="Votre message ici ..."></textarea>
+                                </div>
+                                <div class="col-12 justify-content-center text-center">
+                                    <img :src="newImage" class="w-50 rounded">
+                                    <p class="small text-center">Image à partager</p>
+                                </div>
+                                <div class="col-12 justify-content-center">
+                                    <div class="form-group justify-content-center">
+                                        <label for="File" class="sr-only">Choisir une nouvelle photo</label>
+                                        <input @change="onFileChange()" type="file" ref="file" name="image" class="form-control-file" id="File" accept=".jpg, .jpeg, .gif, .png">
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="modal-footer justify-content-center">
+                                <div class="row">
+                                    <button type="button" data-dismiss="modal" class="btn">Annuler</button>
+                                    <button type="button" data-dismiss="modal" class="btn btn-success " id="update" @click.prevent="updatePost()">Valider</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -99,9 +138,16 @@ export default {
             file: null,
             postToDelete: null,
             posts: [],
+            editPost: "",
+            editUserId: "",
+            editorTag: "",
+            editorColor: "text-secondary",
         }
     },
     methods: {
+        preEdit(id) {
+            this.postToEdit = id;
+        },
         preDelete(id){
             this.postToDelete = id;
         },
@@ -183,6 +229,41 @@ export default {
                 })
             }
         },
+        updatePost() {
+            const formData = new FormData()
+            formData.set("image", this.file)
+            formData.set("content", this.editPost.toString())
+            axios.put("http://localhost:3000/api/posts/" + this.postToEdit, formData, { headers: { "Authorization":"Bearer " + localStorage.getItem("token")}})
+            .then(res=> {
+                if (res.status === 200) {
+                    Swal.fire({
+                        text: "Le message à été mis à jour !",
+                        footer: "Redirection en cours...",
+                        icon: "success",
+                        timer: 1000,
+                        showConfirmButton: false,
+                        timerProgressBar: true,
+                        willClose: () => { location.reload() }
+                    })
+                }
+            })
+            .catch(function(error) {
+                const codeError = error.message.split("code ")[1]
+                let messageError = ""
+                switch (codeError){
+                    case "400": messageError = "Le message n'a pas été mis à jour !"; break
+                    case "401": messageError = "Requête non-authentifiée !"; break
+                }
+                Swal.fire({
+                    title: "Une erreur est survenue",
+                    text: messageError || error.message,
+                    icon: "error",
+                    timer: 1500,
+                    showConfirmButton: false,
+                    timerProgressBar: true
+                })  
+            })
+        },
         created: function() {
             this.currentUserId = localStorage.getItem("userId")
             if (localStorage.getItem("refresh")===null) {
@@ -212,8 +293,18 @@ export default {
         },
     },
     beforeMount() {
-      // On page loading call created method for get all posts
-      this.created();
+        axios.get("http://localhost:3000/api/posts/" + this.currentUserId, { headers: {"Authorization": "Bearer " + localStorage.getItem("token")} })
+            .then(res => { 
+                this.created();
+                this.editUserId = res.data.userId
+                this.editorTag = "( publié par " + res.data.username + " )"
+                this.editorColor = "text-danger"
+                this.editPost = res.data.content
+                this.newImage = res.data.postUrl
+            
+            }).catch(err=>{
+            console.log(err);
+        });   
     }
 }
 </script>
