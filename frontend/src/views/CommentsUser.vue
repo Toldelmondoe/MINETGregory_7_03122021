@@ -50,7 +50,7 @@
 <script>
 import axios from "axios"
 import Swal from "sweetalert2"
-import router from "../router"
+
 export default {
     name: "Comments User",
     data() {
@@ -77,7 +77,7 @@ export default {
                             timer: 1500,
                             showConfirmButton: false,
                             timerProgressBar: true,
-                            willClose: () => { router.push("/compte/") }
+                            willClose: () => { location.reload() }
                         })
                     }
                 })

@@ -3,15 +3,15 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-12 col-md-10 col-lg-8">
-                    <router-link to="/Posts" class="my-2 btn btn-sm btn-block btn-success">...retour aux messages</router-link>                
+                    <router-link to="/Posts" class="my-2 btn btn-sm btn-block btn-success">... retour aux messages</router-link>                
                 </div>
                 <div class="col-12 col-md-10 col-lg-8">
                     <div class="card bg-light">
-                        <div class="card-header text-center" style="background-color:ghostwhite;">
+                        <div class="card-header text-center" style="background-color: ghostwhite;">
                             <span class="text-dark h6">{{username}}</span>
                         </div>
-                        <div class="card-body" style="background-color:#D4D4D4;">
-                            <div class="row border d-flex align-items-center m-2 p-0" style="background-color: ghostwhite;">
+                        <div class="card-body">
+                            <div class="row border d-flex align-items-center m-2 p-2" style="background-color: ghostwhite;">
                                 <div class="col-12 col-md-4 text-center">
                                         <img :src="avatar" class="rounded-circle m-1 p-0" height="128"/>
                                         <a href="" class="btn btn-sm btn-primary mb-2 p-1" data-toggle="modal" data-target="#modalAvatar">Changer de photo</a>

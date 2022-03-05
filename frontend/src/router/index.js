@@ -43,11 +43,6 @@ const routes = [
     component: () => import('../views/PostEdit')
   },
   {
-    path: '/post/drop/:id',
-    name: 'Post Drop',
-    component: () => import('../views/PostDrop')
-  },
-  {
     path: '/comments/:id',
     name: 'Comments',
     component: () => import('../views/Comments')
@@ -56,11 +51,6 @@ const routes = [
     path: '/comment/edit/:id',
     name: 'Comment Edit',
     component: () => import('../views/CommentEdit')
-  },
-  {
-    path: '/comment/drop/:id',
-    name: 'Comment Drop',
-    component: () => import('../views/CommentDrop')
   }
 ]
 

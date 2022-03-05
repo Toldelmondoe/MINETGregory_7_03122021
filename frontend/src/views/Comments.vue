@@ -215,7 +215,7 @@ export default {
                             timer: 1500,
                             showConfirmButton: false,
                             timerProgressBar: true,
-                            willClose: () => { router.push("/posts/") }
+                            willClose: () => { location.reload() }
                         })
                     }
                 })
