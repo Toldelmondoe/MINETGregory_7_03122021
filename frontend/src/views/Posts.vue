@@ -66,7 +66,7 @@
                         </div>
                     </div>
                     <div class="card bg-info">
-                        <p class="my-2 text-center text-white">Il n'y a pas de messages plus ancien que celui au-dessus...</p>
+                        <p class="my-2 text-center text-white">Il n'y a pas de messages plus ancien ...</p>
                     </div>
                 </div>
             </div>
@@ -78,16 +78,15 @@
                             Voulez-vous supprimer ce post?
                         </div>
                         <div class="modal-footer">
-                            <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete" @click.prevent="deletePost()">OUI</button>
-                            <button type="button" data-dismiss="modal" class="btn">Annuler</button>
+                            <button type="button" data-dismiss="modal" class="btn btn-info">Annuler</button>
+                            <button type="button" data-dismiss="modal" class="btn btn-danger" id="delete" @click.prevent="deletePost()">Supprimer</button>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- Modal For post edit -->
-            
             <div id="confirmEdit" class="modal">
-                <div class="modal-dialog">
+                <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <form enctype="multipart/form-data">
                             <div class="modal-header d-flex flex-column flex-md-row align-items-center justify-content-start">
@@ -110,11 +109,9 @@
                                     </div>
                                 </div>
                             </div>
-                             <div class="modal-footer justify-content-center">
-                                <div class="row">
-                                    <button type="button" data-dismiss="modal" class="btn">Annuler</button>
+                             <div class="modal-footer">
+                                    <button type="button" data-dismiss="modal" class="btn btn-info">Annuler</button>
                                     <button type="button" data-dismiss="modal" class="btn btn-success " id="update" @click.prevent="updatePost()">Valider</button>
-                                </div>
                             </div>
                         </form>
                     </div>
@@ -293,7 +290,7 @@ export default {
         },
     },
     beforeMount() {
-        axios.get("http://localhost:3000/api/posts/" + this.currentUserId, { headers: {"Authorization": "Bearer " + localStorage.getItem("token")} })
+        axios.get("http://localhost:3000/api/posts/", { headers: {"Authorization": "Bearer " + localStorage.getItem("token")} })
             .then(res => { 
                 this.created();
                 this.editUserId = res.data.userId

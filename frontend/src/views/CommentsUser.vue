@@ -37,8 +37,8 @@
                             Voulez-vous supprimer ce commentaire ?
                         </div>
                         <div class="modal-footer">
-                            <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete" @click.prevent="deleteComment()">OUI</button>
-                            <button type="button" data-dismiss="modal" class="btn">Annuler</button>
+                            <button type="button" data-dismiss="modal" class="btn btn-info">Annuler</button>
+                            <button type="button" data-dismiss="modal" class="btn btn-danger" id="delete" @click.prevent="deleteComment()">Supprimer</button>
                         </div>
                     </div>
                 </div>

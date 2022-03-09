@@ -42,8 +42,8 @@
                             Voulez-vous supprimer ce post?
                         </div>
                         <div class="modal-footer">
-                            <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete" @click.prevent="deletePost()">OUI</button>
-                            <button type="button" data-dismiss="modal" class="btn">Annuler</button>
+                            <button type="button" data-dismiss="modal" class="btn btn-info">Annuler</button>
+                            <button type="button" data-dismiss="modal" class="btn btn-danger" id="delete" @click.prevent="deletePost()">Supprimer</button>
                         </div>
                     </div>
                 </div>
@@ -55,7 +55,7 @@
 <script>
 import axios from "axios"
 import Swal from "sweetalert2"
-import router from "../router"
+//import router from "../router"
 
 export default {
     name: "Posts User",
@@ -111,7 +111,7 @@ export default {
                             timer: 1500,
                             showConfirmButton: false,
                             timerProgressBar: true,
-                            willClose: () => { router.push("/Posts/") }
+                            willClose: () => { location.reload() }
                         });
                         this.postToDelete = null;
                     }
