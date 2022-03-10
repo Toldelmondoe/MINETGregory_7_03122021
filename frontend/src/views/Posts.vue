@@ -13,8 +13,8 @@
                                     </div>
                                     <div class="row modal-body">
                                         <div class="col-12 justify-content-center form-group">
-                                            <label for="newPost" class="sr-only">Message :</label>
-                                            <textarea class="form-control" v-model="newPost" id="newPost" name="post" rows="10" placeholder="Votre message ici..."></textarea>
+                                            <label for="newContent" class="sr-only">Message :</label>
+                                            <textarea class="form-control" v-model="newContent" id="newContent" name="post" rows="10" placeholder="Votre message ici..."></textarea>
                                         </div>
                                         <div class="col-12 justify-content-center text-center">
                                             <img :src="newImage" class="w-50 rounded">
@@ -48,7 +48,6 @@
                                 </span>
                             </div>                                
                             <div v-if="post.userId == this.currentUserId">
-                                <a :href="'/post/edit/' + post.id"><img src="/images/edit.png" class="m-1 p-0" height="35" alt="Editer le message" title="Editer le message"/></a>
                                 <button type="button" class="btn" data-toggle="modal" @click.prevent="preEdit(post.id)" data-target="#confirmEdit">
                                     <img src="/images/edit.png" alt="remove" height="35" class="my-0 rounded-circle"/>
                                 </button>
@@ -91,15 +90,15 @@
                         <form enctype="multipart/form-data">
                             <div class="modal-header d-flex flex-column flex-md-row align-items-center justify-content-start">
                                 <p class="modal-title h5 mr-1">Editer message</p>
-                                <p class="modal-title mt-1" :class="editorColor">{{editorTag}}</p>
+                                <p class="modal-title mt-1 text-red">Publié par {{postToEdit.username}}</p>
                             </div>
                             <div class="row modal-body">
                                 <div class="col-12 justify-content-center form-group">
-                                    <label for="editPost" class="sr-only">Message :</label>
-                                    <textarea class="form-control" v-model="editPost" id="editPost" name="content" rows="10" placeholder="Votre message ici ..."></textarea>
+                                    <label for="editContent" class="sr-only">Message :</label>
+                                    <textarea class="form-control" v-model="postToEdit.content" id="editContent" name="content" rows="10" placeholder="Votre message ici ..."></textarea>
                                 </div>
                                 <div class="col-12 justify-content-center text-center">
-                                    <img :src="newImage" class="w-50 rounded">
+                                    <img :src="postToEdit.postUrl" class="w-50 rounded">
                                     <p class="small text-center">Image à partager</p>
                                 </div>
                                 <div class="col-12 justify-content-center">
@@ -110,8 +109,8 @@
                                 </div>
                             </div>
                              <div class="modal-footer">
-                                    <button type="button" data-dismiss="modal" class="btn btn-info">Annuler</button>
-                                    <button type="button" data-dismiss="modal" class="btn btn-success " id="update" @click.prevent="updatePost()">Valider</button>
+                                <button type="button" data-dismiss="modal" class="btn btn-info">Annuler</button>
+                                <button type="button" data-dismiss="modal" class="btn btn-success " id="update" @click.prevent="updatePost()">Valider</button>
                             </div>
                         </form>
                     </div>
@@ -129,21 +128,28 @@ export default {
     name: "Posts",
     data() {
         return {
-            newImage: "",
             currentUserId: "", 
-            newPost: "",
+            // Informations for new post creation
+            newContent: "",
+            newImage: "",
             file: null,
+            
+            // Information for delete post
             postToDelete: null,
+            
+            // List of posts
             posts: [],
-            editPost: "",
-            editUserId: "",
-            editorTag: "",
+            
+            // Informations for Edit Post
+            postToEdit: "",
             editorColor: "text-secondary",
         }
     },
     methods: {
         preEdit(id) {
-            this.postToEdit = id;
+            this.postToEdit = this.posts.find(function(item){
+              return item.id === id;
+            });
         },
         preDelete(id){
             this.postToDelete = id;
@@ -156,11 +162,11 @@ export default {
             const formData = new FormData()
             formData.set("image", this.file)
             formData.set("userId", localStorage.getItem("userId"))
-            formData.set("content", this.newPost.toString())
+            formData.set("content", this.newContent.toString())
             axios.post("http://localhost:3000/api/posts/", formData, { headers: { "Authorization":"Bearer " + localStorage.getItem("token")}})
             .then(()=> {
                 this.userId = ""
-                this.newPost = ""
+                this.newContent = ""
                 this.file = null
                 Swal.fire({
                     text: "Message posté !",
@@ -229,8 +235,8 @@ export default {
         updatePost() {
             const formData = new FormData()
             formData.set("image", this.file)
-            formData.set("content", this.editPost.toString())
-            axios.put("http://localhost:3000/api/posts/" + this.postToEdit, formData, { headers: { "Authorization":"Bearer " + localStorage.getItem("token")}})
+            formData.set("content", this.postToEdit.content.toString())
+            axios.put("http://localhost:3000/api/posts/" + this.postToEdit.id, formData, { headers: { "Authorization":"Bearer " + localStorage.getItem("token")}})
             .then(res=> {
                 if (res.status === 200) {
                     Swal.fire({
@@ -290,18 +296,7 @@ export default {
         },
     },
     beforeMount() {
-        axios.get("http://localhost:3000/api/posts/", { headers: {"Authorization": "Bearer " + localStorage.getItem("token")} })
-            .then(res => { 
-                this.created();
-                this.editUserId = res.data.userId
-                this.editorTag = "( publié par " + res.data.username + " )"
-                this.editorColor = "text-danger"
-                this.editPost = res.data.content
-                this.newImage = res.data.postUrl
-            
-            }).catch(err=>{
-            console.log(err);
-        });   
+      this.created();
     }
 }
 </script>
