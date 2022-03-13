@@ -41,8 +41,8 @@
                                     </div>
                                     <div class="row modal-body">
                                         <div class="col-12 justify-content-center form-group">
-                                            <label for="newComment" class="sr-only">Commentaire :</label>
-                                            <textarea class="form-control" v-model="newComment" id="newComment" name="comment" rows="10" placeholder="Votre commentaire ici..."></textarea>
+                                            <label for="newContent" class="sr-only">Commentaire :</label>
+                                            <textarea class="form-control" v-model="newContent" id="newContent" name="comment" rows="10" placeholder="Votre commentaire ici..."></textarea>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
@@ -67,6 +67,9 @@
                                 </span>
                                 <div :id="'addCmt' + comment.id"  v-if="comment.userId == this.currentUserId">
                                     <a :href="'/comment/edit/' + comment.id"><img src="/images/edit.png" class="m-1 p-0" height="35" alt="Editer le commentaire" title="Editer le commentaire"/></a>
+                                    <button type="button" class="btn" data-toggle="modal" @click.prevent="preEditCom(comment.id)" data-target="#confirmEditCom">
+                                        <img src="/images/edit.png" alt="edit" height="35" class="my-0 rounded-circle"/>
+                                    </button>
                                     <button type="button" class="btn" data-toggle="modal" @click.prevent="preDeleteCom(comment.id)" data-target="#confirmCom">
                                         <img src="/images/remove.png" alt="remove" height="30" class="my-0 rounded-circle"/>
                                     </button>
@@ -101,8 +104,64 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" data-dismiss="modal" class="btn btn-info">Annuler</button>
-                            <button type="button" data-dismiss="modal" class="btn btn-danger" id="delete" @click.prevent="deleteCommentt()">Supprimer</button>
+                            <button type="button" data-dismiss="modal" class="btn btn-danger" id="delete" @click.prevent="deleteComment()">Supprimer</button>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal For post edit -->
+            <div id="confirmEdit" class="modal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <form enctype="multipart/form-data">
+                            <div class="modal-header d-flex flex-column flex-md-row align-items-center justify-content-start">
+                                <p class="modal-title h5 mr-1">Modifier message</p>
+                                <p class="modal-title mt-1">de {{postToEdit.username}}</p>
+                            </div>
+                            <div class="row modal-body">
+                                <div class="col-12 justify-content-center form-group">
+                                    <label for="editContent" class="sr-only">Message :</label>
+                                    <textarea class="form-control" v-model="postToEdit.content" id="editContent" name="content" rows="10" placeholder="Votre message ici ..."></textarea>
+                                </div>
+                                <div class="col-12 justify-content-center text-center">
+                                    <img :src="postToEdit.postUrl" class="w-50 rounded">
+                                    <p class="small text-center">Image à partager</p>
+                                </div>
+                                <div class="col-12 justify-content-center">
+                                    <div class="form-group justify-content-center">
+                                        <label for="File" class="sr-only">Choisir une nouvelle photo</label>
+                                        <input @change="onFileChange()" type="file" ref="file" name="image" class="form-control-file" id="File" accept=".jpg, .jpeg, .gif, .png">
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="modal-footer">
+                                <button type="button" data-dismiss="modal" class="btn btn-info">Annuler</button>
+                                <button type="button" data-dismiss="modal" class="btn btn-success " id="update" @click.prevent="updatePost()">Valider</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal For comment edit -->
+            <div id="confirmEditCom" class="modal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <form enctype="multipart/form-data">
+                            <div class="modal-header d-flex flex-column flex-md-row align-items-center justify-content-start">
+                                <p class="modal-title h5">Modifier le commentaire de </p>
+                                <p class="modal-title mt-1"> {{commentToEdit.username}}</p>
+                            </div>
+                            <div class="row modal-body">
+                                <div class="col-12 justify-content-center form-group">
+                                    <label for="editCommentContent" class="sr-only">Commentaire :</label>
+                                    <textarea class="form-control" v-model="commentToEdit.content" id="editCommentContent" name="content" rows="10" placeholder="Votre commentaire ici..."></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" data-dismiss="modal" class="btn btn-info">Annuler</button>
+                                <button type="button" data-dismiss="modal" class="btn btn-success " id="update" @click.prevent="updateComment()">Valider</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -118,11 +177,23 @@ export default {
     name: "Comments",
     data() {
         return {
+            // Informations for new comment creation
             isActive: true,
-            currentUserId: "",
-            newComment: "",
+            newContent: "",
             onePost: [],
+
+            // List of comments
             comments: [],
+
+            // Information for delete comment
+            commentToDelete: null,
+
+            // Information for edi comment
+            commentToEdit: "",
+
+            // Informations for Edit Post
+            postToEdit: "",
+            editorColor: "text-secondary",
         }
     },
     methods: {
@@ -132,15 +203,20 @@ export default {
         preDeleteCom(id){
             this.commentToDelete = id
         },
+        preEditCom(id) {
+            this.commentToEdit = this.comments.find(function(item){
+              return item.id === id;
+            });
+        },
         addNewComment() {
             const formData = new FormData()
             formData.set("userId", localStorage.getItem("userId"))
-            formData.set("content", this.newComment.toString())
+            formData.set("content", this.newContent.toString())
             this.submitted = true
-            axios.post("http://localhost:3000/api/comments/", { "PostId": this.$route.params.id, "UserId": this.currentUserId, "content": this.newComment }, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
+            axios.post("http://localhost:3000/api/comments/", { "PostId": this.$route.params.id, "UserId": this.currentUserId, "content": this.newContent }, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
             .then(()=> {
                 this.userId = ""
-                this.newComment = ""
+                this.newContent = ""
                 Swal.fire({
                     text: "Commentaire ajouté !",
                     footer: "Redirection en cours...",
@@ -236,6 +312,40 @@ export default {
                     })  
                 })
             }
+        },
+        updateComment() {
+            const formData = new FormData()
+            formData.set("content", this.commentToEdit.content.toString())
+            axios.put("http://localhost:3000/api/comments/" + this.commentToEdit.id, formData, {headers: { "Authorization":"Bearer " + localStorage.getItem("token") }})
+            .then(res => {
+                if (res.status === 200) {
+                    Swal.fire({
+                        text: "Le commentaire à été mis à jour !",
+                        footer: "Redirection en cours...",
+                        icon: "success",
+                        timer: 1500,
+                        showConfirmButton: false,
+                        timerProgressBar: true,
+                        willClose: () => { location.reload() }
+                    })
+                }
+            })
+            .catch(function(error) {
+                const codeError = error.message.split("code ")[1]
+                let messageError = ""
+                switch (codeError) {
+                    case "400": messageError = "Le commentaire n'a pas été mis à jour !"; break
+                    case "401": messageError = "Requête non-authentifiée !"; break
+                }
+                Swal.fire({
+                    title: "Une erreur est survenue",
+                    text: messageError || error.message,
+                    icon: "error",
+                    timer: 1500,
+                    showConfirmButton: false,
+                    timerProgressBar: true
+                })  
+            })
         }
     },
     created: function () {
@@ -270,7 +380,6 @@ export default {
         })
         axios.get("http://localhost:3000/api/comments/post/" + this.$route.params.id, { headers: {"Authorization": "Bearer " + localStorage.getItem("token")} })
         .then(cmt => {
-          console.log(cmt.data);
             this.comments = cmt.data.ListComments
         })
         .catch(function(error) {

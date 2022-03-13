@@ -52,7 +52,7 @@ export default {
                         timer: 1500,
                         showConfirmButton: false,
                         timerProgressBar: true,
-                        willClose: () => { router.push("/compte/comments/") }
+                        willClose: () => { router.push("/Compte/comments/") }
                     })
                 }
             })

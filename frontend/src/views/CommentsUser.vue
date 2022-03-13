@@ -58,7 +58,8 @@ export default {
             currentUserId: "", 
             newComment: "",
             file: null,
-            userComments: []
+            userComments: [],
+            commentToDelete: null
         }
     },
     methods: {

@@ -89,8 +89,8 @@
                     <div class="modal-content">
                         <form enctype="multipart/form-data">
                             <div class="modal-header d-flex flex-column flex-md-row align-items-center justify-content-start">
-                                <p class="modal-title h5 mr-1">Editer message</p>
-                                <p class="modal-title mt-1 text-red">Publié par {{postToEdit.username}}</p>
+                                <p class="modal-title h5 mr-1">Modifier message</p>
+                                <p class="modal-title mt-1">de {{postToEdit.username}}</p>
                             </div>
                             <div class="row modal-body">
                                 <div class="col-12 justify-content-center form-group">
