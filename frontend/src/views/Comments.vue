@@ -18,7 +18,9 @@
                                 </span>
                             </div>
                             <div :id="'addUsr' + onePost.id" v-if="onePost.userId == this.currentUserId">
-                                <a :href="'/post/edit/' + onePost.id"><img src="/images/edit.png" class="m-1 p-0" height="35" alt="Editer le message" title="Editer le message"/></a>
+                                <button type="button" class="btn" data-toggle="modal" @click.prevent="preEdit(onePost.id)" data-target="#confirmEdit">
+                                    <img src="/images/edit.png" alt="edit" height="35" class="my-0 rounded-circle"/>
+                                </button>
                                 <button type="button" class="btn" data-toggle="modal" @click.prevent="preDelete(onePost.id)" data-target="#confirm">
                                     <img src="/images/remove.png" alt="remove" height="30" class="my-0 rounded-circle"/>
                                 </button>
@@ -95,36 +97,22 @@
                     </div>
                 </div>
             </div>
-            <!-- Modal For comment delete -->
-            <div id="confirmCom" class="modal">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-body">
-                            Voulez-vous supprimer ce commentaire ?
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" data-dismiss="modal" class="btn btn-info">Annuler</button>
-                            <button type="button" data-dismiss="modal" class="btn btn-danger" id="delete" @click.prevent="deleteComment()">Supprimer</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <!-- Modal For post edit -->
             <div id="confirmEdit" class="modal">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <form enctype="multipart/form-data">
                             <div class="modal-header d-flex flex-column flex-md-row align-items-center justify-content-start">
-                                <p class="modal-title h5 mr-1">Modifier message</p>
-                                <p class="modal-title mt-1">de {{postToEdit.username}}</p>
+                                <p class="modal-title h5 mr-1">Editer message</p>
+                                <p class="modal-title mt-1">publié par {{onePost.username}}</p>
                             </div>
                             <div class="row modal-body">
                                 <div class="col-12 justify-content-center form-group">
                                     <label for="editContent" class="sr-only">Message :</label>
-                                    <textarea class="form-control" v-model="postToEdit.content" id="editContent" name="content" rows="10" placeholder="Votre message ici ..."></textarea>
+                                    <textarea class="form-control" v-model="onePost.content" id="editContent" name="content" rows="10" placeholder="Votre message ici ..."></textarea>
                                 </div>
                                 <div class="col-12 justify-content-center text-center">
-                                    <img :src="postToEdit.postUrl" class="w-50 rounded">
+                                    <img :src="onePost.postUrl" class="w-50 rounded">
                                     <p class="small text-center">Image à partager</p>
                                 </div>
                                 <div class="col-12 justify-content-center">
@@ -142,22 +130,36 @@
                     </div>
                 </div>
             </div>
+            <!-- Modal For comment delete -->
+            <div id="confirmCom" class="modal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            Voulez-vous supprimer ce commentaire ?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" data-dismiss="modal" class="btn btn-info">Annuler</button>
+                            <button type="button" data-dismiss="modal" class="btn btn-danger" id="delete" @click.prevent="deleteComment()">Supprimer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- Modal For comment edit -->
             <div id="confirmEditCom" class="modal">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <form enctype="multipart/form-data">
                             <div class="modal-header d-flex flex-column flex-md-row align-items-center justify-content-start">
-                                <p class="modal-title h5">Modifier le commentaire de </p>
-                                <p class="modal-title mt-1"> {{commentToEdit.username}}</p>
+                                <p class="modal-title h5 mr-1">Editer commentaire</p>
+                                <p class="modal-title mt-1 text-red">Publié par {{commentToEdit.username}}</p>
                             </div>
                             <div class="row modal-body">
                                 <div class="col-12 justify-content-center form-group">
-                                    <label for="editCommentContent" class="sr-only">Commentaire :</label>
-                                    <textarea class="form-control" v-model="commentToEdit.content" id="editCommentContent" name="content" rows="10" placeholder="Votre commentaire ici..."></textarea>
+                                    <label for="editContent" class="sr-only">Message :</label>
+                                    <textarea class="form-control" v-model="commentToEdit.content" id="editContent" name="content" rows="10" placeholder="Votre message ici ..."></textarea>
                                 </div>
                             </div>
-                            <div class="modal-footer">
+                             <div class="modal-footer">
                                 <button type="button" data-dismiss="modal" class="btn btn-info">Annuler</button>
                                 <button type="button" data-dismiss="modal" class="btn btn-success " id="update" @click.prevent="updateComment()">Valider</button>
                             </div>
@@ -181,6 +183,7 @@ export default {
             isActive: true,
             newContent: "",
             onePost: [],
+            currentUserId: "", 
 
             // List of comments
             comments: [],
@@ -188,17 +191,29 @@ export default {
             // Information for delete comment
             commentToDelete: null,
 
-            // Information for edi comment
+            // Information for edit comment
             commentToEdit: "",
 
+            // List of posts
+            posts: [],
+
+            // Information for delete post
+            postToDelete: null,
+
             // Informations for Edit Post
-            postToEdit: "",
+            newImage: "",
+            file: null,
             editorColor: "text-secondary",
         }
     },
     methods: {
         preDelete(id){
             this.postToDelete = id
+        },
+        preEdit(id) {
+            this.postToEdit = this.posts.find(function(item){
+              return item.id === id;
+            });
         },
         preDeleteCom(id){
             this.commentToDelete = id
@@ -207,6 +222,10 @@ export default {
             this.commentToEdit = this.comments.find(function(item){
               return item.id === id;
             });
+        },
+        onFileChange() {
+            this.file = this.$refs.file.files[0];
+            this.newImage = URL.createObjectURL(this.file)
         },
         addNewComment() {
             const formData = new FormData()
@@ -232,6 +251,109 @@ export default {
                 let messageError = ""
                 switch (codeError){
                     case "400": messageError = "Le commentaire n'a pas été oublié !"; break
+                    case "401": messageError = "Requête non-authentifiée !"; break
+                }
+                Swal.fire({
+                    title: "Une erreur est survenue",
+                    text: messageError || error.message,
+                    icon: "error",
+                    timer: 1500,
+                    showConfirmButton: false,
+                    timerProgressBar: true
+                })  
+            })
+        },
+        updateComment() {
+            const formData = new FormData()
+            formData.set("content", this.commentToEdit.content.toString())
+            axios.put("http://localhost:3000/api/comments/" + this.commentToEdit.id, formData, {headers: { "Authorization":"Bearer " + localStorage.getItem("token") }})
+            .then(res => {
+                if (res.status === 200) {
+                    Swal.fire({
+                        text: "Le commentaire à été mis à jour !",
+                        footer: "Redirection en cours...",
+                        icon: "success",
+                        timer: 1500,
+                        showConfirmButton: false,
+                        timerProgressBar: true,
+                        willClose: () => { location.reload() }
+                    })
+                }
+            })
+            .catch(function(error) {
+                const codeError = error.message.split("code ")[1]
+                let messageError = ""
+                switch (codeError) {
+                    case "400": messageError = "Le commentaire n'a pas été mis à jour !"; break
+                    case "401": messageError = "Requête non-authentifiée !"; break
+                }
+                Swal.fire({
+                    title: "Une erreur est survenue",
+                    text: messageError || error.message,
+                    icon: "error",
+                    timer: 1500,
+                    showConfirmButton: false,
+                    timerProgressBar: true
+                })  
+            })
+        },
+        deleteComment() {
+            if(this.commentToDelete != null && this.commentToDelete!=""){
+                axios.delete("http://localhost:3000/api/comments/" + this.commentToDelete, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
+                .then(res => {
+                    if (res.status === 200) {
+                        Swal.fire({
+                            text: "Le commentaire a été supprimé !",
+                            footer: "Redirection en cours...",
+                            icon: "success",
+                            timer: 1500,
+                            showConfirmButton: false,
+                            timerProgressBar: true,
+                            willClose: () => { location.reload() }
+                        })
+                    }
+                })
+                .catch(function(error) {
+                    const codeError = error.message.split("code ")[1]
+                    let messageError = ""
+                    switch (codeError) {
+                        case "400": messageError = "Le commentaire n'a pas été supprimé !"; break
+                        case "401": messageError = "Requête non-authentifiée !"; break
+                    }
+                    Swal.fire({
+                        title: "Une erreur est survenue",
+                        text: messageError || error.message,
+                        icon: "error",
+                        timer: 1500,
+                        showConfirmButton: false,
+                        timerProgressBar: true
+                    })  
+                })
+            }
+        },
+        updatePost() {
+            const formData = new FormData()
+            formData.set("image", this.file)
+            formData.set("content", this.onePost.content.toString())
+            axios.put("http://localhost:3000/api/posts/" + this.onePost.id, formData, { headers: { "Authorization":"Bearer " + localStorage.getItem("token")}})
+            .then(res=> {
+                if (res.status === 200) {
+                    Swal.fire({
+                        text: "Le message à été mis à jour !",
+                        footer: "Redirection en cours...",
+                        icon: "success",
+                        timer: 1000,
+                        showConfirmButton: false,
+                        timerProgressBar: true,
+                        willClose: () => { location.reload() }
+                    })
+                }
+            })
+            .catch(function(error) {
+                const codeError = error.message.split("code ")[1]
+                let messageError = ""
+                switch (codeError){
+                    case "400": messageError = "Le message n'a pas été mis à jour !"; break
                     case "401": messageError = "Requête non-authentifiée !"; break
                 }
                 Swal.fire({
@@ -278,78 +400,9 @@ export default {
                     })
                 })
             }
-        },
-        deleteComment() {
-            if(this.commentToDelete != null && this.commentToDelete!=""){
-                axios.delete("http://localhost:3000/api/comments/" + this.commentToDelete, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
-                .then(res => {
-                    if (res.status === 200) {
-                        Swal.fire({
-                            text: "Le commentaire a été supprimé !",
-                            footer: "Redirection en cours...",
-                            icon: "success",
-                            timer: 1500,
-                            showConfirmButton: false,
-                            timerProgressBar: true,
-                            willClose: () => { location.reload() }
-                        })
-                    }
-                })
-                .catch(function(error) {
-                    const codeError = error.message.split("code ")[1]
-                    let messageError = ""
-                    switch (codeError) {
-                        case "400": messageError = "Le commentaire n'a pas été supprimé !"; break
-                        case "401": messageError = "Requête non-authentifiée !"; break
-                    }
-                    Swal.fire({
-                        title: "Une erreur est survenue",
-                        text: messageError || error.message,
-                        icon: "error",
-                        timer: 1500,
-                        showConfirmButton: false,
-                        timerProgressBar: true
-                    })  
-                })
-            }
-        },
-        updateComment() {
-            const formData = new FormData()
-            formData.set("content", this.commentToEdit.content.toString())
-            axios.put("http://localhost:3000/api/comments/" + this.commentToEdit.id, formData, {headers: { "Authorization":"Bearer " + localStorage.getItem("token") }})
-            .then(res => {
-                if (res.status === 200) {
-                    Swal.fire({
-                        text: "Le commentaire à été mis à jour !",
-                        footer: "Redirection en cours...",
-                        icon: "success",
-                        timer: 1500,
-                        showConfirmButton: false,
-                        timerProgressBar: true,
-                        willClose: () => { location.reload() }
-                    })
-                }
-            })
-            .catch(function(error) {
-                const codeError = error.message.split("code ")[1]
-                let messageError = ""
-                switch (codeError) {
-                    case "400": messageError = "Le commentaire n'a pas été mis à jour !"; break
-                    case "401": messageError = "Requête non-authentifiée !"; break
-                }
-                Swal.fire({
-                    title: "Une erreur est survenue",
-                    text: messageError || error.message,
-                    icon: "error",
-                    timer: 1500,
-                    showConfirmButton: false,
-                    timerProgressBar: true
-                })  
-            })
         }
     },
     created: function () {
-        
         this.currentUserId = localStorage.getItem("userId")
         if (localStorage.getItem("refresh")===null) {
             localStorage.setItem("refresh", 0)

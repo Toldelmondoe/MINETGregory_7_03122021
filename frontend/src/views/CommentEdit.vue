@@ -98,9 +98,5 @@ export default {
             console.log(err);
         });
     },
-    deleteComment(){
-
-    }
-
 }
 </script>
