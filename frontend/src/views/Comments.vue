@@ -68,7 +68,7 @@
                                     le {{comment.createdAt.slice(0,10).split('-').reverse().join('/') +' à '+ comment.createdAt.slice(11,16)}}
                                 </span>
                                 <div :id="'addCmt' + comment.id"  v-if="comment.userId == this.currentUserId">
-                                    <a :href="'/comment/edit/' + comment.id"><img src="/images/edit.png" class="m-1 p-0" height="35" alt="Editer le commentaire" title="Editer le commentaire"/></a>
+                                    
                                     <button type="button" class="btn" data-toggle="modal" @click.prevent="preEditCom(comment.id)" data-target="#confirmEditCom">
                                         <img src="/images/edit.png" alt="edit" height="35" class="my-0 rounded-circle"/>
                                     </button>
@@ -264,9 +264,7 @@ export default {
             })
         },
         updateComment() {
-            const formData = new FormData()
-            formData.set("content", this.commentToEdit.content.toString())
-            axios.put("http://localhost:3000/api/comments/" + this.commentToEdit.id, formData, {headers: { "Authorization":"Bearer " + localStorage.getItem("token") }})
+            axios.put("http://localhost:3000/api/comments/" + this.commentToEdit.id, {"content":this.commentToEdit.content}, {headers: { "Authorization":"Bearer " + localStorage.getItem("token") }})
             .then(res => {
                 if (res.status === 200) {
                     Swal.fire({
