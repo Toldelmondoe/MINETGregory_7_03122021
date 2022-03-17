@@ -19,7 +19,8 @@
                                 <div class="modal fade" id="modalAvatar" tabindex="-1" aria-labelledby="modalAvatar" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
-                                            <form @submit.prevent="updateAvatar()" enctype="multipart/form-data">
+                                            <form enctype="multipart/form-data">
+                                                <input type="hidden" name="testInput" id="testInput"  v-model="testInput"/>
                                                 <div class="modal-header">
                                                     <p class="modal-title h5">Changer la photo de profil</p>
                                                 </div>
@@ -43,7 +44,7 @@
                                                 <div class="modal-footer">
                                                     <div class="row w-100 justify-content-spacebetween">
                                                         <div class="col-6"><a data-dismiss="modal" class="btn btn-sm btn-secondary btn-block">Annuler</a></div>
-                                                        <div class="col-6"><button type="submit" class="btn btn-sm btn-success btn-block">Valider</button></div>
+                                                        <div class="col-6"><button type="submit" class="btn btn-sm btn-success btn-block" @click.prevent="updateAvatar()">Valider</button></div>
                                                     </div>
                                                 </div>
                                             </form>
@@ -105,7 +106,7 @@ import axios from "axios"
 import Swal from "sweetalert2"
 export default {
     name: "Compte",
-    data() {
+  data() {
         return {
             username: "", 
             email: "", 
@@ -116,7 +117,8 @@ export default {
             avatar: "",
             newAvatar: "", 
             file: null, 
-            submitted: false
+            submitted: false,
+            testInput: "testValue"
         }
     },
     methods:{
@@ -128,6 +130,7 @@ export default {
             this.submitted = true
             const formData = new FormData()
             formData.set("image", this.file);
+            formData.set("test", this.testInput);
             axios.put("http://localhost:3000/api/users/" + localStorage.getItem("userId"), formData, { headers:{ "Authorization": "Bearer " + localStorage.getItem("token")}})
             .then(function(res) {
                 localStorage.setItem("avatar", res.data.avatar)

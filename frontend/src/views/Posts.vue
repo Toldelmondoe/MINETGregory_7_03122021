@@ -23,7 +23,7 @@
                                         <div class="col-12 justify-content-center">
                                             <div class="form-group justify-content-center">
                                                 <label for="File" class="sr-only">Choisir une nouvelle photo</label>
-                                                <input @change="onFileChange()" type="file" ref="file" name="image" class="form-control-file" id="File" accept=".jpg, .jpeg, .gif, .png">
+                                                <input @change="onFileChange('create')" type="file" ref="fileCreate" name="image" class="form-control-file" id="FileCreate" accept=".jpg, .jpeg, .gif, .png">
                                             </div>
                                         </div>
                                     </div>
@@ -104,7 +104,7 @@
                                 <div class="col-12 justify-content-center">
                                     <div class="form-group justify-content-center">
                                         <label for="File" class="sr-only">Choisir une nouvelle photo</label>
-                                        <input @change="onFileChange()" type="file" ref="file" name="image" class="form-control-file" id="File" accept=".jpg, .jpeg, .gif, .png">
+                                        <input @change="onFileChange('edit')" type="file" ref="file" name="image" class="form-control-file" id="File" accept=".jpg, .jpeg, .gif, .png">
                                     </div>
                                 </div>
                             </div>
@@ -154,8 +154,12 @@ export default {
         preDelete(id){
             this.postToDelete = id;
         },
-        onFileChange() {
-            this.file = this.$refs.file.files[0];
+        onFileChange(action) {
+            if(action === "create"){
+              this.file = this.$refs.fileCreate.files[0];
+            }else if(action === "edit"){
+              this.file = this.$refs.file.files[0];
+            }
             this.newImage = URL.createObjectURL(this.file)
         },
         addNewPost() {

@@ -1,18 +1,24 @@
 const db = require("../models")
 const User = db.users
+const Role = db.roles
 const Post = db.posts
 const Comment = db.comments
 
 exports.findOneUser = (req, res, next) => {
     const userInfo = {}
-    User.findOne({ where: { id: req.params.id }})
+    User.findOne(
+        {
+            where: { id: req.params.id },
+            include: [{
+                model: Role,
+                required: true
+            }]
+        })
     .then(user => {
         userInfo.username = user.username
-        userInfo.email = user.email
-        if (user.id == 3) {
-            userInfo.roles = "admin"
-          } else {
-            userInfo.roles = "user"
+        userInfo.email = user.email;
+        for(i = 0; i< user.Roles.length; i++){
+            userInfo.roles = user.Roles[i].name;
         }
         userInfo.createdAt = user.createdAt
         userInfo.avatar = user.avatar
@@ -29,7 +35,7 @@ exports.findOneUser = (req, res, next) => {
         })
     })  
     .catch(error => res.status(404).json({ error }))
-}
+};
 
 exports.modifyUser = (req, res, next) => {
     const userObject = req.file ?
@@ -40,13 +46,13 @@ exports.modifyUser = (req, res, next) => {
     User.update({ ...userObject, id:  req.params.id}, { where: { id: req.params.id }})
       .then(() => res.status(200).json({ ...userObject }))
       .catch(error => res.status(400).json({ error }))
-}
+};
 
 exports.deleteUser = (req, res, next) => {
     User.destroy({ where: { id: req.params.id }})
         .then(() => res.status(200).json({ message: "Utilisateur supprimé !" }))
         .catch(error => res.status(400).json({ error }))
-}
+};
 
 exports.AllAccess = (req, res) => {
     res.status(200).send("Public Content.");
