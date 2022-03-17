@@ -38,19 +38,9 @@ const routes = [
     component: () => import('../views/Posts')
   },
   {
-    path: '/post/edit/:id',
-    name: 'Post Edit',
-    component: () => import('../views/PostEdit')
-  },
-  {
     path: '/comments/:id',
     name: 'Comments',
     component: () => import('../views/Comments')
-  },
-  {
-    path: '/comment/edit/:id',
-    name: 'Comment Edit',
-    component: () => import('../views/CommentEdit')
   }
 ]
 
