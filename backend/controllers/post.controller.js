@@ -13,7 +13,8 @@ createPost = (req, res, next) => {
         {
             UserId: req.body.userId,
             content: req.body.content,
-            postUrl: varImage
+            postUrl: varImage,
+            token: req.body.token
         }
     )
     post.save()
