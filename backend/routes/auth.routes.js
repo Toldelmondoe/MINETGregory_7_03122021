@@ -4,6 +4,6 @@ const verifySignUp = require("../middleware/verifySignUp");
 const controller = require("../controllers/auth.controller");
 
 router.post('/signup', verifySignUp.checkDuplicateUsernameOrEmail, controller.signup); 
-router.post('/signin', controller.signin); 
+router.post('/signin', verifySignUp.checkRolesExisted, controller.signin); 
 
 module.exports = router; 

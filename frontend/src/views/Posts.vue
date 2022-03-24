@@ -167,6 +167,7 @@ export default {
             formData.set("image", this.file)
             formData.set("userId", localStorage.getItem("userId"))
             formData.set("content", this.newContent.toString())
+            formData.set("token", localStorage.getItem("token"))
             axios.post("http://localhost:3000/api/posts/", formData, { headers: { "Authorization":"Bearer " + localStorage.getItem("token")}})
             .then(()=> {
                 this.userId = ""

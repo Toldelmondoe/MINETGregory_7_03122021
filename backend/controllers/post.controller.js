@@ -114,7 +114,6 @@ modifyPost = (req, res, next) => {
         ... req.body,
         postUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
       } : { ... req.body}
-
     Post.update({ ...postObject, id:  req.params.id}, { where: { id: req.params.id }})
     .then(() => res.status(200).json({ message: "Message modifié !" }))
     .catch(error => res.status(400).json({ error }))

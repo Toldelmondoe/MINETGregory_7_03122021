@@ -13,11 +13,11 @@
                         <div class="card-body">
                             <div class="row border d-flex align-items-center m-2 p-2" style="background-color: ghostwhite;">
                                 <div class="col-12 col-md-4 text-center">
-                                        <img :src="avatar" class="rounded-circle m-1 p-0" height="128"/>
-                                        <a href="" class="btn btn-sm btn-primary mb-2 p-1" data-toggle="modal" data-target="#modalAvatar">Changer de photo</a>
+                                    <img :src="avatar" class="rounded-circle m-1 p-0" height="128"/>
+                                    <a href="" class="btn btn-sm btn-primary mb-2 p-1" data-toggle="modal" data-target="#modalAvatar">Changer de photo</a>
                                 </div>
-                                <div class="modal fade" id="modalAvatar" tabindex="-1" aria-labelledby="modalAvatar" aria-hidden="true">
-                                    <div class="modal-dialog">
+                                <div class="modal fade" id="modalAvatar">
+                                    <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <form enctype="multipart/form-data">
                                                 <input type="hidden" name="testInput" id="testInput"  v-model="testInput"/>
@@ -77,7 +77,6 @@
                                                     <div class="row modal-body">
                                                         <div class="col-12 justify-content-center form-group">
                                                             <p class="text-danger"><span class="h6">ATTENTION !</span> Cette action est irréversible.</p>
-                                                            <p>Vous ne pourrez plus vous connecter avec cette adresse email mais vos messages et commentaires seront toujours visibles par les autres utilisateurs.</p>
                                                             <p>Êtes-vous <span class="font-weight-bold">certain</span> de vouloir supprimer votre compte ?</p>
                                                         </div>
                                                     </div>
@@ -115,10 +114,10 @@ export default {
             postsCount: "", 
             commentsCount: "", 
             avatar: "",
-            newAvatar: "", 
+            newAvatar: "/images/default_user.jpg", 
             file: null, 
             submitted: false,
-            testInput: "testValue"
+            testInput: "testValue",
         }
     },
     methods:{
@@ -129,7 +128,7 @@ export default {
         updateAvatar() {
             this.submitted = true
             const formData = new FormData()
-            formData.set("image", this.file);
+            formData.set("avatar", this.file);
             formData.set("test", this.testInput);
             axios.put("http://localhost:3000/api/users/" + localStorage.getItem("userId"), formData, { headers:{ "Authorization": "Bearer " + localStorage.getItem("token")}})
             .then(function(res) {
