@@ -3,7 +3,7 @@ const Post = db.posts;
 const User = db.users;
 
 createPost = (req, res, next) => {
-
+    console.log(req.file);
     let varImage = "";
     if (req.file) { 
         varImage = `${req.protocol}://${req.get("host")}/images/${req.file.filename}` 
@@ -13,8 +13,7 @@ createPost = (req, res, next) => {
         {
             UserId: req.body.userId,
             content: req.body.content,
-            postUrl: varImage,
-            token: req.body.token
+            postUrl: varImage
         }
     )
     post.save()

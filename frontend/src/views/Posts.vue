@@ -168,7 +168,8 @@ export default {
             formData.set("userId", localStorage.getItem("userId"))
             formData.set("content", this.newContent.toString())
             formData.set("token", localStorage.getItem("token"))
-            axios.post("http://localhost:3000/api/posts/", formData, { headers: { "Authorization":"Bearer " + localStorage.getItem("token")}})
+            console.log(formData);
+            axios.post("http://localhost:3000/api/posts/", formData, { headers: { "x-access-token": localStorage.getItem("token") }})
             .then(()=> {
                 this.userId = ""
                 this.newContent = ""
@@ -202,7 +203,7 @@ export default {
         },
         deletePost() {
           if(this.postToDelete != null && this.postToDelete!=""){
-            axios.delete("http://localhost:3000/api/posts/" + this.postToDelete, { headers: { "Authorization":"Bearer " + localStorage.getItem("token") }})
+            axios.delete("http://localhost:3000/api/posts/" + this.postToDelete, { headers: { "x-access-token": localStorage.getItem("token") }})
                 .then(res=> {
                   if (res.status === 200) {
                     Swal.fire({
@@ -241,7 +242,7 @@ export default {
             const formData = new FormData()
             formData.set("image", this.file)
             formData.set("content", this.postToEdit.content.toString())
-            axios.put("http://localhost:3000/api/posts/" + this.postToEdit.id, formData, { headers: { "Authorization":"Bearer " + localStorage.getItem("token")}})
+            axios.put("http://localhost:3000/api/posts/" + this.postToEdit.id, formData, { headers: { "x-access-token": localStorage.getItem("token") }})
             .then(res=> {
                 if (res.status === 200) {
                     Swal.fire({

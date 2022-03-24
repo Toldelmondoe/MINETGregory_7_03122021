@@ -16,41 +16,6 @@
                                     <img :src="avatar" class="rounded-circle m-1 p-0" height="128"/>
                                     <a href="" class="btn btn-sm btn-primary mb-2 p-1" data-toggle="modal" data-target="#modalAvatar">Changer de photo</a>
                                 </div>
-                                <div class="modal fade" id="modalAvatar">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <form enctype="multipart/form-data">
-                                                <input type="hidden" name="testInput" id="testInput"  v-model="testInput"/>
-                                                <div class="modal-header">
-                                                    <p class="modal-title h5">Changer la photo de profil</p>
-                                                </div>
-                                                <div class="row modal-body">
-                                                    <div class="col-6 justify-content-center">
-                                                        <img :src="avatar" class="w-100 rounded-circle">
-                                                        <p class="small text-center">Photo actuelle</p>
-                                                    </div>
-                                                    <div class="col-6 justify-content-center">
-                                                        <img :src="newAvatar" class="w-100 rounded-circle">
-                                                        <p class="small text-center">Nouvelle photo</p>
-                                                    </div>
-                                                    <div class="col-12 justify-content-center">
-                                                        <div class="form-group justify-content-center">
-                                                            <label for="File" class="sr-only">Choisir une nouvelle photo</label>
-                                                            <input @change="onFileChange()" type="file" ref="file" name="image" class="form-control-file" id="File" accept=".jpg, .jpeg, .gif, .png" :class="{ 'is-invalid': submitted && !file }">
-                                                            <div v-show="submitted && !file" class="invalid-feedback">Une nouvelle photo est requise !</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <div class="row w-100 justify-content-spacebetween">
-                                                        <div class="col-6"><a data-dismiss="modal" class="btn btn-sm btn-secondary btn-block">Annuler</a></div>
-                                                        <div class="col-6"><button type="submit" class="btn btn-sm btn-success btn-block" @click.prevent="updateAvatar()">Valider</button></div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="col-12 col-md-8 text-dark">
                                     <p class="small text-left m-0 p-1">Adresse e-mail : {{email}}</p>
                                     <p class="small text-left m-0 p-1">Rôle : {{roles}}</p>
@@ -93,6 +58,41 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="modalAvatar">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <form enctype="multipart/form-data">
+                            <input type="hidden" name="testInput" id="testInput"  v-model="testInput"/>
+                            <div class="modal-header">
+                                <p class="modal-title h5">Changer la photo de profil</p>
+                            </div>
+                            <div class="row modal-body">
+                                <div class="col-6 justify-content-center">
+                                    <img :src="avatar" class="w-100 rounded-circle">
+                                    <p class="small text-center">Photo actuelle</p>
+                                </div>
+                                <div class="col-6 justify-content-center">
+                                    <img :src="newAvatar" class="w-100 rounded-circle">
+                                    <p class="small text-center">Nouvelle photo</p>
+                                </div>
+                                <div class="col-12 justify-content-center">
+                                    <div class="form-group justify-content-center">
+                                        <label for="File" class="sr-only">Choisir une nouvelle photo</label>
+                                        <input @change="onFileChange()" type="file" ref="file" name="image" class="form-control-file" id="File" accept=".jpg, .jpeg, .gif, .png" :class="{ 'is-invalid': submitted && !file }">
+                                        <div v-show="submitted && !file" class="invalid-feedback">Une nouvelle photo est requise !</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="row w-100 justify-content-spacebetween">
+                                    <div class="col-6"><a data-dismiss="modal" class="btn btn-sm btn-secondary btn-block">Annuler</a></div>
+                                    <div class="col-6"><button type="submit" class="btn btn-sm btn-success btn-block" @click.prevent="updateAvatar()">Valider</button></div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

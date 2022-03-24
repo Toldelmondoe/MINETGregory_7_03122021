@@ -98,7 +98,7 @@ export default {
         },
         deleteComment() {
             if(this.commentToDelete != null && this.commentToDelete!=""){
-                axios.delete("http://localhost:3000/api/comments/" + this.commentToDelete, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
+                axios.delete("http://localhost:3000/api/comments/" + this.commentToDelete, { headers: { "x-access-token": localStorage.getItem("token") }})
                 .then(res => {
                     if (res.status === 200) {
                         Swal.fire({
@@ -131,7 +131,7 @@ export default {
             }
         },
         updateComment() {
-            axios.put("http://localhost:3000/api/comments/" + this.commentToEdit.id, {"content":this.commentToEdit.content}, { headers: { "Authorization":"Bearer " + localStorage.getItem("token")}})
+            axios.put("http://localhost:3000/api/comments/" + this.commentToEdit.id, {"content":this.commentToEdit.content}, { headers: { "x-access-token": localStorage.getItem("token") }})
             .then(res=> {
                 if (res.status === 200) {
                     Swal.fire({

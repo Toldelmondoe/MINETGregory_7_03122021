@@ -36,7 +36,7 @@ verifyPostRight = (req, res, next) => {
                         return;
                     }
                     Post.findByPk(req.params.id).then((post) => {
-                    console.log("post created by: "+ post.userId);
+                        console.log("post created by: "+ post.userId);
                         if(post.userId === user.id) {
                             console.log("Current is owner !");
                             next();

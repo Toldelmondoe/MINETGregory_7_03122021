@@ -232,7 +232,7 @@ export default {
             formData.set("userId", localStorage.getItem("userId"))
             formData.set("content", this.newContent.toString())
             this.submitted = true
-            axios.post("http://localhost:3000/api/comments/", { "PostId": this.$route.params.id, "UserId": this.currentUserId, "content": this.newContent }, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
+            axios.post("http://localhost:3000/api/comments/", { "PostId": this.$route.params.id, "UserId": this.currentUserId, "content": this.newContent }, { headers: { "x-access-token": localStorage.getItem("token") }})
             .then(()=> {
                 this.userId = ""
                 this.newContent = ""
@@ -264,7 +264,7 @@ export default {
             })
         },
         updateComment() {
-            axios.put("http://localhost:3000/api/comments/" + this.commentToEdit.id, {"content":this.commentToEdit.content}, {headers: { "Authorization":"Bearer " + localStorage.getItem("token") }})
+            axios.put("http://localhost:3000/api/comments/" + this.commentToEdit.id, {"content":this.commentToEdit.content}, {headers: { "x-access-token": localStorage.getItem("token") }})
             .then(res => {
                 if (res.status === 200) {
                     Swal.fire({
@@ -297,7 +297,7 @@ export default {
         },
         deleteComment() {
             if(this.commentToDelete != null && this.commentToDelete!=""){
-                axios.delete("http://localhost:3000/api/comments/" + this.commentToDelete, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
+                axios.delete("http://localhost:3000/api/comments/" + this.commentToDelete, { headers: { "x-access-token": localStorage.getItem("token") }})
                 .then(res => {
                     if (res.status === 200) {
                         Swal.fire({
@@ -333,7 +333,7 @@ export default {
             const formData = new FormData()
             formData.set("image", this.file)
             formData.set("content", this.onePost.content.toString())
-            axios.put("http://localhost:3000/api/posts/" + this.onePost.id, formData, { headers: { "Authorization":"Bearer " + localStorage.getItem("token")}})
+            axios.put("http://localhost:3000/api/posts/" + this.onePost.id, formData, { headers: { "x-access-token": localStorage.getItem("token") }})
             .then(res=> {
                 if (res.status === 200) {
                     Swal.fire({
@@ -366,7 +366,7 @@ export default {
         },
         deletePost() {
             if(this.postToDelete != null && this.postToDelete!=""){
-                axios.delete("http://localhost:3000/api/posts/" + this.postToDelete, { headers: { "Authorization":"Bearer " + localStorage.getItem("token") }})
+                axios.delete("http://localhost:3000/api/posts/" + this.postToDelete, { headers: { "x-access-token": localStorage.getItem("token") }})
                 .then(res=> {
                     if (res.status === 200) {
                         Swal.fire({
