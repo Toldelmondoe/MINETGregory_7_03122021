@@ -17,7 +17,7 @@
                                     le {{onePost.createdAt}}
                                 </span>
                             </div>
-                            <div :id="'addUsr' + onePost.id" v-if="onePost.userId == this.currentUserId">
+                            <div :id="'addUsr' + onePost.id" v-if="onePost.userId == this.currentUserId || onePost.userId  == '1' || onePost.userId  == '2'">
                                 <button type="button" class="btn" data-toggle="modal" @click.prevent="preEdit(onePost.id)" data-target="#confirmEdit">
                                     <img src="/images/edit.png" alt="edit" height="35" class="my-0 rounded-circle"/>
                                 </button>
@@ -67,7 +67,7 @@
                                     <span v-if="!comment.isActive" class="small text-danger">(supprimé)</span>,
                                     le {{comment.createdAt.slice(0,10).split('-').reverse().join('/') +' à '+ comment.createdAt.slice(11,16)}}
                                 </span>
-                                <div :id="'addCmt' + comment.id"  v-if="comment.userId == this.currentUserId">
+                                <div :id="'addCmt' + comment.id"  v-if="comment.userId == this.currentUserId || comment.userId  == '1' || comment.userId  == '2'">
                                     
                                     <button type="button" class="btn" data-toggle="modal" @click.prevent="preEditCom(comment.id)" data-target="#confirmEditCom">
                                         <img src="/images/edit.png" alt="edit" height="35" class="my-0 rounded-circle"/>
