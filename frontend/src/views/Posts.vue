@@ -47,7 +47,7 @@
                                     le {{post.createdAt.slice(0,10).split('-').reverse().join('/') + ' à ' + post.createdAt.slice(11,16)}}
                                 </span>
                             </div>                                
-                            <div v-if="post.userId == this.currentUserId">
+                            <div v-if="post.userId == this.currentUserId || post.userId  == '1' || post.userId  == '2'">
                                 <button type="button" class="btn" data-toggle="modal" @click.prevent="preEdit(post.id)" data-target="#confirmEdit">
                                     <img src="/images/edit.png" alt="remove" height="35" class="my-0 rounded-circle"/>
                                 </button>
@@ -167,7 +167,7 @@ export default {
             formData.set("image", this.file)
             formData.set("userId", localStorage.getItem("userId"))
             formData.set("content", this.newContent.toString())
-            formData.set("token", localStorage.getItem("token"))
+            
             console.log(formData);
             axios.post("http://localhost:3000/api/posts/", formData, { headers: { "x-access-token": localStorage.getItem("token") }})
             .then(()=> {
@@ -274,6 +274,7 @@ export default {
             })
         },
         created: function() {
+            this.role = localStorage.getItem("authorities")
             this.currentUserId = localStorage.getItem("userId")
             if (localStorage.getItem("refresh")===null) {
                 localStorage.setItem("refresh", 0)

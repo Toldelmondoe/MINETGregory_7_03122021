@@ -35,6 +35,11 @@ verifyPostRight = (req, res, next) => {
                         next ();
                         return;
                     }
+                    if (roles[i].name === "user") {
+                        console.log("Current is user !");
+                        next ();
+                        return;
+                    }
                     Post.findByPk(req.params.id).then((post) => {
                         console.log("post created by: "+ post.userId);
                         if(post.userId === user.id) {
@@ -78,6 +83,11 @@ verifyCommentRight = (req, res, next) => {
                     }
                     if (roles[i].name === "moderator") {
                         console.log("Current is moderator !");
+                        next ();
+                        return;
+                    }
+                    if (roles[i].name === "user") {
+                        console.log("Current is user !");
                         next ();
                         return;
                     }
