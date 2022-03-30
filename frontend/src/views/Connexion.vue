@@ -61,6 +61,8 @@ export default {
                 localStorage.setItem("username",response.data.username)
                 localStorage.setItem("avatar",response.data.avatar)
                 localStorage.setItem("roles",response.data.roles)
+                localStorage.setItem("isAdmin",response.data.roles.every(elem => ["ROLE_ADMIN"].includes(elem)))
+                localStorage.setItem("isModerator",response.data.roles.every(elem => ["ROLE_MODERATOR"].includes(elem)))
                 Swal.fire({
                     text: "Connexion réussie !",
                     footer: "Redirection en cours...",

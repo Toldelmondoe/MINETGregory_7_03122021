@@ -47,7 +47,7 @@
                                     le {{post.createdAt.slice(0,10).split('-').reverse().join('/') + ' à ' + post.createdAt.slice(11,16)}}
                                 </span>
                             </div>                                
-                            <div v-if="post.userId == this.currentUserId || post.userId  == '1' || post.userId  == '2'">
+                            <div v-if="post.userId == this.currentUserId || isAdmin == 'true' || isModerator == 'true'">
                                 <button type="button" class="btn" data-toggle="modal" @click.prevent="preEdit(post.id)" data-target="#confirmEdit">
                                     <img src="/images/edit.png" alt="remove" height="35" class="my-0 rounded-circle"/>
                                 </button>
@@ -128,7 +128,9 @@ export default {
     name: "Posts",
     data() {
         return {
-            currentUserId: "", 
+            isAdmin: localStorage.getItem("isAdmin"),
+            isModerator: localStorage.getItem("isModerator"),
+            currentUserId: "",
             // Informations for new post creation
             newContent: "",
             newImage: "",
@@ -276,6 +278,7 @@ export default {
         created: function() {
             this.role = localStorage.getItem("authorities")
             this.currentUserId = localStorage.getItem("userId")
+            console.log(this.currentUserId);
             if (localStorage.getItem("refresh")===null) {
                 localStorage.setItem("refresh", 0)
                 location.reload()

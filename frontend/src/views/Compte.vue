@@ -128,9 +128,9 @@ export default {
         updateAvatar() {
             this.submitted = true
             const formData = new FormData()
-            formData.set("avatar", this.file);
+            formData.set("image", this.file);
             formData.set("test", this.testInput);
-            axios.put("http://localhost:3000/api/users/" + localStorage.getItem("userId"), formData, { headers:{ "Authorization": "Bearer " + localStorage.getItem("token")}})
+            axios.post("http://localhost:3000/api/users/" + localStorage.getItem("userId"), formData, { headers:{ "Authorization": "Bearer " + localStorage.getItem("token")}})
             .then(function(res) {
                 localStorage.setItem("avatar", res.data.avatar)
                 Swal.fire({
