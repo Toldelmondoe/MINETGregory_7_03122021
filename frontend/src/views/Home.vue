@@ -12,7 +12,7 @@
                         <p>Cette application est strictement réservée aux personnels du groupe.</p>
                         <p>Pour y accéder, merci de vous <router-link to="/signin">connecter</router-link> ou de vous <router-link to="/signup">inscrire</router-link> si ce n'est déjà fait.</p>
                     </div>
-                    <div class="card-footer bg-light d-flex justify-content-between">
+                    <div class="card-footer bg-light d-flex justify-content-center">
                         <span class="text-dark">Bonne navigation !</span>
                     </div>
                 </div>

@@ -38,7 +38,7 @@
                         </div>
                     </div>
                     <div v-for="post in posts" :key="post.id" class="card bg-light my-3">
-                        <div class="card-header bg-light d-flex align-items-center justify-content-between m-0 p-1">
+                        <div class="card-header bg-light d-flex flex-column justify-content-between m-0 p-1">
                             <div>
                                 <img :src="post.avatar" height="40" class="m-0 rounded-circle"/>
                                 <span class="small text-dark m-0 p-1" >
@@ -47,11 +47,11 @@
                                     le {{post.createdAt.slice(0,10).split('-').reverse().join('/') + ' à ' + post.createdAt.slice(11,16)}}
                                 </span>
                             </div>                                
-                            <div v-if="post.userId == this.currentUserId || isAdmin == 'true' || isModerator == 'true'">
-                                <button type="button" class="btn" data-toggle="modal" @click.prevent="preEdit(post.id)" data-target="#confirmEdit">
+                            <div v-if="post.userId == this.currentUserId || isAdmin == 'true' || isModerator == 'true'" class="d-flex justify-content-end">
+                                <button type="button" class="btn pt-0 pr-2" data-toggle="modal" @click.prevent="preEdit(post.id)" data-target="#confirmEdit">
                                     <img src="/images/edit.png" alt="remove" height="35" class="my-0 rounded-circle"/>
                                 </button>
-                                <button type="button" class="btn" data-toggle="modal" @click.prevent="preDelete(post.id)" data-target="#confirm">
+                                <button type="button" class="btn pt-0 pl-2" data-toggle="modal" @click.prevent="preDelete(post.id)" data-target="#confirm">
                                     <img src="/images/remove.png" alt="remove" height="30" class="my-0 rounded-circle"/>
                                 </button>
                             </div>

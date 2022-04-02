@@ -8,7 +8,7 @@
                 <div class="col-12 col-md-10 col-lg-8" id="OnePost">
                     
                     <div class="card bg-light my-3">
-                        <div class="card-header bg-light d-flex align-items-center justify-content-between m-0 p-1">
+                        <div class="card-header bg-light d-flex flex-column justify-content-between m-0 p-1">
                             <div>
                                 <img :src="onePost.avatar" height="40" class="m-0 rounded-circle"/>
                                 <span class="small text-dark m-0 p-1">
@@ -17,11 +17,11 @@
                                     le {{onePost.createdAt}}
                                 </span>
                             </div>
-                            <div :id="'addUsr' + onePost.id" v-if="onePost.userId == this.currentUserId || isAdmin == 'true' || isModerator == 'true'">
-                                <button type="button" class="btn" data-toggle="modal" @click.prevent="preEdit(onePost.id)" data-target="#confirmEdit">
+                            <div :id="'addUsr' + onePost.id" v-if="onePost.userId == this.currentUserId || isAdmin == 'true' || isModerator == 'true'" class="d-flex justify-content-end">
+                                <button type="button" class="btn pt-0 pr-2" data-toggle="modal" @click.prevent="preEdit(onePost.id)" data-target="#confirmEdit">
                                     <img src="/images/edit.png" alt="edit" height="35" class="my-0 rounded-circle"/>
                                 </button>
-                                <button type="button" class="btn" data-toggle="modal" @click.prevent="preDelete(onePost.id)" data-target="#confirm">
+                                <button type="button" class="btn pt-0 pl-2" data-toggle="modal" @click.prevent="preDelete(onePost.id)" data-target="#confirm">
                                     <img src="/images/remove.png" alt="remove" height="30" class="my-0 rounded-circle"/>
                                 </button>
                             </div>                               
@@ -61,17 +61,17 @@
                 <div class="col-12 col-md-10 col-lg-8">
                     <div v-for="comment in comments" :key="comment.id" class="card bg-light my-3">
                         <div class="card-header align-items-center m-0 p-1">
-                            <div class="d-flex justify-content-between">
+                            <div class="d-flex flex-column justify-content-between">
                                 <span class="small text-dark m-0 p-1">
                                     Commenté par {{comment.username}}
                                     <span v-if="!comment.isActive" class="small text-danger">(supprimé)</span>,
                                     le {{comment.createdAt.slice(0,10).split('-').reverse().join('/') +' à '+ comment.createdAt.slice(11,16)}}
                                 </span>
-                                <div :id="'addCmt' + comment.id"  v-if="comment.userId == this.currentUserId  || isAdmin == 'true' || isModerator == 'true'">
-                                    <button type="button" class="btn" data-toggle="modal" @click.prevent="preEditCom(comment.id)" data-target="#confirmEditCom">
+                                <div :id="'addCmt' + comment.id"  v-if="comment.userId == this.currentUserId  || isAdmin == 'true' || isModerator == 'true'" class="d-flex justify-content-end">
+                                    <button type="button" class="btn pt-0 pr-2" data-toggle="modal" @click.prevent="preEditCom(comment.id)" data-target="#confirmEditCom">
                                         <img src="/images/edit.png" alt="edit" height="35" class="my-0 rounded-circle"/>
                                     </button>
-                                    <button type="button" class="btn" data-toggle="modal" @click.prevent="preDeleteCom(comment.id)" data-target="#confirmCom">
+                                    <button type="button" class="btn pt-0 pl-2" data-toggle="modal" @click.prevent="preDeleteCom(comment.id)" data-target="#confirmCom">
                                         <img src="/images/remove.png" alt="remove" height="30" class="my-0 rounded-circle"/>
                                     </button>
                                 </div>

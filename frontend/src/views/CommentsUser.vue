@@ -8,7 +8,7 @@
                         <div class="col-6 pl-1"><a href="/compte" class="btn btn-sm btn-block btn-primary">retour à mon compte ...</a></div>
                     </div>
                     <div v-for="comment in userComments" :key="comment.id" class="card bg-light my-3">
-                        <div class="card-header bg-light d-flex align-items-center justify-content-between m-0 p-1">
+                        <div class="card-header bg-light d-flex flex-column justify-content-between m-0 p-1">
                             <div>
                                 <span class="small text-dark m-0 p-1" >
                                     Posté par {{comment.username}} 
@@ -16,11 +16,11 @@
                                     le {{comment.createdAt.slice(0,10).split('-').reverse().join('/') + ' à ' + comment.createdAt.slice(11,16)}}
                                 </span>
                             </div>                                
-                            <div>
-                                <button type="button" class="btn" data-toggle="modal" @click.prevent="preEditCom(comment.id)" data-target="#confirmEditCom">
+                            <div class="d-flex justify-content-end">
+                                <button type="button" class="btn pt-0 pr-2" data-toggle="modal" @click.prevent="preEditCom(comment.id)" data-target="#confirmEditCom">
                                     <img src="/images/edit.png" alt="remove" height="35" class="my-0 rounded-circle"/>
                                 </button>
-                                <button type="button" class="btn" data-toggle="modal" @click.prevent="preDeleteCom(comment.id)" data-target="#confirmCom">
+                                <button type="button" class="btn pt-0 pl-2" data-toggle="modal" @click.prevent="preDeleteCom(comment.id)" data-target="#confirmCom">
                                     <img src="/images/remove.png" alt="remove" height="30" class="my-0 rounded-circle"/>
                                 </button>
                             </div>                               
