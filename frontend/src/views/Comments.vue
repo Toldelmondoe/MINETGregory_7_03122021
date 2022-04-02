@@ -68,7 +68,6 @@
                                     le {{comment.createdAt.slice(0,10).split('-').reverse().join('/') +' à '+ comment.createdAt.slice(11,16)}}
                                 </span>
                                 <div :id="'addCmt' + comment.id"  v-if="comment.userId == this.currentUserId  || isAdmin == 'true' || isModerator == 'true'">
-                                    
                                     <button type="button" class="btn" data-toggle="modal" @click.prevent="preEditCom(comment.id)" data-target="#confirmEditCom">
                                         <img src="/images/edit.png" alt="edit" height="35" class="my-0 rounded-circle"/>
                                     </button>
@@ -135,7 +134,7 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-body">
-                            Voulez-vous supprimer ce commentaire ?
+                        Voulez-vous supprimer ce commentaire ?
                         </div>
                         <div class="modal-footer">
                             <button type="button" data-dismiss="modal" class="btn btn-info">Annuler</button>
@@ -186,22 +185,16 @@ export default {
             newContent: "",
             onePost: [],
             currentUserId: "", 
-
             // List of comments
             comments: [],
-
             // Information for delete comment
             commentToDelete: null,
-
             // Information for edit comment
             commentToEdit: "",
-
             // List of posts
             posts: [],
-
             // Information for delete post
             postToDelete: null,
-
             // Informations for Edit Post
             newImage: "",
             file: null,

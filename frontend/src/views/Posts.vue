@@ -134,14 +134,11 @@ export default {
             // Informations for new post creation
             newContent: "",
             newImage: "",
-            file: null,
-            
+            file: null,          
             // Information for delete post
-            postToDelete: null,
-            
+            postToDelete: null,           
             // List of posts
-            posts: [],
-            
+            posts: [],          
             // Informations for Edit Post
             postToEdit: "",
             editorColor: "text-secondary",
@@ -169,8 +166,6 @@ export default {
             formData.set("image", this.file)
             formData.set("userId", localStorage.getItem("userId"))
             formData.set("content", this.newContent.toString())
-            
-            console.log(formData);
             axios.post("http://localhost:3000/api/posts/", formData, { headers: { "x-access-token": localStorage.getItem("token") }})
             .then(()=> {
                 this.userId = ""
@@ -207,36 +202,36 @@ export default {
           if(this.postToDelete != null && this.postToDelete!=""){
             axios.delete("http://localhost:3000/api/posts/" + this.postToDelete, { headers: { "x-access-token": localStorage.getItem("token") }})
                 .then(res=> {
-                  if (res.status === 200) {
-                    Swal.fire({
-                      text: "Le message a été supprimé !",
-                      footer: "Redirection en cours...",
-                      icon: "success",
-                      timer: 1500,
-                      showConfirmButton: false,
-                      timerProgressBar: true,
-                      willClose: () => {
-                        this.created();
-                      }
-                    });
-                    this.postToDelete = null;
-                  }
+                    if (res.status === 200) {
+                        Swal.fire({
+                            text: "Le message a été supprimé !",
+                            footer: "Redirection en cours...",
+                            icon: "success",
+                            timer: 1500,
+                            showConfirmButton: false,
+                            timerProgressBar: true,
+                            willClose: () => {
+                                this.created();
+                            }
+                        });
+                        this.postToDelete = null;
+                    }
                 })
                 .catch(function(error) {
-                  const codeError = error.message.split("code ")[1]
-                  let messageError = ""
-                  switch (codeError){
-                    case "400": messageError = "Le message n'a pas été supprimé !"; break
-                    case "401": messageError = "Requête non-authentifiée !"; break
-                  }
-                  Swal.fire({
-                    title: "Une erreur est survenue",
-                    text: messageError || error.message,
-                    icon: "error",
-                    timer: 1500,
-                    showConfirmButton: false,
-                    timerProgressBar: true
-                  })
+                    const codeError = error.message.split("code ")[1]
+                    let messageError = ""
+                    switch (codeError){
+                        case "400": messageError = "Le message n'a pas été supprimé !"; break
+                        case "401": messageError = "Requête non-authentifiée !"; break
+                    }
+                    Swal.fire({
+                        title: "Une erreur est survenue",
+                        text: messageError || error.message,
+                        icon: "error",
+                        timer: 1500,
+                        showConfirmButton: false,
+                        timerProgressBar: true
+                    })
                 })
             }
         },

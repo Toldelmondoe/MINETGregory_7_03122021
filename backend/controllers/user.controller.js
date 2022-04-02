@@ -25,7 +25,9 @@ exports.findOneUser = (req, res, next) => {
     })
     .then(() => {
         Comment.count({ where: { userId: req.params.id }})
-        .then(cmtcount => { userInfo.commentsCount = cmtcount })
+        .then(cmtcount => { 
+            userInfo.commentsCount = cmtcount 
+        })
     })
     .then(() => {
         Post.count({ where: { userId: req.params.id }})

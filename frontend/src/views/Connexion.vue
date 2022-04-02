@@ -54,9 +54,8 @@ export default {
             .then(function (response) {
                 let currentUser = {};
                 currentUser = response.data;
-              localStorage.setItem("currentUser",currentUser)
-              //@TODO No need for this local storages anymore....
-              localStorage.setItem("token",response.data.token)
+                localStorage.setItem("currentUser",currentUser)
+                localStorage.setItem("token",response.data.token)
                 localStorage.setItem("userId",response.data.id)
                 localStorage.setItem("username",response.data.username)
                 localStorage.setItem("avatar",response.data.avatar)
