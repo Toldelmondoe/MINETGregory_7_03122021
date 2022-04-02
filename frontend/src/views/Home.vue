@@ -8,7 +8,7 @@
                         <img src="../assets/icon-left-font-monochrome-black.svg" class="m-0 p-0" height="60" alt="logo groupomania">
                         <h5 class="h6 text-center" style="color:#008EAB;">Informations utiles !</h5>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body text-center">
                         <p>Cette application est strictement réservée aux personnels du groupe.</p>
                         <p>Pour y accéder, merci de vous <router-link to="/signin">connecter</router-link> ou de vous <router-link to="/signup">inscrire</router-link> si ce n'est déjà fait.</p>
                     </div>

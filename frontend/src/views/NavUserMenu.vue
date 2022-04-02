@@ -51,7 +51,25 @@ export default {
 </script>
 
 <style>
- .center {
-  left: -90%;
+.center {
+  left: -160%;
+}
+
+@media screen and (max-width: 1290px) {
+    .center {
+        left: -200%;
+    }
+}
+
+@media screen and (max-width: 1246px) {
+    .center {
+        left: -320%;
+    }
+}
+
+@media screen and (max-width: 368px) {
+    .center {
+        left: -10%;
+    }
 }
 </style>

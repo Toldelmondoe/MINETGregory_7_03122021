@@ -3,10 +3,10 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-12 col-md-10 col-lg-8">
-                    <div class="card bg-light">
+                    <div class="card bg-light text-center">
+                        <router-link to="/"><img src="../assets/icon-left-font-monochrome-black.svg" class="m-0 p-0 mt-3" height="50" alt="logo groupomania"></router-link>
                         <p class="h5 my-3 text-center" style="color:#008EAB;">Bienvenue sur le réseau social interne Groupomania</p>
                         <div class="card-header bg-light d-flex flex-column justify-content-center">
-                            <router-link to="/"><img src="../assets/icon-left-font-monochrome-black.svg" class="offset-lg-2" height="60" alt="logo groupomania"></router-link>
                             <h5 class="h6 text-center" style="color:#008EAB;">Veuillez-vous identifier !</h5>
                         </div>
                         <div class="card-body col-md-8 col-lg-6 offset-md-2 offset-lg-3">
@@ -93,3 +93,8 @@ export default {
     }
 }
 </script>
+<style>
+@media screen and (max-width: 700px) {
+
+}
+</style>
