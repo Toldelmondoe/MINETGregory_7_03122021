@@ -56,19 +56,3 @@ exports.deleteUser = (req, res, next) => {
         .catch(error => res.status(400).json({ error }))
 };
 
-exports.AllAccess = (req, res) => {
-    res.status(200).send("Public Content.");
-};
-
-exports.userBoard = (req, res) => {
-    res.status(200).send("User content.");
-};
-
-exports.adminBoard = (req, res) => {
-    res.status(200).send("Admin content.");
-};
-
-exports.moderatorBoard = (req, res) => {
-    res.status(200).send("Moderator Content.");
-};
-
