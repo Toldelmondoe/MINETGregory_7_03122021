@@ -2,6 +2,7 @@ const db = require("../models");
 const Post = db.posts;
 const User = db.users;
 
+/* Fonction de création d'un message */
 createPost = (req, res, next) => {
     console.log(req.file);
     let varImage = "";
@@ -20,7 +21,7 @@ createPost = (req, res, next) => {
         .then(() => res.status(201).json({ message: "Publication réussie" }))
         .catch(error => res.status(400).json({ error }))
 };
-
+/* Fonction de recherche de tous les messages */
 findAllPosts = (req, res, next) => {
     Post.findAll({
         include: { model: User, required: true, attributes: ["username", "avatar", "isActive"]}, 
@@ -45,7 +46,7 @@ findAllPosts = (req, res, next) => {
     })
     .catch(error => res.status(400).json({ error }))
 };
-
+/* Fonction de recherche d'un message spécifique */
 findOnePost = (req, res, next) => {
     const onePost = {}
     Post.findOne({ 
@@ -71,7 +72,7 @@ findOnePost = (req, res, next) => {
     })
     .catch(error => res.status(404).json({ error }))
 };
-
+/* Fonction de recherche de tous les messages d'un utilisateur */
 findAllPostsForOne = (req, res, next) => {
     Post.findAll({ 
         where: { userId: req.params.id },
@@ -101,13 +102,13 @@ findAllPostsForOne = (req, res, next) => {
     })
     .catch(error => res.status(400).json({ error }))
 };
-
+/* Fonction de suppression d'un message */
 deletePost = (req, res, next) => {
     Post.destroy({ where: { id: req.params.id }})
         .then(() => res.status(200).json({ message: "Message supprimé !" }))
         .catch(error => res.status(400).json({ error }))
 };
-
+/* Fonction de modification d'un message */
 modifyPost = (req, res, next) => {
     const postObject = req.file ?
       {

@@ -2,6 +2,7 @@ const db = require("../models");
 const Comment = db.comments;              
 const User = db.users;
 
+/* Fonction de création d'un commentaire */
 createComment = (req, res, next) => {
     
     const comment = new Comment(
@@ -15,6 +16,7 @@ createComment = (req, res, next) => {
         .then(() => res.status(201).json({ message: "Commentaire ajouté !" }))
         .catch(error => res.status(400).json({ error }))
 };
+/* Fonction de recherche des commentaires d'un message */
 findCommentsByPost = (req, res, next) => {
     Comment.findAll({
         where: {PostId: req.params.id},
@@ -39,7 +41,7 @@ findCommentsByPost = (req, res, next) => {
         })
         .catch(error => res.status(400).json({ error }))
 };
-
+/* Fonction de recherche de tous les commentaires */
 findAllComments = (req, res, next) => {
     Comment.findAll({ 
         include: { model: User, required: true, attributes: ["username", "avatar", "isActive"]}, 
@@ -63,7 +65,7 @@ findAllComments = (req, res, next) => {
     })
     .catch(error => res.status(400).json({ error }))
 };
-
+/* Fonction de recherche d'un commentaire spécifique */
 findOneComment = (req, res, next) => {
     const oneComment = {}
     Comment.findOne({ 
@@ -89,7 +91,7 @@ findOneComment = (req, res, next) => {
     })
     .catch(error => res.status(404).json({ error }))
 };
-
+/* Fonction de recherche des commentaires d'un utilisateur */
 findAllCommentsForOne = (req, res, next) => {
     Comment.findAll({ 
         where: { userId: req.params.id },
@@ -118,13 +120,13 @@ findAllCommentsForOne = (req, res, next) => {
     })
     .catch(error => res.status(400).json({ error }))
 };
-
+/* Fonction de suppression d'un commentaire */
 deleteComment = (req, res, next) => {
     Comment.destroy({ where: { id: req.params.id }})
         .then(() => res.status(200).json({ message: "Commentaire supprimé !" }))
         .catch(error => res.status(400).json({ error }))
 };
-
+/* Fonction de modification d'un commentaire */
 modifyComment = (req, res, next) => { 
     Comment.update({ ...req.body }, { where: { id: req.params.id }})
     .then(() => res.status(200).json({ message: "Commentaire modifié !" }))

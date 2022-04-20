@@ -5,6 +5,7 @@ const User = db.users;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcrypt");
 
+/* Fonction d'enregistrement */
 exports.signup = (req, res) => {
   User.create({
     username: req.body.username,
@@ -20,7 +21,7 @@ exports.signup = (req, res) => {
     res.status(500).send({ message: err.message });
   });
 };
-
+/* Fonction de connection */
 exports.signin = (req, res) => {
   User.findOne({
     where: {

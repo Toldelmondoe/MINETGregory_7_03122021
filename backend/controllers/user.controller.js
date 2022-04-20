@@ -4,6 +4,7 @@ const Role = db.roles
 const Post = db.posts
 const Comment = db.comments
 
+/* Fonction de recherche d'un utilisateur */
 exports.findOneUser = (req, res, next) => {
     const userInfo = {}
     User.findOne(
@@ -38,7 +39,7 @@ exports.findOneUser = (req, res, next) => {
     })  
     .catch(error => res.status(404).json({ error }))
 };
-
+/* Fonction de modification d'un utilisateur */
 exports.modifyUser = (req, res, next) => {
     const userObject = req.file ?
         {
@@ -49,7 +50,7 @@ exports.modifyUser = (req, res, next) => {
       .then(() => res.status(200).json({ ...userObject }))
       .catch(error => res.status(400).json({ error }))
 };
-
+/* Fonction de suppression d'un utilisateur */
 exports.deleteUser = (req, res, next) => {
     User.destroy({ where: { id: req.params.id }})
         .then(() => res.status(200).json({ message: "Utilisateur supprimé !" }))
